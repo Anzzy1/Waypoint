@@ -104,7 +104,7 @@ function RolePicker({ active, onPick }: { active: string; onPick: () => void }) 
                   )}
                 </b>
                 <span className="mono role-card-meta">
-                  {s.tools} tools · {s.must} must-know
+                  <span className="nowrap">{s.tools} tools ·</span> <span className="nowrap">{s.must} must-know</span>
                 </span>
               </span>
             </Link>

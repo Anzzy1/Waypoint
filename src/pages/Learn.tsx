@@ -333,18 +333,19 @@ export default function Learn() {
                 </p>
                 <div className="ob-grid">
                   {[
-                    { t: 'Spot your traps', d: 'A quick yes/no game about your study habits.', time: '2 min', s: 1, g: 'eye' as GlyphKey },
-                    { t: 'Learn the method', d: 'The 5-step loop and how to study one lesson.', time: '4 min', s: 2, g: 'refresh' as GlyphKey },
-                    { t: 'Make a plan', d: 'Choose a path, set your hours, see your finish date.', time: '3 min', s: 5, g: 'gauge' as GlyphKey },
+                    { t: 'Spot your traps', d: 'A quick yes/no game about your study habits.', time: '2 min', g: 'eye' as GlyphKey },
+                    { t: 'Learn the method', d: 'The 5-step loop and how to study one lesson.', time: '4 min', g: 'refresh' as GlyphKey },
+                    { t: 'Make a plan', d: 'Choose a path, set your hours, see your finish date.', time: '3 min', g: 'gauge' as GlyphKey },
                   ].map((c, i) => (
-                    <button key={c.t} className="ob-mini" onClick={() => go(c.s)} style={{ '--i': i } as CSSProperties}>
+                    // a preview of what's ahead, not a shortcut: learners go through the steps in order
+                    <div key={c.t} className="ob-mini" style={{ '--i': i } as CSSProperties}>
                       <span className="ob-mini-top">
                         <span className="ob-mini-icon"><Glyph name={c.g} size={18} /></span>
-                        <span className="mono small faint">{c.time}</span>
+                        <span className="mono small faint">Part {i + 1} · {c.time}</span>
                       </span>
                       <b>{c.t}</b>
                       <span className="muted small">{c.d}</span>
-                    </button>
+                    </div>
                   ))}
                 </div>
                 <Video id="O96fE1E-rf8" title="Learning How to Learn" by="Barbara Oakley · TEDx" />

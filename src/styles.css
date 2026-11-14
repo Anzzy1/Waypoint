@@ -1192,11 +1192,9 @@ button.complete-note:hover { transform: translateY(-1px); box-shadow: var(--shad
 .ob-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .ob-mini {
   display: flex; flex-direction: column; gap: 6px; padding: 18px; border-radius: 16px;
-  border: 1px solid var(--line-strong); background: var(--card); text-align: left; cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+  border: 1px solid var(--line-strong); background: var(--card); text-align: left;
   animation: riseIn 0.5s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 90ms + 150ms);
 }
-.ob-mini:hover { border-color: var(--faint); box-shadow: var(--shadow-md); transform: translateY(-2px); }
 .ob-mini-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
 .ob-mini-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; background: var(--soft); border: 1px solid var(--line); }
 
@@ -1561,6 +1559,11 @@ button.complete-note:hover { transform: translateY(-1px); box-shadow: var(--shad
   .role-card-text b { font-size: 14.5px; }
   .role-bar-art, .role-bar-meta, .role-bar-label { display: none; }
 }
+/* very narrow phones: art above the text so names and stats get the full card width */
+@media (max-width: 420px) {
+  .role-card { flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 12px 12px; }
+  .role-card-art { width: 64px; height: 32px; }
+}
 
 .stack-section { padding-top: clamp(40px, 6vw, 64px); }
 .stack-overview { display: grid; grid-template-columns: 1fr 320px; gap: 40px; align-items: start; margin-bottom: 44px; }
@@ -1835,7 +1838,7 @@ button.complete-note:hover { transform: translateY(-1px); box-shadow: var(--shad
 /* skills: compact cards that expand with "Read more" */
 .skill-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
 .skill-count { margin-left: 4px; opacity: 0.6; }
-.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; align-items: start; }
+.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
 .skill { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 18px; border-radius: 16px; background: var(--card); border: 1px solid var(--line-strong); transition: border-color 0.25s ease, box-shadow 0.25s var(--ease); }
 .skill:hover { border-color: var(--faint); }
 .skill-head { display: flex; align-items: center; gap: 12px; }
@@ -1845,7 +1848,7 @@ button.complete-note:hover { transform: translateY(-1px); box-shadow: var(--shad
 .skill-tag { font-size: 13.5px; color: var(--good); font-weight: 600; }
 .skill-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
 .skill-cat { padding: 2px 8px; border-radius: 6px; background: var(--soft); border: 1px solid var(--line); font: 600 11px var(--mono); color: var(--muted); }
-.skill-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.skill-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; }
 .skill-more { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 9px; border: 1px solid var(--line-strong); background: transparent; cursor: pointer; font-weight: 600; font-size: 13.5px; color: var(--ink); transition: background-color 0.2s ease, border-color 0.2s ease; }
 .skill-more:hover { background: var(--soft); border-color: var(--faint); }
 .skill-more:hover .i-arrow-r { transform: translateX(3px); }
@@ -1926,6 +1929,12 @@ button.complete-note:hover { transform: translateY(-1px); box-shadow: var(--shad
   .harness-grid, .skill-grid { grid-template-columns: minmax(0, 1fr); }
   .ai-promo { flex-wrap: wrap; }
   .ai-promo-go { margin-left: 64px; }
+}
+
+/* equal-size cards on the AI workflow page: every card in a grid matches the tallest one
+   (multi-column layouts only; on phones cards keep their natural height) */
+@media (min-width: 761px) {
+  .harness-grid, .concept-grid, .skill-grid { grid-auto-rows: 1fr; }
 }
 
 /* ============ Images: logos ============ */
