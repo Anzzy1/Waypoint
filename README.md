@@ -63,4 +63,4 @@ so nothing is lost. Guests see a welcome pop-up on their first visit and a remin
 
 The site uses hash routing and `base: './'`, so the `dist/` folder runs on any static host (Vercel, Netlify, GitHub Pages) with no extra configuration.
 
-This repo deploys to **GitHub Pages** automatically on every push to `main` (`.github/workflows/deploy.yml`). One-time setup: in the repo's **Settings → Pages**, set **Source** to **GitHub Actions**. The live site is at `https://anzzy1.github.io/Waypoint/`; add that URL to Supabase's Site URL and Redirect URLs.
+The live site is hosted on **Vercel**, which redeploys on every push to `main`. The `VITE_SUPABASE_…` variables are set in the Vercel project settings.
