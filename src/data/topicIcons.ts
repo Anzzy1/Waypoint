@@ -1,0 +1,91 @@
+import type { GlyphKey } from '../components/Art';
+
+/** Icon for every lesson: a real Devicon logo when the lesson is about one tool, a drawn glyph for concepts. */
+export type TopicIcon = { logo: string } | { glyph: GlyphKey };
+
+export const TOPIC_ICONS: Record<string, TopicIcon> = {
+  /* foundations */
+  'how-to-learn': { glyph: 'brain' },
+  'how-internet-works': { glyph: 'globe' },
+  terminal: { glyph: 'terminal' },
+  git: { logo: 'git/git-original' },
+  dsa: { glyph: 'puzzle' },
+  /* frontend */
+  html: { logo: 'html5/html5-original' },
+  css: { logo: 'css3/css3-original' },
+  responsive: { glyph: 'phone' },
+  javascript: { logo: 'javascript/javascript-original' },
+  dom: { glyph: 'tree' },
+  'async-js': { glyph: 'clock' },
+  tooling: { logo: 'vitejs/vitejs-original' },
+  typescript: { logo: 'typescript/typescript-original' },
+  react: { logo: 'react/react-original' },
+  'state-routing': { glyph: 'refresh' },
+  tailwind: { logo: 'tailwindcss/tailwindcss-original' },
+  accessibility: { glyph: 'access' },
+  performance: { glyph: 'gauge' },
+  'frontend-testing': { logo: 'vitest/vitest-original' },
+  nextjs: { logo: 'nextjs/nextjs-original' },
+  'deploy-web': { logo: 'vercel/vercel-original' },
+  /* backend */
+  nodejs: { logo: 'nodejs/nodejs-original' },
+  python: { logo: 'python/python-original' },
+  'http-apis': { glyph: 'api' },
+  'server-framework': { logo: 'express/express-original' },
+  sql: { logo: 'postgresql/postgresql-original' },
+  orm: { logo: 'prisma/prisma-original' },
+  'nosql-caching': { logo: 'redis/redis-original' },
+  auth: { glyph: 'lock' },
+  security: { glyph: 'shield' },
+  'backend-testing': { logo: 'jest/jest-plain' },
+  'realtime-queues': { logo: 'rabbitmq/rabbitmq-original' },
+  'system-design': { glyph: 'network' },
+  'fullstack-arch': { glyph: 'layers' },
+  /* devops & cloud */
+  linux: { logo: 'linux/linux-original' },
+  networking: { glyph: 'network' },
+  scripting: { logo: 'bash/bash-original' },
+  docker: { logo: 'docker/docker-original' },
+  'ci-cd': { logo: 'githubactions/githubactions-original' },
+  cloud: { logo: 'amazonwebservices/amazonwebservices-original-wordmark' },
+  kubernetes: { logo: 'kubernetes/kubernetes-original' },
+  iac: { logo: 'terraform/terraform-original' },
+  observability: { logo: 'grafana/grafana-original' },
+  sre: { glyph: 'gauge' },
+  'cloud-networking': { glyph: 'network' },
+  'cloud-security': { glyph: 'lock' },
+  serverless: { glyph: 'bolt' },
+  'cloud-architecture': { glyph: 'cloud' },
+  /* AI & agents */
+  'math-ml': { glyph: 'chart' },
+  'data-tools': { logo: 'pandas/pandas-original' },
+  'ml-fundamentals': { logo: 'scikitlearn/scikitlearn-original' },
+  'deep-learning': { logo: 'pytorch/pytorch-original' },
+  'llm-basics': { glyph: 'brain' },
+  prompting: { glyph: 'chat' },
+  'llm-apps': { glyph: 'layers' },
+  rag: { glyph: 'search' },
+  agents: { glyph: 'nodes' },
+  evals: { glyph: 'checklist' },
+  mlops: { glyph: 'eye' },
+  'agentic-coding': { glyph: 'sparkle' },
+  mcp: { glyph: 'nodes' },
+  'agent-frameworks': { glyph: 'layers' },
+  'agent-safety': { glyph: 'shield' },
+  /* mobile */
+  'mobile-basics': { glyph: 'phone' },
+  'react-native': { logo: 'react/react-original' },
+  'mobile-navigation': { glyph: 'compass' },
+  'mobile-data': { logo: 'sqlite/sqlite-original' },
+  'native-features': { glyph: 'bolt' },
+  'mobile-ui': { glyph: 'sparkle' },
+  'mobile-testing': { logo: 'jest/jest-plain' },
+  'app-store': { logo: 'apple/apple-original' },
+  'native-intro': { logo: 'swift/swift-original' },
+};
+
+/** Lessons that have a "See it" diagram (kept here so the roadmap page doesn't load the diagram chunk). */
+export const DIAGRAM_IDS = new Set([
+  'how-internet-works', 'terminal', 'git', 'html', 'css', 'responsive', 'javascript',
+  'dom', 'async-js', 'react', 'http-apis', 'sql', 'agents',
+]);

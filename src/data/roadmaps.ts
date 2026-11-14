@@ -1,0 +1,202 @@
+import type { Roadmap } from './types';
+import { topics } from './topics';
+
+export const roadmaps: Roadmap[] = [
+  {
+    id: 'frontend',
+    title: 'Frontend Developer',
+    tagline: 'Build the interfaces people see and use.',
+    role: 'Frontend developers turn designs into fast, accessible, interactive web interfaces. They work closely with designers and backend engineers, and own everything that runs in the browser.',
+    level: 'Beginner friendly',
+    duration: '6–9 months',
+    outcomes: [
+      'Build responsive, accessible pages from a design',
+      'Ship React + TypeScript apps that consume real APIs',
+      'Test, optimise and deploy production frontends',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'How the web works, plus the tools every developer uses daily.', topics: ['how-to-learn', 'how-internet-works', 'terminal', 'git'], project: 'Create a GitHub account and push a repo with a README describing your learning plan.' },
+      { title: 'HTML & CSS', summary: 'Structure and style. Get these solid before touching a framework.', topics: ['html', 'css', 'responsive'], project: 'Rebuild the landing page of a site you like, responsive from 320px up to desktop.' },
+      { title: 'JavaScript', summary: 'The language of the web: logic, interactivity and talking to servers.', topics: ['javascript', 'dom', 'async-js'], project: 'Build a weather app that fetches a public API with proper loading and error states.' },
+      { title: 'Tooling & TypeScript', summary: 'Professional setup: packages, bundlers, linting and types.', topics: ['tooling', 'typescript', 'agentic-coding'], project: 'Move your weather app to Vite + TypeScript with ESLint configured.' },
+      { title: 'React', summary: 'Component-driven UIs, routing, data fetching and styling at scale.', topics: ['react', 'state-routing', 'tailwind'], project: 'Build a multi-page movie search app with React Router and TanStack Query.' },
+      { title: 'Quality', summary: 'What separates hobby projects from production: accessibility, speed and tests.', topics: ['accessibility', 'performance', 'frontend-testing'], project: 'Audit your React app: hit 90+ in Lighthouse and add tests for the key flows.' },
+      { title: 'Ship it', summary: 'Meta-frameworks and getting your work live on the internet.', topics: ['nextjs', 'deploy-web'], project: 'Build your portfolio with Next.js and deploy it on a custom domain.' },
+    ],
+  },
+  {
+    id: 'backend',
+    title: 'Backend Developer',
+    tagline: 'Power apps with APIs, data and business logic.',
+    role: 'Backend developers build the servers, APIs and databases behind applications. They care about data integrity, security, performance, and keeping systems running reliably.',
+    level: 'Beginner friendly',
+    duration: '6–10 months',
+    outcomes: [
+      'Design and build secure REST APIs',
+      'Model data in PostgreSQL and cache it with Redis',
+      'Containerise, test and deploy services to the cloud',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'How the web works, plus the tools every developer uses daily.', topics: ['how-to-learn', 'how-internet-works', 'terminal', 'git'], project: 'Push a repo to GitHub and write a README describing your learning plan.' },
+      { title: 'Language & runtime', summary: 'Go deep on one server language. This path uses Node.js + TypeScript; Python (see the AI roadmap) is a great alternative.', topics: ['javascript', 'typescript', 'nodejs'], project: 'Write a CLI tool in Node that reads a CSV file and prints a summary report.' },
+      { title: 'Building APIs', summary: 'HTTP in depth and a framework to structure your server.', topics: ['http-apis', 'server-framework'], project: 'Build a REST API for a notes app with validation and correct status codes.' },
+      { title: 'Databases', summary: 'Where your data lives, and how to keep it fast.', topics: ['sql', 'orm', 'nosql-caching'], project: 'Move your API to PostgreSQL with migrations, and cache a slow endpoint in Redis.' },
+      { title: 'Auth & security', summary: 'Users, permissions and keeping attackers out.', topics: ['auth', 'security'], project: 'Add signup/login with hashed passwords and role-based permissions.' },
+      { title: 'Testing & async work', summary: 'Confidence through tests, plus work that happens outside the request.', topics: ['backend-testing', 'realtime-queues'], project: 'Add integration tests, and send a welcome email from a background job.' },
+      { title: 'Shipping', summary: 'Containers, pipelines and the cloud.', topics: ['docker', 'ci-cd', 'cloud', 'agentic-coding'], project: 'Containerise your API and deploy it with a GitHub Actions pipeline.' },
+      { title: 'Scale & interviews', summary: 'Design systems that grow, and prepare for technical interviews.', topics: ['system-design', 'dsa', 'observability'], project: 'Write a one-page design doc for scaling your API to a million users.' },
+    ],
+  },
+  {
+    id: 'fullstack',
+    title: 'Full-Stack Developer',
+    tagline: 'Own a feature from the database to the UI.',
+    role: 'Full-stack developers build both the frontend and the backend. They are especially valuable in startups and small teams, where one person often ships a whole feature end to end.',
+    level: 'Beginner → Intermediate',
+    duration: '9–14 months',
+    outcomes: [
+      'Build complete web apps: UI, API, database and auth',
+      'Use Next.js to ship full-stack React',
+      'Test, containerise and deploy with CI/CD',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'How the web works, plus the tools every developer uses daily.', topics: ['how-to-learn', 'how-internet-works', 'terminal', 'git'] },
+      { title: 'Web fundamentals', summary: 'Structure and style every page you build.', topics: ['html', 'css', 'responsive'], project: 'Build a responsive personal homepage from scratch.' },
+      { title: 'JavaScript & TypeScript', summary: 'One language for the whole stack, with types for safety.', topics: ['javascript', 'dom', 'async-js', 'typescript'], project: 'Build a vanilla TypeScript to-do app that saves to localStorage.' },
+      { title: 'Frontend with React', summary: 'Components, routing, data fetching and styling.', topics: ['tooling', 'react', 'state-routing', 'tailwind'], project: 'Build a React dashboard that consumes a public API.' },
+      { title: 'Backend with Node', summary: 'Servers and APIs your frontend can talk to.', topics: ['nodejs', 'http-apis', 'server-framework'], project: 'Write a REST API that powers your React dashboard.' },
+      { title: 'Data', summary: 'Relational databases, ORMs and caching.', topics: ['sql', 'orm', 'nosql-caching'], project: 'Persist your app data in PostgreSQL with Prisma or Drizzle.' },
+      { title: 'Auth & security', summary: 'Users, sessions and defending your app.', topics: ['auth', 'security'], project: 'Add accounts so each user only sees their own data.' },
+      { title: 'Full-stack frameworks', summary: 'Bring it together with Next.js and sound architecture.', topics: ['nextjs', 'fullstack-arch'], project: 'Rebuild your app as a single Next.js project with Server Actions.' },
+      { title: 'Ship & maintain', summary: 'Tests, containers, pipelines and deployment.', topics: ['frontend-testing', 'backend-testing', 'docker', 'ci-cd', 'deploy-web', 'agentic-coding'], project: 'Capstone: a small SaaS with auth, a database, Stripe test-mode payments, tests and CI, live on your own domain.' },
+    ],
+  },
+  {
+    id: 'ai',
+    title: 'AI & ML Engineer',
+    tagline: 'Make AI smart: models, machine learning and LLM apps.',
+    role: 'AI & ML engineers understand how models learn and build products on top of them: from data and model training to LLM features and RAG systems running in production. In job posts this role is usually called “AI engineer” or “ML engineer”.',
+    level: 'Intermediate',
+    duration: '9–12 months',
+    hot: { note: 'AI engineer is #1 on LinkedIn’s Jobs on the Rise 2026', rank: 2 },
+    outcomes: [
+      'Understand how ML models and LLMs actually work',
+      'Build RAG systems and tool-using agents',
+      'Evaluate, deploy and monitor AI features',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'Python and the developer toolkit.', topics: ['how-to-learn', 'terminal', 'git', 'python'], project: 'Write a Python script that scrapes or downloads a dataset and saves it as CSV.' },
+      { title: 'Math & data', summary: 'Intuition for the math, and fluency with data.', topics: ['math-ml', 'data-tools'], project: 'Explore a Kaggle dataset in a notebook and publish 5 insights with charts.' },
+      { title: 'Machine learning', summary: 'Classic ML: the base everything else builds on.', topics: ['ml-fundamentals'], project: 'Train and evaluate a model that predicts house prices or customer churn.' },
+      { title: 'Deep learning & LLMs', summary: 'Neural networks, and how transformers power modern AI.', topics: ['deep-learning', 'llm-basics'], project: 'Train a small image classifier in PyTorch, then follow Karpathy’s GPT build.' },
+      { title: 'Building with LLMs', summary: 'Prompting and integrating models into real apps.', topics: ['prompting', 'llm-apps', 'http-apis', 'agentic-coding'], project: 'Build a streaming chat app with a system prompt and one tool.' },
+      { title: 'RAG & agents', summary: 'Ground models in your data and let them take actions.', topics: ['rag', 'agents'], project: 'Build a “chat with your docs” app with citations, then add an agent that can search the web.' },
+      { title: 'Production AI', summary: 'Measure quality, stay safe and deploy reliably.', topics: ['evals', 'mlops', 'docker'], project: 'Add an eval suite to your RAG app and deploy it in a container.' },
+    ],
+  },
+  {
+    id: 'devops',
+    title: 'DevOps Engineer',
+    tagline: 'Automate, deploy and keep systems reliable.',
+    role: 'DevOps engineers build the pipelines and infrastructure that let teams ship quickly and safely. They automate everything, run the cloud, and get paged when things break.',
+    level: 'Intermediate',
+    duration: '8–12 months',
+    outcomes: [
+      'Run and troubleshoot Linux servers and networks',
+      'Build CI/CD pipelines and container platforms',
+      'Manage cloud infrastructure as code and monitor it',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'The terminal, Git and Linux: your everyday tools.', topics: ['how-to-learn', 'terminal', 'git', 'linux'], project: 'Rent a $5 VPS (or use a VM), harden SSH, and host a static site with Nginx.' },
+      { title: 'Networking & scripting', summary: 'How traffic flows, and automating the boring parts.', topics: ['networking', 'scripting'], project: 'Write a script that backs up a directory nightly and alerts you on failure.' },
+      { title: 'Containers', summary: 'Package once, run anywhere.', topics: ['docker'], project: 'Dockerise a web app + database with Docker Compose.' },
+      { title: 'CI/CD', summary: 'Automate testing and delivery.', topics: ['ci-cd', 'agentic-coding'], project: 'Build a pipeline that tests, builds an image and deploys on every merge.' },
+      { title: 'Cloud & IaC', summary: 'Cloud building blocks, defined in code.', topics: ['cloud', 'iac'], project: 'Provision a VPC, database and container service on AWS with Terraform.' },
+      { title: 'Orchestration', summary: 'Run containers at scale.', topics: ['kubernetes'], project: 'Deploy your app to a local Kubernetes cluster (kind or minikube) with Helm.' },
+      { title: 'Operate', summary: 'Observability, reliability and security.', topics: ['observability', 'sre', 'security'], project: 'Add Prometheus + Grafana dashboards and alerts, and write an incident runbook.' },
+    ],
+  },
+  {
+    id: 'mobile',
+    title: 'Mobile Developer',
+    tagline: 'Ship native-feeling apps to iOS and Android.',
+    role: 'Mobile developers build the apps on our phones. With React Native you can ship to both iOS and Android from one codebase while still using native features and performance.',
+    level: 'Beginner friendly',
+    duration: '7–10 months',
+    outcomes: [
+      'Build cross-platform apps with React Native + Expo',
+      'Use device features, offline storage and animations',
+      'Publish to the App Store and Google Play',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'Developer tools and how mobile differs from the web.', topics: ['how-to-learn', 'terminal', 'git', 'mobile-basics'] },
+      { title: 'JavaScript & TypeScript', summary: 'The language behind React Native.', topics: ['javascript', 'async-js', 'typescript'], project: 'Build a small TypeScript quiz game that runs in the terminal.' },
+      { title: 'React', summary: 'Learn React’s mental model first. It transfers directly to mobile.', topics: ['react'], project: 'Build a habit tracker web app in React.' },
+      { title: 'React Native', summary: 'Native components, styling and navigation.', topics: ['react-native', 'mobile-navigation'], project: 'Port your habit tracker to React Native with tab navigation.' },
+      { title: 'Data & users', summary: 'APIs, offline storage and accounts.', topics: ['mobile-data', 'auth'], project: 'Add accounts and cloud sync with Supabase, and make it work offline.' },
+      { title: 'Native experience', summary: 'Device features, gestures and smooth animation.', topics: ['native-features', 'mobile-ui'], project: 'Add reminders via notifications and a swipe-to-complete gesture.' },
+      { title: 'Ship it', summary: 'Testing and publishing to the stores.', topics: ['mobile-testing', 'app-store', 'agentic-coding'], project: 'Publish your app to TestFlight and Google Play internal testing.' },
+      { title: 'Level up (optional)', summary: 'Native platforms for deeper control.', topics: ['native-intro'] },
+    ],
+  },
+  {
+    id: 'cloud',
+    title: 'Cloud Engineer',
+    tagline: 'Design, build and run infrastructure in the cloud.',
+    role: 'Cloud engineers design and run the infrastructure apps live on: networks, servers, databases and security in AWS, Azure or Google Cloud. They automate it with code, keep it secure, and keep the bill under control.',
+    level: 'Beginner → Intermediate',
+    duration: '7–10 months',
+    hot: { note: 'AWS and Azure each appear in ~46% of cloud engineer job posts', rank: 3 },
+    outcomes: [
+      'Build secure networks and permissions in AWS or Azure',
+      'Run containers and serverless apps in the cloud',
+      'Define everything with Terraform and keep costs in check',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'How the internet works, plus the tools every engineer uses daily.', topics: ['how-to-learn', 'how-internet-works', 'terminal', 'git'], project: 'Push a repo to GitHub with a README describing your cloud learning plan.' },
+      { title: 'Linux & networking', summary: 'The operating system and network basics every cloud runs on.', topics: ['linux', 'networking', 'scripting'], project: 'Host a static site on a cloud VM with Nginx and HTTPS.' },
+      { title: 'Cloud core', summary: 'The building blocks: compute, storage, private networks and permissions.', topics: ['cloud', 'cloud-networking', 'cloud-security'], project: 'Build a VPC with public and private subnets and a least-privilege IAM role.' },
+      { title: 'Containers', summary: 'Package apps once, then run them at scale.', topics: ['docker', 'kubernetes'], project: 'Run a containerised app on managed Kubernetes (EKS/AKS) or a local kind cluster.' },
+      { title: 'Infrastructure as code', summary: 'Define your whole setup in code and deploy it automatically.', topics: ['iac', 'ci-cd'], project: 'Recreate your entire setup with Terraform, deployed by GitHub Actions.' },
+      { title: 'Serverless & managed services', summary: 'Run code without managing servers.', topics: ['serverless'], project: 'Build an image-resize function that runs whenever a file is uploaded.' },
+      { title: 'Operate & optimise', summary: 'Keep systems up, secure and affordable, and prove your skills.', topics: ['observability', 'sre', 'cloud-architecture', 'agentic-coding'], project: 'Complete the Cloud Resume Challenge, with monitoring, alerts and a cost report.' },
+    ],
+  },
+  {
+    id: 'agents',
+    title: 'AI Agent Engineer',
+    tagline: 'Make AI do things: agents that use tools to finish real work.',
+    role: 'AI agent engineers build systems where a language model plans, calls tools and APIs, and works through multi-step tasks on its own, safely. It is the fastest-growing part of AI hiring, but most openings want some experience, so it’s best started once you know the basics of programming.',
+    level: 'Intermediate',
+    duration: '6–9 months',
+    hot: { note: 'Fastest-growing role in AI: job posts up ~280% in a year', rank: 1 },
+    outcomes: [
+      'Build agents that plan, use tools and finish multi-step tasks',
+      'Connect models to real data and apps with MCP',
+      'Test, secure and deploy agents with evals and guardrails',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'Python and the developer toolkit.', topics: ['how-to-learn', 'terminal', 'git', 'python'], project: 'Write a Python script that calls a public API and saves the results.' },
+      { title: 'APIs & LLMs', summary: 'How web APIs and language models work.', topics: ['http-apis', 'llm-basics', 'prompting'], project: 'Build a command-line chatbot that streams answers from an LLM API.' },
+      { title: 'AI-native workflow', summary: 'Work alongside coding agents, and review everything they write.', topics: ['agentic-coding'] },
+      { title: 'Tools & MCP', summary: 'Let models call functions and connect to your data.', topics: ['mcp', 'llm-apps'], project: 'Build an MCP server that exposes your own notes or calendar to an AI client.' },
+      { title: 'Agents', summary: 'The agent loop, and frameworks that run it reliably.', topics: ['agents', 'agent-frameworks'], project: 'Build a research agent that plans, searches the web and writes a cited brief.' },
+      { title: 'Memory & knowledge', summary: 'Ground agents in your own documents.', topics: ['rag'], project: 'Give your agent a searchable knowledge base with citations.' },
+      { title: 'Quality & safety', summary: 'Measure behaviour and stop agents doing harm.', topics: ['evals', 'agent-safety'], project: 'Write an eval suite and prompt-injection tests for your agent.' },
+      { title: 'Ship it', summary: 'Deploy, trace and control costs.', topics: ['docker', 'cloud', 'mlops'], project: 'Deploy your agent behind an API with tracing and a cost dashboard.' },
+    ],
+  },
+];
+
+export function getRoadmap(id: string | undefined) {
+  return roadmaps.find((r) => r.id === id);
+}
+
+/** unique topic ids in roadmap order */
+export function topicIdsOf(rm: Roadmap): string[] {
+  return [...new Set(rm.stages.flatMap((s) => s.topics))];
+}
+
+export function hoursOf(rm: Roadmap): number {
+  return topicIdsOf(rm).reduce((sum, id) => sum + (topics[id]?.hours ?? 0), 0);
+}
