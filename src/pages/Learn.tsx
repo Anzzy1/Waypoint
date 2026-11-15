@@ -28,6 +28,24 @@ const WHY = [
 
 /** How far the learner has got through the quick start (steps finished with "Next"). Saved in the browser. */
 const REACHED_KEY = 'waypoint.quickstartReached.v1';
+// answers to the trap game and the loop steps already opened, so coming back shows results instead of a blank game
+const TRAPS_KEY = 'waypoint.quickstartTraps.v1';
+const LOOP_KEY = 'waypoint.quickstartLoop.v1';
+function readJSON<T>(key: string, ok: (v: unknown) => v is T, fallback: T): T {
+  try {
+    const v = JSON.parse(localStorage.getItem(key) || 'null');
+    return ok(v) ? v : fallback;
+  } catch {
+    return fallback;
+  }
+}
+function writeJSON(key: string, v: unknown) {
+  try {
+    localStorage.setItem(key, JSON.stringify(v));
+  } catch {
+    /* storage blocked: the game still works, it just won't be remembered */
+  }
+}
 function readReached() {
   try {
     const n = Number(localStorage.getItem(REACHED_KEY));
@@ -56,18 +74,27 @@ function Video({ id, title, by }: { id: string; title: string; by: string }) {
 }
 
 /* ---------- Step 1: study-trap card game ---------- */
-function TrapGame({ onDone }: { onDone: () => void }) {
-  const [idx, setIdx] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, boolean>>({});
+function TrapGame({ onReady }: { onReady: (ready: boolean) => void }) {
   const total = HABITS.length;
+  const [answers, setAnswers] = useState<Record<number, boolean>>(() => {
+    const saved = readJSON(TRAPS_KEY, (v): v is Record<string, boolean> => !!v && typeof v === 'object' && !Array.isArray(v), {});
+    const clean: Record<number, boolean> = {};
+    for (const [k, v] of Object.entries(saved)) if (Number(k) < total && typeof v === 'boolean') clean[Number(k)] = v;
+    return clean;
+  });
+  // every trap answered last time: open straight on the results
+  const [idx, setIdx] = useState(() => {
+    const open = HABITS.findIndex((_, i) => !(i in answers));
+    return open === -1 ? total : open;
+  });
+  useEffect(() => writeJSON(TRAPS_KEY, answers), [answers]);
   // first trap not answered yet: you can't jump past it, so every card gets read
   const firstOpen = HABITS.findIndex((_, i) => !(i in answers));
   const finished = idx >= total && firstOpen === -1;
   const mine = HABITS.map((h, i) => ({ ...h, i })).filter((h) => answers[h.i]);
 
-  useEffect(() => {
-    if (finished) onDone();
-  }, [finished, onDone]);
+  // Next unlocks only once all 8 are answered (and locks again on "Play again")
+  useEffect(() => onReady(finished), [finished, onReady]);
 
   if (finished) {
     return (
@@ -151,17 +178,20 @@ function TrapGame({ onDone }: { onDone: () => void }) {
 /* ---------- Step 2: learning-loop wheel ---------- */
 const RING = 2 * Math.PI * 40;
 
-function LoopWheel({ onDone }: { onDone: () => void }) {
+function LoopWheel({ onReady }: { onReady: (ready: boolean) => void }) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
   const [auto, setAuto] = useState(!reduced);
   // steps the learner opened themselves (auto-play doesn't count)
-  const [seen, setSeen] = useState<number[]>([0]);
+  const [seen, setSeen] = useState<number[]>(() => {
+    const saved = readJSON(LOOP_KEY, (v): v is number[] => Array.isArray(v), [0]);
+    const clean = [...new Set([0, ...saved.filter((n) => Number.isInteger(n) && n >= 0 && n < LOOP.length)])];
+    return clean;
+  });
   const allSeen = seen.length === LOOP.length;
+  useEffect(() => writeJSON(LOOP_KEY, seen), [seen]);
 
-  useEffect(() => {
-    if (allSeen) onDone();
-  }, [allSeen, onDone]);
+  useEffect(() => onReady(allSeen), [allSeen, onReady]);
 
   useEffect(() => {
     if (!auto) return;
@@ -281,8 +311,12 @@ export default function Learn() {
   // steps with something to do (trap game, loop wheel) keep Next locked until it's done
   const TASK: Record<number, string> = { 1: 'Answer all 8 traps first', 2: 'Tap all 5 steps first' };
   const [readySteps, setReadySteps] = useState<number[]>([]);
-  const markReady = useCallback(() => setReadySteps((v) => (v.includes(step) ? v : [...v, step])), [step]);
-  const canNext = !(step in TASK) || readySteps.includes(step) || step < reached;
+  const setReady = useCallback(
+    (ready: boolean) => setReadySteps((v) => (ready ? (v.includes(step) ? v : [...v, step]) : v.filter((x) => x !== step))),
+    [step],
+  );
+  // always finish the activity on screen first, even when coming back to a step
+  const canNext = !(step in TASK) || readySteps.includes(step);
 
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const correct = QUIZ.filter((q, i) => answers[i] === q.answer).length;
@@ -417,7 +451,7 @@ export default function Learn() {
                   We’ll show you 8 common habits. For each one, just answer <b>yes</b> or <b>no</b>. Then you’ll see the
                   better way to do it. Nobody else sees your answers.
                 </p>
-                <TrapGame onDone={markReady} />
+                <TrapGame onReady={setReady} />
               </>
             )}
 
@@ -425,7 +459,7 @@ export default function Learn() {
             {step === 2 && (
               <>
                 <p className="ob-lead">For every topic, go round these 5 steps. Tap a step to read what it means.</p>
-                <LoopWheel onDone={markReady} />
+                <LoopWheel onReady={setReady} />
                 <div className="split">
                   <div className="split-bar">
                     <span className="split-in">20%<small>take it in</small></span>
