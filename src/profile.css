@@ -92,13 +92,13 @@
 .ob { width: min(600px, 100%); padding: 28px 32px; }
 .ob-form { display: flex; flex-direction: column; gap: 18px; }
 .ob-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.ob-steps { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 360px; }
-.ob-step { display: flex; flex-direction: column; gap: 6px; }
-.ob-step i { display: block; width: 100%; height: 5px; border-radius: 99px; background: var(--line-strong); overflow: hidden; position: relative; }
-.ob-step i::after { content: ""; position: absolute; inset: 0; background: var(--good); transform: scaleX(0); transform-origin: left; transition: transform 0.45s var(--ease); }
-.ob-step.done i::after, .ob-step.on i::after { transform: scaleX(1); }
-.ob-step-label { font: 500 11px var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--faint); }
-.ob-step.on .ob-step-label { color: var(--ink); }
+.ps-steps { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 360px; }
+.ps-step { display: flex; flex-direction: column; gap: 6px; }
+.ps-step i { display: block; width: 100%; height: 5px; border-radius: 99px; background: var(--line-strong); overflow: hidden; position: relative; }
+.ps-step i::after { content: ""; position: absolute; inset: 0; background: var(--good); transform: scaleX(0); transform-origin: left; transition: transform 0.45s var(--ease); }
+.ps-step.done i::after, .ps-step.on i::after { transform: scaleX(1); }
+.ps-step-label { font: 500 11px var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--faint); }
+.ps-step.on .ps-step-label { color: var(--ink); }
 .ob-skip { flex: none; }
 .ob-skip:hover { color: var(--ink); }
 .ob-card {
@@ -111,7 +111,7 @@
 .ob-card-tag { position: absolute; top: 10px; right: 12px; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
 .ob-card-av { box-shadow: 0 0 0 3px var(--card), 0 6px 18px -6px var(--shadow); }
 .ob-body { display: flex; flex-direction: column; gap: 14px; animation: stepIn 0.35s var(--ease); }
-.ob-title { font-size: clamp(24px, 3.2vw, 30px); font-weight: 700; letter-spacing: -0.03em; }
+.ps-title { font-size: clamp(24px, 3.2vw, 30px); font-weight: 700; letter-spacing: -0.03em; }
 .ob-sub { margin-top: -6px; font-size: 15px; }
 .ob-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .ob-suggest-btn { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-strong); background: var(--soft); font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.2s ease, background-color 0.2s ease; }
@@ -130,7 +130,7 @@
 
 @media (max-width: 640px) {
   .ob { padding: 22px 18px calc(20px + env(safe-area-inset-bottom)); }
-  .ob-step-label { display: none; }
+  .ps-step-label { display: none; }
   .ob-card { padding: 14px; gap: 12px; }
   .ob-card-text b { font-size: 18px; }
   .photo-options { grid-template-columns: minmax(0, 1fr); }

@@ -76,11 +76,11 @@ function ProfileSetup({ onDone }: { onDone: (name: string) => void }) {
       <div ref={panel} className="auth-modal ob" role="dialog" aria-modal="true" aria-labelledby="ob-title" tabIndex={-1}>
           <form onSubmit={next} className="ob-form">
             <div className="ob-top">
-              <div className="ob-steps" aria-label={`Step ${step + 1} of ${STEPS.length}`}>
+              <div className="ps-steps" aria-label={`Step ${step + 1} of ${STEPS.length}`}>
                 {STEPS.map((s, i) => (
-                  <span key={s} className={`ob-step${i < step ? ' done' : ''}${i === step ? ' on' : ''}`}>
+                  <span key={s} className={`ps-step${i < step ? ' done' : ''}${i === step ? ' on' : ''}`}>
                     <i />
-                    <span className="ob-step-label">{s}</span>
+                    <span className="ps-step-label">{s}</span>
                   </span>
                 ))}
               </div>
@@ -102,7 +102,7 @@ function ProfileSetup({ onDone }: { onDone: (name: string) => void }) {
             <div className="ob-body" key={step}>
               {step === 0 && (
                 <>
-                  <h2 id="ob-title" className="ob-title">What should we call you?</h2>
+                  <h2 id="ob-title" className="ps-title">What should we call you?</h2>
                   <p className="muted ob-sub">This is the name you’ll see on your account and around Waypoint.</p>
                   <CountedField label="Your name" value={name} max={NAME_MAX} onChange={setName} placeholder="e.g. Sam" autoFocus />
                   {suggestions.length > 1 && (
@@ -120,7 +120,7 @@ function ProfileSetup({ onDone }: { onDone: (name: string) => void }) {
 
               {step === 1 && (
                 <>
-                  <h2 id="ob-title" className="ob-title">Pick your profile photo</h2>
+                  <h2 id="ob-title" className="ps-title">Pick your profile photo</h2>
                   <p className="muted ob-sub">Use your Google photo, upload your own, or go with colourful initials. You can change it anytime.</p>
                   <PhotoPicker user={user} name={shown} value={photo} onChange={setPhoto} />
                 </>
@@ -128,7 +128,7 @@ function ProfileSetup({ onDone }: { onDone: (name: string) => void }) {
 
               {step === 2 && (
                 <>
-                  <h2 id="ob-title" className="ob-title">A bit about you</h2>
+                  <h2 id="ob-title" className="ps-title">A bit about you</h2>
                   <p className="muted ob-sub">Optional. It helps us cheer you on and shows on your profile.</p>
                   <div className="ob-group">
                     <span className="ob-label">Where are you starting from?</span>
