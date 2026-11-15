@@ -72,6 +72,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [user]);
   const lastPushed = useRef<string>('');
   const applying = useRef(false);
+  /** a local change is waiting to be pushed: don't let a pull overwrite it */
+  const pending = useRef(false);
 
   /* ---------- session ---------- */
   useEffect(() => {
@@ -149,11 +151,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const off = onLocalChange(() => {
       if (applying.current) return;
       window.clearTimeout(t);
-      t = window.setTimeout(() => push(uid), 900);
+      pending.current = true;
+      t = window.setTimeout(() => {
+        pending.current = false;
+        push(uid);
+      }, 900);
     });
     return () => {
       off();
       window.clearTimeout(t);
+      pending.current = false;
     };
   }, [uid, push]);
 
@@ -161,9 +168,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabase || !uid) return;
     const onVisible = async () => {
-      if (document.visibilityState !== 'visible' || !supabase) return;
+      if (document.visibilityState !== 'visible' || !supabase || pending.current) return;
       const { data } = await supabase.from(TABLE).select('data, updated_at').eq('user_id', uid).maybeSingle();
-      if (!data) return;
+      if (!data || pending.current) return;
       const remote = normalise(data.data);
       const body = JSON.stringify(remote);
       if (body === lastPushed.current) return;

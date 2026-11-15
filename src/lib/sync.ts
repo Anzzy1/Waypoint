@@ -97,3 +97,10 @@ export function onReload(cb: () => void) {
 export function clearLocal() {
   writeLocal({ progress: [], plan: null, steps: {}, celebrated: [] });
 }
+
+/** "Reset progress": untick every lesson but keep the learner's plan, then push so the
+ *  account copy is cleared too (otherwise the next pull would bring the old ticks back). */
+export function resetProgress() {
+  writeLocal({ ...readLocal(), progress: [], steps: {}, celebrated: [] });
+  notifyLocalChange();
+}

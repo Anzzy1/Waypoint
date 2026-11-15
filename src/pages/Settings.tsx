@@ -7,7 +7,7 @@ import { roadmaps, topicIdsOf } from '../data/roadmaps';
 import { topics } from '../data/topics';
 import { GOALS, HEADLINE_MAX, LEVELS, NAME_MAX, avatarSrc, cleanGithub, readProfile, type Profile } from '../lib/profile';
 import { useTheme, type ThemePref } from '../lib/theme';
-import { clearLocal } from '../lib/sync';
+import { resetProgress } from '../lib/sync';
 import Avatar from '../components/Avatar';
 import { ChoiceChips, CountedField, PhotoPicker } from '../components/ProfileBits';
 import { Glyph, type GlyphKey } from '../components/Art';
@@ -18,7 +18,7 @@ const SECTIONS: { id: string; label: string; glyph: GlyphKey }[] = [
   { id: 'learning', label: 'Learning plan', glyph: 'gauge' },
   { id: 'appearance', label: 'Appearance', glyph: 'eye' },
   { id: 'account', label: 'Account', glyph: 'lock' },
-  { id: 'danger', label: 'Danger zone', glyph: 'shield' },
+  { id: 'data', label: 'Your data', glyph: 'shield' },
 ];
 
 const THEMES: { id: ThemePref; label: string }[] = [
@@ -124,7 +124,6 @@ function SettingsInner() {
   const current = roadmaps.find((r) => r.id === plan.roadmap) ?? roadmaps[0];
   const left = topicIdsOf(current).filter((t) => !isDone(t)).reduce((s, t) => s + (topics[t]?.hours ?? 0), 0);
   const est = estimateFinish(left * 1.6, plan.hours);
-  const providers = (user.app_metadata?.providers as string[] | undefined) ?? [user.app_metadata?.provider ?? 'email'];
 
   return (
     <section className="settings">
@@ -138,7 +137,7 @@ function SettingsInner() {
         <div className="settings-layout">
           <nav className="settings-nav" aria-label="Settings sections">
             {SECTIONS.map((s) => (
-              <button key={s.id} type="button" className={`settings-nav-btn${active === s.id ? ' on' : ''}${s.id === 'danger' ? ' danger' : ''}`} onClick={() => jump(s.id)} aria-current={active === s.id ? 'true' : undefined}>
+              <button key={s.id} type="button" className={`settings-nav-btn${active === s.id ? ' on' : ''}`} onClick={() => jump(s.id)} aria-current={active === s.id ? 'true' : undefined}>
                 <Glyph name={s.glyph} size={16} />
                 {s.label}
               </button>
@@ -229,39 +228,29 @@ function SettingsInner() {
               <Row title="Email" desc="Used to log in with a code.">
                 <span className="set-value">{user.email}</span>
               </Row>
-              <Row title="Sign-in methods">
-                <span className="set-badges">
-                  {providers.map((p) => (
-                    <span key={p} className="chip chip-good"><Check size={12} /> {p === 'email' ? 'Email code' : p[0].toUpperCase() + p.slice(1)}</span>
-                  ))}
-                </span>
-              </Row>
-              <Row title="Progress sync" desc="Lessons, plan and badges are saved to your account.">
-                <span className={`sync-pill sync-${auth.sync}`}><span className="sync-dot" aria-hidden />{auth.sync === 'synced' ? 'Up to date' : auth.sync === 'syncing' ? 'Saving…' : auth.sync === 'error' ? 'Couldn’t save' : 'Off'}</span>
-              </Row>
               <Row title="Log out" desc="Your progress stays in your account.">
                 <button type="button" className="btn btn-ghost" onClick={() => auth.signOut()}>Log out</button>
               </Row>
             </section>
 
-            {/* ---------- danger ---------- */}
-            <section id="set-danger" className="set-card set-danger" style={{ '--i': 4 } as CSSProperties}>
+            {/* ---------- your data ---------- */}
+            <section id="set-data" className="set-card set-data" style={{ '--i': 4 } as CSSProperties}>
               <div className="set-card-head">
-                <h2>Danger zone</h2>
-                <p className="muted small">These can’t be undone.</p>
+                <h2>Your data</h2>
+                <p className="muted small">Start fresh or remove your account. We’ll always ask before anything is removed.</p>
               </div>
               <Row title="Reset all progress" desc="Untick every lesson on every roadmap.">
                 {confirmReset ? (
                   <span className="danger-confirm">
                     <button type="button" className="btn btn-ghost" onClick={() => setConfirmReset(false)}>Cancel</button>
-                    <button type="button" className="btn btn-danger" onClick={() => { clearLocal(); setConfirmReset(false); setToast('Progress reset'); }}>Yes, reset</button>
+                    <button type="button" className="btn btn-danger" onClick={() => { resetProgress(); setConfirmReset(false); setToast('Progress reset'); }}>Yes, reset</button>
                   </span>
                 ) : (
                   <button type="button" className="btn btn-ghost" onClick={() => setConfirmReset(true)}>Reset progress</button>
                 )}
               </Row>
               <Row title="Delete account" desc="Delete your account, photo and everything saved in it.">
-                {!deleteOpen && <button type="button" className="btn btn-ghost danger-text" onClick={() => setDeleteOpen(true)}>Delete account</button>}
+                {!deleteOpen && <button type="button" className="btn btn-ghost" onClick={() => setDeleteOpen(true)}>Delete account</button>}
               </Row>
               {deleteOpen && (
                 <div className="delete-box">
