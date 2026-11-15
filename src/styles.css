@@ -1286,6 +1286,10 @@ button.complete-note:hover { transform: translateY(-1px); box-shadow: var(--shad
 .wheel-detail h3 { font-size: 24px; }
 .wheel-detail-nav { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .wheel-detail-nav .icon-btn { border: 1px solid var(--line-strong); background: var(--card); }
+.wheel-read { color: var(--muted); }
+.wheel-read.done { color: var(--good); font-weight: 600; }
+.trap-dot:disabled { cursor: not-allowed; opacity: .5; }
+.onboard-foot .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
 
 .split { display: flex; flex-direction: column; gap: 8px; }
 .split-bar { display: flex; height: 54px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line-strong); font-weight: 700; }

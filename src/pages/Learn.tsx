@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useState, type CSSProperties } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useProgress } from '../hooks/useProgress';
 import { estimateFinish, usePlan } from '../hooks/usePlan';
@@ -56,12 +56,18 @@ function Video({ id, title, by }: { id: string; title: string; by: string }) {
 }
 
 /* ---------- Step 1: study-trap card game ---------- */
-function TrapGame() {
+function TrapGame({ onDone }: { onDone: () => void }) {
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<number, boolean>>({});
   const total = HABITS.length;
-  const finished = idx >= total;
+  // first trap not answered yet: you can't jump past it, so every card gets read
+  const firstOpen = HABITS.findIndex((_, i) => !(i in answers));
+  const finished = idx >= total && firstOpen === -1;
   const mine = HABITS.map((h, i) => ({ ...h, i })).filter((h) => answers[h.i]);
+
+  useEffect(() => {
+    if (finished) onDone();
+  }, [finished, onDone]);
 
   if (finished) {
     return (
@@ -102,6 +108,7 @@ function TrapGame() {
             key={i}
             className={`trap-dot${i === idx ? ' now' : ''}${i in answers ? (answers[i] ? ' yes' : ' no') : ''}`}
             onClick={() => setIdx(i)}
+            disabled={i !== idx && !(i in answers) && i !== firstOpen}
             aria-label={`Trap ${i + 1}`}
           />
         ))}
@@ -131,8 +138,8 @@ function TrapGame() {
               {answers[idx] ? 'Here’s the fix' : 'Good. Keep doing the opposite'}
             </span>
             <p>{h.fix}</p>
-            <button className="btn btn-primary trap-next" onClick={() => setIdx(idx + 1)}>
-              {idx === total - 1 ? 'See my results' : 'Next trap'} <ArrowRight size={16} />
+            <button className="btn btn-primary trap-next" onClick={() => setIdx(firstOpen === -1 ? total : firstOpen)}>
+              {firstOpen === -1 ? 'See my results' : 'Next trap'} <ArrowRight size={16} />
             </button>
           </div>
         )}
@@ -144,10 +151,17 @@ function TrapGame() {
 /* ---------- Step 2: learning-loop wheel ---------- */
 const RING = 2 * Math.PI * 40;
 
-function LoopWheel() {
+function LoopWheel({ onDone }: { onDone: () => void }) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
   const [auto, setAuto] = useState(!reduced);
+  // steps the learner opened themselves (auto-play doesn't count)
+  const [seen, setSeen] = useState<number[]>([0]);
+  const allSeen = seen.length === LOOP.length;
+
+  useEffect(() => {
+    if (allSeen) onDone();
+  }, [allSeen, onDone]);
 
   useEffect(() => {
     if (!auto) return;
@@ -158,6 +172,7 @@ function LoopWheel() {
   const pick = (i: number) => {
     setAuto(false);
     setActive(i);
+    setSeen((v) => (v.includes(i) ? v : [...v, i]));
   };
   const s = LOOP[active];
 
@@ -187,7 +202,7 @@ function LoopWheel() {
           return (
             <button
               key={l.t}
-              className={`wheel-node${i === active ? ' on' : ''}${i < active ? ' past' : ''}`}
+              className={`wheel-node${i === active ? ' on' : ''}${seen.includes(i) && i !== active ? ' past' : ''}`}
               style={{ left: `${50 + 40 * Math.cos(a)}%`, top: `${50 + 40 * Math.sin(a)}%` }}
               onClick={() => pick(i)}
               aria-pressed={i === active}
@@ -205,7 +220,9 @@ function LoopWheel() {
         <div className="wheel-detail-nav">
           <button className="icon-btn" onClick={() => pick((active + 4) % 5)} aria-label="Previous step"><ArrowLeft size={16} /></button>
           <button className="icon-btn" onClick={() => pick((active + 1) % 5)} aria-label="Next step"><ArrowRight size={16} /></button>
-          {auto && <span className="mono small faint">auto-playing · tap a step</span>}
+          <span className={`mono small wheel-read${allSeen ? ' done' : ''}`}>
+            {allSeen ? '✓ All 5 read' : `${seen.length}/5 read · tap each step`}
+          </span>
         </div>
       </div>
     </div>
@@ -260,6 +277,12 @@ export default function Learn() {
     }
     go(step + 1);
   };
+
+  // steps with something to do (trap game, loop wheel) keep Next locked until it's done
+  const TASK: Record<number, string> = { 1: 'Answer all 8 traps first', 2: 'Tap all 5 steps first' };
+  const [readySteps, setReadySteps] = useState<number[]>([]);
+  const markReady = useCallback(() => setReadySteps((v) => (v.includes(step) ? v : [...v, step])), [step]);
+  const canNext = !(step in TASK) || readySteps.includes(step) || step < reached;
 
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const correct = QUIZ.filter((q, i) => answers[i] === q.answer).length;
@@ -394,7 +417,7 @@ export default function Learn() {
                   We’ll show you 8 common habits. For each one, just answer <b>yes</b> or <b>no</b>. Then you’ll see the
                   better way to do it. Nobody else sees your answers.
                 </p>
-                <TrapGame />
+                <TrapGame onDone={markReady} />
               </>
             )}
 
@@ -402,7 +425,7 @@ export default function Learn() {
             {step === 2 && (
               <>
                 <p className="ob-lead">For every topic, go round these 5 steps. Tap a step to read what it means.</p>
-                <LoopWheel />
+                <LoopWheel onDone={markReady} />
                 <div className="split">
                   <div className="split-bar">
                     <span className="split-in">20%<small>take it in</small></span>
@@ -638,8 +661,8 @@ export default function Learn() {
             </button>
             {step < STEPS.length - 1 && <span className="foot-next mono small faint">Next: {STEPS[step + 1].title}</span>}
             {step < STEPS.length - 1 ? (
-              <button className="btn btn-primary" onClick={next}>
-                {step === 0 ? 'Let’s start' : 'Next'} <ArrowRight size={16} />
+              <button className="btn btn-primary" onClick={next} disabled={!canNext}>
+                {step === 0 ? 'Let’s start' : canNext ? 'Next' : TASK[step]} {canNext && <ArrowRight size={16} />}
               </button>
             ) : (
               <button className="btn btn-primary" onClick={finish} disabled={!quizPassed}>
