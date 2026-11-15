@@ -89,9 +89,9 @@
 .pf-hint { font-size: 13px; font-weight: 400; color: var(--faint); }
 
 /* first-login setup */
-.ob { width: min(600px, 100%); padding: 28px 32px; }
-.ob-form { display: flex; flex-direction: column; gap: 18px; }
-.ob-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.ps { width: min(600px, 100%); padding: 28px 32px; }
+.ps-form { display: flex; flex-direction: column; gap: 18px; }
+.ps-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .ps-steps { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 360px; }
 .ps-step { display: flex; flex-direction: column; gap: 6px; }
 .ps-step i { display: block; width: 100%; height: 5px; border-radius: 99px; background: var(--line-strong); overflow: hidden; position: relative; }
@@ -99,44 +99,44 @@
 .ps-step.done i::after, .ps-step.on i::after { transform: scaleX(1); }
 .ps-step-label { font: 500 11px var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--faint); }
 .ps-step.on .ps-step-label { color: var(--ink); }
-.ob-skip { flex: none; }
-.ob-skip:hover { color: var(--ink); }
-.ob-card {
+.ps-skip { flex: none; }
+.ps-skip:hover { color: var(--ink); }
+.ps-card {
   position: relative; display: flex; align-items: center; gap: 16px; padding: 18px; border-radius: 18px;
   background: linear-gradient(135deg, color-mix(in srgb, var(--good-bg) 80%, var(--card)), var(--soft)); border: 1px solid var(--line);
 }
-.ob-card-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
-.ob-card-text b { font-size: 20px; letter-spacing: -0.02em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ob-card-text span { color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ob-card-tag { position: absolute; top: 10px; right: 12px; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
-.ob-card-av { box-shadow: 0 0 0 3px var(--card), 0 6px 18px -6px var(--shadow); }
-.ob-body { display: flex; flex-direction: column; gap: 14px; animation: stepIn 0.35s var(--ease); }
+.ps-card-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+.ps-card-text b { font-size: 20px; letter-spacing: -0.02em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-card-text span { color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-card-tag { position: absolute; top: 10px; right: 12px; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+.ps-card-av { box-shadow: 0 0 0 3px var(--card), 0 6px 18px -6px var(--shadow); }
+.ps-body { display: flex; flex-direction: column; gap: 14px; animation: stepIn 0.35s var(--ease); }
 .ps-title { font-size: clamp(24px, 3.2vw, 30px); font-weight: 700; letter-spacing: -0.03em; }
-.ob-sub { margin-top: -6px; font-size: 15px; }
-.ob-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.ob-suggest-btn { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-strong); background: var(--soft); font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.2s ease, background-color 0.2s ease; }
-.ob-suggest-btn:hover { border-color: var(--faint); }
-.ob-suggest-btn.on { border-color: var(--good); background: var(--good-bg); color: var(--good); }
-.ob-group { display: flex; flex-direction: column; gap: 8px; }
-.ob-label { font-size: 14px; font-weight: 600; }
-.ob-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding-top: 4px; }
-.ob-toast {
+.ps-sub { margin-top: -6px; font-size: 15px; }
+.ps-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ps-suggest-btn { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-strong); background: var(--soft); font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.2s ease, background-color 0.2s ease; }
+.ps-suggest-btn:hover { border-color: var(--faint); }
+.ps-suggest-btn.on { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+.ps-group { display: flex; flex-direction: column; gap: 8px; }
+.ps-label { font-size: 14px; font-weight: 600; }
+.ps-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding-top: 4px; }
+.ps-toast {
   position: fixed; left: 50%; bottom: 24px; z-index: 80; display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px 12px 12px;
   border-radius: 99px; background: var(--primary); color: var(--on-primary); font-weight: 600; font-size: 15px; box-shadow: var(--shadow-md);
   transform: translateX(-50%); animation: toastIn 0.45s var(--ease); white-space: nowrap;
 }
-.ob-toast-check { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--good); color: #fff; animation: popIn 0.4s var(--ease) 0.15s backwards; }
+.ps-toast-check { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--good); color: #fff; animation: popIn 0.4s var(--ease) 0.15s backwards; }
 @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 16px) scale(0.95); } }
 
 @media (max-width: 640px) {
-  .ob { padding: 22px 18px calc(20px + env(safe-area-inset-bottom)); }
+  .ps { padding: 22px 18px calc(20px + env(safe-area-inset-bottom)); }
   .ps-step-label { display: none; }
-  .ob-card { padding: 14px; gap: 12px; }
-  .ob-card-text b { font-size: 18px; }
+  .ps-card { padding: 14px; gap: 12px; }
+  .ps-card-text b { font-size: 18px; }
   .photo-options { grid-template-columns: minmax(0, 1fr); }
   .photo-option { flex-direction: row; text-align: left; padding: 12px 40px 12px 12px; }
   .photo-option-tick { top: 50%; transform: translateY(-50%); }
-  .ob-actions .btn-lg { flex: 1; }
+  .ps-actions .btn-lg { flex: 1; }
 }
 
 /* account header extras */
@@ -235,7 +235,7 @@
 .save-bar.show .save-bar-inner { pointer-events: auto; }
 .save-bar-text { font-size: 15px; font-weight: 600; }
 .save-bar-actions { display: flex; gap: 8px; }
-.settings .ob-toast { bottom: 96px; }
+.settings .ps-toast { bottom: 96px; }
 
 @media (max-width: 860px) {
   .settings-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; }

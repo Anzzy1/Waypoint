@@ -282,8 +282,8 @@ function SettingsInner() {
       </div>
 
       {toast && (
-        <div className="ob-toast" role="status">
-          <span className="ob-toast-check"><Check size={14} /></span>
+        <div className="ps-toast" role="status">
+          <span className="ps-toast-check"><Check size={14} /></span>
           {toast}
         </div>
       )}

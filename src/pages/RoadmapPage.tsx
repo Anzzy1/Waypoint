@@ -5,7 +5,9 @@ import { topics } from '../data/topics';
 import { DIAGRAM_IDS } from '../data/topicIcons';
 import { useProgress } from '../hooks/useProgress';
 import { estimateFinish, usePlan } from '../hooks/usePlan';
-import { Checkbox, ProgressBar } from '../components/Bits';
+import { ProgressBar } from '../components/Bits';
+import { GUIDES } from '../data/guides';
+import { onReload } from '../lib/sync';
 import LessonDrawer from '../components/LessonDrawer';
 import { ArrowLeft, ArrowRight, Check } from '../components/Icons';
 import { CountUp } from '../components/Motion';
@@ -14,6 +16,16 @@ import { Glyph, StepArt } from '../components/Art';
 import { TopicIcon } from '../components/TechLogo';
 import { ProgressRing, RoadmapCelebration, StageCelebration, StageMedal, Trophy, useCelebrated } from '../components/Rewards';
 import NotFound from './NotFound';
+
+/** "I understand this step" ticks per lesson (written by the lesson view), re-read when it closes. */
+function readSteps(): Record<string, number[]> {
+  try {
+    return JSON.parse(localStorage.getItem('waypoint.steps.v1') || '{}') ?? {};
+  } catch {
+    return {};
+  }
+}
+const stepCount = (tid: string) => GUIDES[tid]?.steps.length ?? topics[tid]?.points.length ?? 0;
 
 type Celebration = { kind: 'stage'; stage: number } | { kind: 'roadmap' } | null;
 
@@ -85,6 +97,8 @@ export default function RoadmapPage() {
   const celebrated = useCelebrated();
   const [celebration, setCelebration] = useState<Celebration>(null);
   const journeyRef = useRef<HTMLOListElement>(null);
+  const [steps, setSteps] = useState(readSteps);
+  useEffect(() => onReload(() => setSteps(readSteps())), []);
 
   // flat, ordered list of lessons with their stage for drawer prev/next
   const order = useMemo(() => {
@@ -103,6 +117,10 @@ export default function RoadmapPage() {
   }, [rm]);
 
   const openId = params.get('lesson');
+  // the lesson view saves step ticks itself; pick them up when it closes
+  useEffect(() => {
+    if (!openId) setSteps(readSteps());
+  }, [openId]);
   const setLesson = useCallback(
     (lessonId: string | null) => {
       const next = new URLSearchParams(params);
@@ -350,9 +368,15 @@ export default function RoadmapPage() {
                     {sIds.map((tid) => {
                       const t = topics[tid];
                       const d = isDone(tid);
+                      const total = stepCount(tid);
+                      const got = Math.min(total, new Set(steps[tid] ?? []).size);
                       return (
                         <li key={tid} className={`lesson-tile${d ? ' is-done' : ''}`} data-topic={tid}>
-                          <button className="lesson-open" onClick={() => setLesson(tid)}>
+                          <button
+                            className="lesson-open"
+                            onClick={() => setLesson(tid)}
+                            aria-label={`${t.title}: ${d ? 'completed' : got > 0 ? `${got} of ${total} steps understood` : 'not started'}. Open lesson`}
+                          >
                             <TopicIcon id={tid} />
                             <span className="lesson-text">
                               <b>{t.title}</b>
@@ -361,8 +385,17 @@ export default function RoadmapPage() {
                                 {DIAGRAM_IDS.has(tid) && <span className="lesson-pic"> · with diagram</span>}
                               </span>
                             </span>
+                            {/* status only: lessons are completed from inside the lesson, after reading it */}
+                            <span className={`lesson-status${d ? ' done' : got > 0 ? ' started' : ''}`} aria-hidden>
+                              {d ? (
+                                <><Check size={13} /> Done</>
+                              ) : got > 0 ? (
+                                <span className="mono">{got}/{total}</span>
+                              ) : (
+                                <ArrowRight size={16} />
+                              )}
+                            </span>
                           </button>
-                          <Checkbox checked={d} onChange={() => completeLesson(tid)} label={`Mark ${t.title} complete`} />
                         </li>
                       );
                     })}

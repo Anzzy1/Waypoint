@@ -26,6 +26,17 @@ const WHY = [
   { g: 'refresh' as GlyphKey, t: 'Spacing beats cramming', d: 'Short reviews over days stop you forgetting.' },
 ];
 
+/** How far the learner has got through the quick start (steps finished with "Next"). Saved in the browser. */
+const REACHED_KEY = 'waypoint.quickstartReached.v1';
+function readReached() {
+  try {
+    const n = Number(localStorage.getItem(REACHED_KEY));
+    return Number.isFinite(n) && n > 0 ? Math.min(n, STEPS.length) : 0;
+  } catch {
+    return 0;
+  }
+}
+
 const DONE_ICONS = [<Hammer size={20} key="h" />, <Glyph name="speech" size={20} key="s" />, <Glyph name="checklist" size={20} key="c" />];
 
 function Video({ id, title, by }: { id: string; title: string; by: string }) {
@@ -229,16 +240,30 @@ export default function Learn() {
   const { isDone, setDone, countDone } = useProgress();
   const { plan, update } = usePlan();
 
-  const step = Math.min(Math.max(Number(params.get('step')) || 0, 0), STEPS.length - 1);
+  const alreadyDone = isDone('how-to-learn');
+  // steps are ticked only once they're finished with "Next"; later steps stay locked until then
+  const [reachedRaw, setReached] = useState(readReached);
+  const reached = alreadyDone ? STEPS.length : reachedRaw;
+  const maxOpen = Math.min(reached, STEPS.length - 1);
+  const step = Math.min(Math.max(Number(params.get('step')) || 0, 0), maxOpen);
   const go = (n: number) => {
     setParams({ step: String(n) });
     window.scrollTo({ top: 0 });
+  };
+  const next = () => {
+    const r = Math.max(reachedRaw, step + 1);
+    setReached(r);
+    try {
+      localStorage.setItem(REACHED_KEY, String(r));
+    } catch {
+      /* ignore */
+    }
+    go(step + 1);
   };
 
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const correct = QUIZ.filter((q, i) => answers[i] === q.answer).length;
   const quizPassed = correct === QUIZ.length;
-  const alreadyDone = isDone('how-to-learn');
 
   // plan estimate
   const rm = roadmaps.find((r) => r.id === plan.roadmap) ?? roadmaps[0];
@@ -270,14 +295,18 @@ export default function Learn() {
             {STEPS.map((s, i) => (
               <li key={s.title}>
                 <button
-                  className={`ob-step${i === step ? ' now' : ''}${i < step ? ' past' : ''}`}
+                  className={`ob-step${i === step ? ' now' : ''}${i < reached && i !== step ? ' past' : ''}${i > maxOpen ? ' locked' : ''}`}
                   onClick={() => go(i)}
+                  disabled={i > maxOpen}
                   aria-current={i === step ? 'step' : undefined}
+                  title={i > maxOpen ? 'Finish the steps before this one first' : undefined}
                 >
-                  <span className="ob-step-icon">{i < step ? <Check size={14} /> : <Glyph name={s.glyph} size={16} />}</span>
+                  <span className="ob-step-icon">
+                    {i < reached && i !== step ? <Check size={14} /> : i > maxOpen ? <Glyph name="lock" size={14} /> : <Glyph name={s.glyph} size={16} />}
+                  </span>
                   <span className="ob-step-text">
                     <b>{s.title}</b>
-                    <span>{s.sub}</span>
+                    <span>{i < reached && i !== step ? 'Done' : i > maxOpen ? 'Locked' : s.sub}</span>
                   </span>
                 </button>
               </li>
@@ -296,9 +325,10 @@ export default function Learn() {
               {STEPS.map((s, i) => (
                 <button
                   key={s.title}
-                  className={i < step ? 'past' : i === step ? 'now' : ''}
+                  className={i === step ? 'now' : i < reached ? 'past' : ''}
                   onClick={() => go(i)}
-                  aria-label={`Go to step ${i + 1}: ${s.title}`}
+                  disabled={i > maxOpen}
+                  aria-label={`Go to step ${i + 1}: ${s.title}${i > maxOpen ? ' (locked)' : ''}`}
                 />
               ))}
             </div>
@@ -608,7 +638,7 @@ export default function Learn() {
             </button>
             {step < STEPS.length - 1 && <span className="foot-next mono small faint">Next: {STEPS[step + 1].title}</span>}
             {step < STEPS.length - 1 ? (
-              <button className="btn btn-primary" onClick={() => go(step + 1)}>
+              <button className="btn btn-primary" onClick={next}>
                 {step === 0 ? 'Let’s start' : 'Next'} <ArrowRight size={16} />
               </button>
             ) : (

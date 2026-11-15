@@ -71,11 +71,11 @@ function ProfileSetup({ onDone }: { onDone: (name: string) => void }) {
   };
 
   return (
-    <div className="auth-modal-root ob-root">
+    <div className="auth-modal-root ps-root">
       <div className="auth-modal-backdrop" />
-      <div ref={panel} className="auth-modal ob" role="dialog" aria-modal="true" aria-labelledby="ob-title" tabIndex={-1}>
-          <form onSubmit={next} className="ob-form">
-            <div className="ob-top">
+      <div ref={panel} className="auth-modal ps" role="dialog" aria-modal="true" aria-labelledby="ps-title" tabIndex={-1}>
+          <form onSubmit={next} className="ps-form">
+            <div className="ps-top">
               <div className="ps-steps" aria-label={`Step ${step + 1} of ${STEPS.length}`}>
                 {STEPS.map((s, i) => (
                   <span key={s} className={`ps-step${i < step ? ' done' : ''}${i === step ? ' on' : ''}`}>
@@ -84,32 +84,32 @@ function ProfileSetup({ onDone }: { onDone: (name: string) => void }) {
                   </span>
                 ))}
               </div>
-              <button type="button" className="link-btn small ob-skip" disabled={busy} onClick={() => finish(true)}>
+              <button type="button" className="link-btn small ps-skip" disabled={busy} onClick={() => finish(true)}>
                 Skip for now
               </button>
             </div>
 
             {/* live preview: what others will see */}
-            <div className="ob-card" aria-hidden>
-              <Avatar src={avatarSrc(photo, user)} name={shown} color={photo.color} size={64} className="ob-card-av" />
-              <div className="ob-card-text">
+            <div className="ps-card" aria-hidden>
+              <Avatar src={avatarSrc(photo, user)} name={shown} color={photo.color} size={64} className="ps-card-av" />
+              <div className="ps-card-text">
                 <b>{shown}</b>
                 <span>{headline.trim() || (level ? LEVELS.find((l) => l.id === level)?.label : 'Waypoint learner')}</span>
               </div>
-              <span className="ob-card-tag mono">Preview</span>
+              <span className="ps-card-tag mono">Preview</span>
             </div>
 
-            <div className="ob-body" key={step}>
+            <div className="ps-body" key={step}>
               {step === 0 && (
                 <>
-                  <h2 id="ob-title" className="ps-title">What should we call you?</h2>
-                  <p className="muted ob-sub">This is the name you’ll see on your account and around Waypoint.</p>
+                  <h2 id="ps-title" className="ps-title">What should we call you?</h2>
+                  <p className="muted ps-sub">This is the name you’ll see on your account and around Waypoint.</p>
                   <CountedField label="Your name" value={name} max={NAME_MAX} onChange={setName} placeholder="e.g. Sam" autoFocus />
                   {suggestions.length > 1 && (
-                    <div className="ob-suggest">
+                    <div className="ps-suggest">
                       <span className="small faint">Quick pick:</span>
                       {suggestions.map((s) => (
-                        <button key={s} type="button" className={`ob-suggest-btn${name === s ? ' on' : ''}`} onClick={() => setName(s)}>
+                        <button key={s} type="button" className={`ps-suggest-btn${name === s ? ' on' : ''}`} onClick={() => setName(s)}>
                           {s}
                         </button>
                       ))}
@@ -120,22 +120,22 @@ function ProfileSetup({ onDone }: { onDone: (name: string) => void }) {
 
               {step === 1 && (
                 <>
-                  <h2 id="ob-title" className="ps-title">Pick your profile photo</h2>
-                  <p className="muted ob-sub">Use your Google photo, upload your own, or go with colourful initials. You can change it anytime.</p>
+                  <h2 id="ps-title" className="ps-title">Pick your profile photo</h2>
+                  <p className="muted ps-sub">Use your Google photo, upload your own, or go with colourful initials. You can change it anytime.</p>
                   <PhotoPicker user={user} name={shown} value={photo} onChange={setPhoto} />
                 </>
               )}
 
               {step === 2 && (
                 <>
-                  <h2 id="ob-title" className="ps-title">A bit about you</h2>
-                  <p className="muted ob-sub">Optional. It helps us cheer you on and shows on your profile.</p>
-                  <div className="ob-group">
-                    <span className="ob-label">Where are you starting from?</span>
+                  <h2 id="ps-title" className="ps-title">A bit about you</h2>
+                  <p className="muted ps-sub">Optional. It helps us cheer you on and shows on your profile.</p>
+                  <div className="ps-group">
+                    <span className="ps-label">Where are you starting from?</span>
                     <ChoiceChips label="Experience" options={LEVELS} value={level} onChange={setLevel} />
                   </div>
-                  <div className="ob-group">
-                    <span className="ob-label">What’s your goal?</span>
+                  <div className="ps-group">
+                    <span className="ps-label">What’s your goal?</span>
                     <ChoiceChips label="Goal" options={GOALS} value={goal} onChange={setGoal} />
                   </div>
                   <CountedField label="Short headline" value={headline} max={HEADLINE_MAX} onChange={setHeadline} placeholder="e.g. Aspiring frontend developer" />
@@ -145,7 +145,7 @@ function ProfileSetup({ onDone }: { onDone: (name: string) => void }) {
 
             {error && <div className="auth-alert bad" role="alert">{error}</div>}
 
-            <div className="ob-actions">
+            <div className="ps-actions">
               {step > 0 ? (
                 <button type="button" className="btn btn-ghost" onClick={() => setStep(step - 1)} disabled={busy}>
                   <ArrowLeft size={16} /> Back
@@ -171,8 +171,8 @@ function SetupDone({ name, onClose }: { name: string; onClose: () => void }) {
     return () => window.clearTimeout(t);
   }, [onClose]);
   return (
-    <div className="ob-toast" role="status" style={{ '--i': 0 } as CSSProperties}>
-      <span className="ob-toast-check"><Check size={14} /></span>
+    <div className="ps-toast" role="status" style={{ '--i': 0 } as CSSProperties}>
+      <span className="ps-toast-check"><Check size={14} /></span>
       You’re all set, {name.split(' ')[0]}!
     </div>
   );
