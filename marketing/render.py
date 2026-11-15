@@ -14,6 +14,7 @@ with sync_playwright() as p:
     page = browser.new_page(viewport={"width": 2100, "height": 1200}, device_scale_factor=2)
     page.goto((here / "poster.html").as_uri(), wait_until="networkidle")
     page.evaluate("document.fonts.ready")
+    page.evaluate("window.cropsReady")
     page.wait_for_timeout(500)
     for frame in page.query_selector_all(".frame"):
         name = frame.get_attribute("data-name")

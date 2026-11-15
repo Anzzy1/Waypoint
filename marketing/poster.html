@@ -8,214 +8,293 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <style>
   :root {
-    --bg: #0a0d0e;
-    --ink: #f5f7f8;
-    --muted: #9fb0b8;
-    --faint: #5f747e;
-    --line: rgba(255, 255, 255, 0.09);
-    --green: #7fd49a;
+    --bg: #ffffff;
+    --soft: #f4f6f5;
+    --ink: #0b0f10;
+    --muted: #4f5f67;
+    --faint: #7d8f97;
+    --line: #e4e9eb;
+    --green: #1f9d5c;
     --green-deep: #1f6b45;
+    --green-bg: #e7f4ec;
+    --green-line: #bfe0cc;
     --sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --shadow: 0 1px 2px rgba(16,24,28,.06), 0 24px 60px -18px rgba(16,24,28,.22);
+    --shadow-lg: 0 2px 4px rgba(16,24,28,.05), 0 40px 90px -24px rgba(16,24,28,.28);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #222; font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; padding: 40px; display: grid; gap: 40px; justify-content: center; }
+  body { background: #d9dedc; font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; padding: 40px; display: grid; gap: 40px; justify-content: center; }
 
   .frame { position: relative; overflow: hidden; background: var(--bg); isolation: isolate; }
   .w1920 { width: 1920px; height: 1080px; }
   .w1200 { width: 1200px; height: 627px; }
+  /* dotted backdrop + soft green wash */
+  .frame::before { content: ''; position: absolute; inset: 0; z-index: -2;
+    background-image: radial-gradient(#d5dcdf 1.3px, transparent 1.3px); background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 75% 75% at 72% 45%, #000 15%, transparent 72%); opacity: .9; }
+  .frame::after { content: ''; position: absolute; z-index: -1; width: 1300px; height: 1000px; right: -260px; top: -260px;
+    background: radial-gradient(closest-side, rgba(31,157,92,.13), rgba(31,157,92,.04) 55%, transparent 75%); }
 
-  /* backdrop: grid + glows */
-  .frame::before {
-    content: ''; position: absolute; inset: 0; z-index: -2;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 80% 70% at 70% 40%, #000 20%, transparent 75%);
-    opacity: 0.55;
-  }
-  .frame::after {
-    content: ''; position: absolute; z-index: -1; pointer-events: none;
-    width: 1400px; height: 1000px; right: -300px; top: -300px;
-    background: radial-gradient(closest-side, rgba(127, 212, 154, 0.22), rgba(127, 212, 154, 0.06) 55%, transparent 75%);
-  }
-  .glow-b { position: absolute; z-index: -1; width: 900px; height: 700px; left: -300px; bottom: -400px;
-    background: radial-gradient(closest-side, rgba(90, 150, 255, 0.12), transparent 70%); }
-
-  /* brand */
-  .brand { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; }
-  .brand svg { width: 46px; height: 46px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 26px; letter-spacing: -.02em; }
+  .brand svg { width: 40px; height: 40px; }
   .pill { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 999px;
-    border: 1px solid rgba(127, 212, 154, 0.35); background: rgba(127, 212, 154, 0.08);
-    font: 500 15px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); }
-  .pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); }
-  .kicker { font: 500 16px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+    border: 1px solid var(--green-line); background: var(--green-bg); color: var(--green-deep);
+    font: 600 14px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+  .pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(31,157,92,.18); }
+  .pill.ghost { background: #fff; border-color: var(--line); color: var(--muted); }
+  .kicker { font: 700 15px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--green-deep); }
 
-  h1 { font-weight: 800; letter-spacing: -0.045em; line-height: 0.95; }
-  .hl { position: relative; color: var(--green); white-space: nowrap; }
-  .hl svg { position: absolute; left: 0; right: 0; bottom: -0.12em; width: 100%; height: 0.2em; overflow: visible; }
-  .hl path { fill: none; stroke: var(--green); stroke-width: 5; stroke-linecap: round; }
-  .lead { color: var(--muted); line-height: 1.45; letter-spacing: -0.005em; }
+  h1, h2 { font-weight: 800; letter-spacing: -.045em; line-height: .96; }
+  .g { color: var(--green); }
+  .hl { position: relative; white-space: nowrap; }
+  .hl svg { position: absolute; left: 0; width: 100%; bottom: -.1em; height: .22em; overflow: visible; }
+  .hl path { fill: none; stroke: var(--green); stroke-width: 6; stroke-linecap: round; }
+  .lead { color: var(--muted); line-height: 1.45; }
 
-  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-  .chip { padding: 10px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.035);
-    font-weight: 600; font-size: 17px; color: #dfe6e9; display: inline-flex; align-items: center; gap: 9px; }
-  .chip b { width: 7px; height: 7px; border-radius: 2px; background: var(--green); opacity: 0.9; }
-
-  .stats { display: flex; gap: 0; border-top: 1px solid var(--line); }
-  .stat { padding: 24px 30px 0 0; margin-right: 30px; border-right: 1px solid var(--line); }
-  .stat:last-child { border-right: 0; }
-  .stat strong { display: block; font-size: 54px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
-  .stat span { font: 400 15px/1 var(--mono); color: var(--faint); display: block; margin-top: 12px; white-space: nowrap; }
-  .meta { position: absolute; left: 120px; bottom: 80px; display: flex; gap: 12px; }
-
-  /* browser window */
-  .win { position: absolute; border-radius: 18px; overflow: hidden; background: #111618;
-    border: 1px solid rgba(255,255,255,0.14);
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.6), 0 50px 120px -20px rgba(0,0,0,0.85), 0 0 80px -20px rgba(127,212,154,0.25); }
-  .win.light { background: #fff; }
-  .bar { height: 46px; display: flex; align-items: center; gap: 9px; padding: 0 18px; background: #161c1f; border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .win.light .bar { background: #eef1f3; border-bottom-color: #dde3e6; }
-  .bar i { width: 12px; height: 12px; border-radius: 50%; background: #3a4449; }
+  /* windows & cards */
+  .win { position: absolute; border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid #dfe5e7; box-shadow: var(--shadow-lg); }
+  .bar { height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: #f3f5f6; border-bottom: 1px solid #e3e8ea; }
+  .bar i { width: 12px; height: 12px; border-radius: 50%; }
   .bar i:nth-child(1) { background: #ff5f57; } .bar i:nth-child(2) { background: #febc2e; } .bar i:nth-child(3) { background: #28c840; }
-  .url { margin-left: 18px; flex: 1; max-width: 460px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.06);
-    font: 400 13px/28px var(--mono); color: #8c9ba2; padding: 0 12px; }
-  .win.light .url { background: #fff; color: #5f747e; border: 1px solid #dde3e6; }
-  .win img { display: block; width: 100%; }
+  .url { margin-left: 16px; width: 420px; height: 26px; border-radius: 7px; background: #fff; border: 1px solid #e0e6e8;
+    font: 400 13px/24px var(--mono); color: var(--faint); padding: 0 10px; }
+  .win > img { display: block; width: 100%; }
+  .card { position: absolute; border-radius: 18px; overflow: hidden; background: #fff; border: 1px solid #dfe5e7; box-shadow: var(--shadow-lg); }
 
-  /* floating tags */
-  .tag { position: absolute; z-index: 5; display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 14px;
-    background: rgba(20, 27, 30, 0.82); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.14);
-    font: 500 16px/1 var(--mono); color: #dfe6e9; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6); }
-  .tag .ok { width: 22px; height: 22px; border-radius: 50%; background: var(--green-deep); display: grid; place-items: center; color: var(--green); font-size: 13px; }
+  .crop { position: relative; overflow: hidden; }
+  .crop img { position: absolute; left: 0; top: 0; max-width: none; }
 
-  .footer { position: absolute; left: 120px; right: 120px; bottom: 56px; display: flex; justify-content: space-between; align-items: center;
-    font: 400 16px/1 var(--mono); color: var(--faint); }
+  /* numbered pins */
+  .pin { position: absolute; z-index: 10; width: 46px; height: 46px; border-radius: 50%; background: var(--green); color: #fff;
+    display: grid; place-items: center; font: 800 20px/1 var(--sans);
+    box-shadow: 0 0 0 7px rgba(31,157,92,.2), 0 10px 24px -6px rgba(31,100,60,.6); }
+  .label { position: absolute; z-index: 10; padding: 10px 14px; border-radius: 12px; background: var(--ink); color: #fff;
+    font: 600 16px/1.2 var(--sans); white-space: nowrap; box-shadow: 0 14px 30px -10px rgba(0,0,0,.45); }
 
-  /* feature slides */
-  .num { font: 700 16px/1 var(--mono); color: var(--green); letter-spacing: 0.1em; }
-  .points { list-style: none; display: grid; gap: 18px; }
-  .points li { display: flex; gap: 14px; align-items: flex-start; font-size: 22px; line-height: 1.35; color: #dfe6e9; }
-  .points li::before { content: ''; flex: none; width: 24px; height: 24px; margin-top: 3px; border-radius: 7px;
-    background: rgba(127,212,154,0.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 12.5l3.2 3.2L17 9' fill='none' stroke='%237fd49a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat;
-    border: 1px solid rgba(127,212,154,0.35); }
+  .flist { list-style: none; display: grid; gap: 26px; }
+  .flist li { display: grid; grid-template-columns: 46px 1fr; gap: 18px; align-items: start; }
+  .flist .n { width: 46px; height: 46px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font: 800 20px/1 var(--sans); }
+  .flist b { display: block; font-size: 25px; letter-spacing: -.02em; margin-top: 2px; }
+  .flist span { display: block; color: var(--muted); font-size: 19px; line-height: 1.4; margin-top: 5px; }
+
+  .checks { list-style: none; display: grid; gap: 14px; }
+  .checks li { display: flex; gap: 14px; align-items: center; font-size: 22px; font-weight: 600; letter-spacing: -.01em; }
+  .checks li::before { content: ''; flex: none; width: 30px; height: 30px; border-radius: 9px; background: var(--green-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 12.5l3.2 3.2L17 9' fill='none' stroke='%231f6b45' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat; border: 1px solid var(--green-line); }
+
+  /* finish-date plan card (recreated from the app) */
+  .plan { position: absolute; width: 380px; padding: 22px; border-radius: 20px; background: #fff; border: 1px solid #dfe5e7; box-shadow: var(--shadow-lg); }
+  .plan-head { display: flex; justify-content: space-between; align-items: center; font: 400 13px/1 var(--mono); color: var(--faint); padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .plan-chip { padding: 5px 9px; border-radius: 999px; background: var(--soft); border: 1px solid var(--line); }
+  .plan-role { font-weight: 700; font-size: 19px; margin: 16px 0 12px; }
+  .plan-finish { border-radius: 14px; background: var(--green-bg); border: 1px solid var(--green-line); padding: 14px 16px; }
+  .plan-finish small { display: block; font-size: 13px; color: var(--green-deep); }
+  .plan-finish strong { display: block; font-size: 30px; letter-spacing: -.03em; color: var(--green-deep); margin-top: 4px; }
+  .plan-rows { list-style: none; display: grid; gap: 9px; margin-top: 16px; font-size: 15px; color: var(--muted); }
+  .plan-rows li { display: flex; gap: 10px; align-items: center; }
+  .plan-rows li::before { content: '✓'; width: 18px; height: 18px; border-radius: 5px; background: var(--green-deep); color: #fff; font-size: 11px; display: grid; place-items: center; }
+
+  /* bento */
+  .bento { position: absolute; left: 120px; right: 120px; top: 320px; bottom: 72px; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 24px; }
+  .tile { position: relative; overflow: hidden; border-radius: 24px; background: #fff; border: 1px solid #e1e7e9; box-shadow: 0 1px 2px rgba(16,24,28,.04), 0 18px 40px -22px rgba(16,24,28,.18); padding: 26px 28px; }
+  .tile .tn { font: 700 13px/1 var(--mono); color: var(--green-deep); letter-spacing: .12em; }
+  .tile h3 { font-size: 28px; letter-spacing: -.03em; margin-top: 10px; line-height: 1.05; }
+  .tile p { color: var(--muted); font-size: 17px; margin-top: 7px; line-height: 1.35; }
+  .tile .vis { position: absolute; left: 20px; right: 20px; bottom: 0; height: 188px; border-radius: 16px 16px 0 0; background: var(--soft); border: 1px solid #e8ecee; border-bottom: 0; overflow: hidden; display: flex; justify-content: center; }
+  .tile .vis > * { position: relative; margin-top: 18px; border-radius: 12px 12px 0 0; box-shadow: 0 10px 30px -10px rgba(16,24,28,.25); border: 1px solid #e3e8ea; background: #fff; }
+  .tile.feature { background: var(--ink); color: #fff; border-color: var(--ink); }
 </style>
 </head>
 <body>
 
-<!-- Logo symbol reused -->
 <svg width="0" height="0" style="position:absolute">
-  <symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#0a0d0e" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#0a0d0e"/><circle cx="23" cy="8" r="2.8" fill="#1f9d5c"/></symbol>
+  <symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.8" fill="#7fd49a"/></symbol>
 </svg>
 
-<!-- ========== 1. Hero poster 1920x1080 ========== -->
+<!-- ===================== 01 · Main poster ===================== -->
 <section class="frame w1920" data-name="01-poster">
-  <div class="glow-b"></div>
-  <div style="position:absolute; left:120px; top:96px; width:820px;">
+  <div style="position:absolute; left:120px; top:96px; width:760px;">
     <div class="brand"><svg><use href="#logo"/></svg>Waypoint</div>
-    <div style="margin-top:96px"><span class="pill"><i></i>Free developer roadmaps</span></div>
-    <h1 style="font-size:124px; margin-top:34px;">Know exactly<br/>what to learn <span class="hl">next.<svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M3 14 C 50 5, 120 4, 197 10"/></svg></span></h1>
-    <p class="lead" style="font-size:26px; margin-top:44px; max-width:720px;">Step-by-step roadmaps for 8 developer roles. Short lessons, hand-picked videos, a project per stage, and a checklist that remembers your progress.</p>
-    <div class="stats" style="margin-top:56px; width:780px;">
-      <div class="stat"><strong>8</strong><span>career roadmaps</span></div>
-      <div class="stat"><strong>72</strong><span>focused lessons</span></div>
-      <div class="stat"><strong>296</strong><span>resources</span></div>
-      <div class="stat"><strong>100%</strong><span>free</span></div>
-    </div>
+    <div style="margin-top:92px"><span class="pill"><i></i>Free developer roadmaps</span></div>
+    <h1 style="font-size:116px; margin-top:30px;">Know exactly<br/>what to learn<br/><span class="hl g">next.<svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M3 14 C 50 5, 120 4, 197 10"/></svg></span></h1>
+    <p class="lead" style="font-size:25px; margin-top:42px; max-width:660px;">Step-by-step roadmaps for 8 developer roles, from your first line of code to job-ready.</p>
+    <ul class="checks" style="margin-top:36px;">
+      <li>Lessons with real code, diagrams &amp; try-it tasks</li>
+      <li>Progress, badges and a project in every stage</li>
+      <li>Your personal plan with a finish date</li>
+    </ul>
+    <div style="margin-top:44px; display:flex; gap:12px;"><span class="pill"><i></i>100% free</span><span class="pill ghost">No sign-up needed</span></div>
   </div>
 
-  <div class="win" style="left:1080px; top:150px; width:1100px; transform: rotate(-3deg);">
-    <div class="bar"><i></i><i></i><i></i><div class="url">waypoint / roadmap / frontend</div></div>
-    <img src="screens/roadmap-dark.png" alt="" />
+  <div class="win" style="left:960px; top:120px; width:1100px;">
+    <div class="bar"><i></i><i></i><i></i><div class="url">waypoint · roadmap / frontend</div></div>
+    <img src="screens/roadmap-top.png" alt="" />
   </div>
-  <div class="win light" style="left:1010px; top:470px; width:1060px; transform: rotate(2deg);">
-    <div class="bar"><i></i><i></i><i></i><div class="url">waypoint / home</div></div>
-    <img src="screens/home-light.png" alt="" />
+  <div class="card" style="left:900px; top:650px; width:700px;"><div class="crop" data-src="screens/stage1.png" data-box="0,0,2264,946"></div></div>
+  <div class="plan" style="left:1500px; top:680px;">
+    <div class="plan-head"><span>your-plan.md</span><span class="plan-chip">7h / week</span></div>
+    <div class="plan-role">Frontend Developer</div>
+    <div class="plan-finish"><small>Finish around</small><strong>August 2027</strong></div>
+    <ul class="plan-rows"><li>Study habits checked</li><li>Lesson method learned</li><li>Weekly plan set</li></ul>
   </div>
-  <div class="tag" style="left:960px; top:380px;"><span class="ok">✓</span>HTML &amp; CSS done</div>
-  <div class="tag" style="left:1610px; top:96px;">▶ React in 100s</div>
-  <div class="tag" style="left:1560px; top:960px;">git commit -m "day 1"</div>
 </section>
 
-<!-- ========== 2. LinkedIn 1200x627 ========== -->
-<section class="frame w1200" data-name="02-linkedin">
-  <div class="glow-b"></div>
-  <div style="position:absolute; left:64px; top:56px; width:560px;">
-    <div class="brand" style="font-size:22px; gap:10px;"><svg style="width:34px;height:34px"><use href="#logo"/></svg>Waypoint</div>
-    <div style="margin-top:48px"><span class="pill" style="font-size:12px; padding:7px 12px;"><i></i>Free · No sign-up</span></div>
-    <h1 style="font-size:70px; margin-top:22px;">Know exactly<br/>what to learn <span class="hl">next.<svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M3 14 C 50 5, 120 4, 197 10"/></svg></span></h1>
-    <p class="lead" style="font-size:18px; margin-top:28px; max-width:470px;">Step-by-step roadmaps for 8 developer roles, with lessons, curated videos and a progress checklist.</p>
-    <div class="chips" style="margin-top:28px; gap:8px; max-width:520px;">
-      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Frontend</span>
-      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Backend</span>
-      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Full-Stack</span>
-      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>AI &amp; ML</span>
-      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>DevOps</span>
-      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Mobile</span>
-      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Cloud</span>
-      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>AI Agent</span>
+<!-- ===================== 02 · Feature bento ===================== -->
+<section class="frame w1920" data-name="02-features">
+  <div style="position:absolute; left:120px; top:92px; right:120px; display:flex; justify-content:space-between; align-items:flex-start;">
+    <div>
+      <div class="kicker">What's inside Waypoint</div>
+      <h2 style="font-size:78px; margin-top:20px;">Everything you need to go<br/>from zero to <span class="g">hired.</span></h2>
     </div>
+    <div class="brand" style="margin-top:4px;"><svg><use href="#logo"/></svg>Waypoint</div>
   </div>
-  <div class="win" style="left:680px; top:70px; width:680px; transform: rotate(-3deg); border-radius:12px;">
-    <div class="bar" style="height:30px; padding:0 12px; gap:6px;"><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i></div>
-    <img src="screens/learn-dark.png" alt="" />
+  <div class="bento">
+    <div class="tile"><div class="tn">01 · ROADMAPS</div><h3>A clear path for 8 roles</h3><p>Stages in order, each with a real project.</p>
+      <div class="vis"><div class="crop" data-src="screens/stage1.png" data-box="0,0,2264,946" style="width:440px"></div></div></div>
+    <div class="tile"><div class="tn">02 · LESSONS</div><h3>Lessons that show, not tell</h3><p>Real commands, real output, clear diagrams.</p>
+      <div class="vis"><div class="crop" data-src="screens/lesson-2.png" data-box="937,250,1517,900" style="width:440px"></div></div></div>
+    <div class="tile"><div class="tn">03 · PROGRESS</div><h3>Progress you can see</h3><p>Check off lessons and earn stage badges.</p>
+      <div class="vis"><div class="crop" data-src="screens/roadmap-top.png" data-box="1853,321,717,500" style="width:300px"></div></div></div>
+    <div class="tile"><div class="tn">04 · YOUR PLAN</div><h3>Know your finish date</h3><p>Set your weekly hours. Get a real date.</p>
+      <div class="vis"><div style="width:330px; padding:16px 18px;">
+        <div style="font:400 12px/1 var(--mono); color:var(--faint); display:flex; justify-content:space-between;"><span>your-plan.md</span><span>7h / week</span></div>
+        <div style="font-weight:700; font-size:16px; margin:12px 0 10px;">Frontend Developer</div>
+        <div class="plan-finish" style="padding:12px 14px;"><small>Finish around</small><strong style="font-size:26px;">August 2027</strong></div>
+      </div></div></div>
+    <div class="tile"><div class="tn">05 · TECH STACKS</div><h3>What companies hire for</h3><p>Must-know skills first, per role.</p>
+      <div class="vis"><div class="crop" data-src="screens/stack-overview.png" data-box="1625,0,639,522" style="width:300px"></div></div></div>
+    <div class="tile"><div class="tn">06 · AI WORKFLOW</div><h3>Work with AI like a pro</h3><p>The AI tools devs use, and how to set them up.</p>
+      <div class="vis"><div class="crop" data-src="screens/ai-0.png" data-box="309,342,732,600" style="width:380px"></div></div></div>
   </div>
-  <div class="win light" style="left:640px; top:270px; width:640px; transform: rotate(2deg); border-radius:12px;">
-    <div class="bar" style="height:30px; padding:0 12px; gap:6px;"><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i></div>
-    <img src="screens/home-light.png" alt="" />
-  </div>
-  <div class="tag" style="left:610px; top:225px; font-size:12px; padding:9px 13px;"><span class="ok" style="width:18px;height:18px;font-size:11px">✓</span>72 lessons · 296 resources</div>
 </section>
 
-<!-- ========== Feature slides 1920x1080 ========== -->
-<template id="feature">
-  <section class="frame w1920">
-    <div class="glow-b"></div>
-    <div style="position:absolute; left:120px; top:96px; width:600px;">
-      <div class="brand" style="font-size:24px; gap:12px;"><svg style="width:38px;height:38px"><use href="#logo"/></svg>Waypoint</div>
-      <div class="num" style="margin-top:140px" data-f="num"></div>
-      <h1 style="font-size:84px; margin-top:22px;" data-f="title"></h1>
-      <p class="lead" style="font-size:24px; margin-top:30px;" data-f="lead"></p>
-      <ul class="points" style="margin-top:44px;" data-f="points"></ul>
-    </div>
-    <div class="meta"><span class="pill"><i></i>100% free</span><span class="pill" style="color:#cfd8dc;border-color:var(--line);background:rgba(255,255,255,0.04)">8 roadmaps · 72 lessons</span></div>
-    <div class="win" data-f="win" style="left:800px; top:150px; width:1280px;">
-      <div class="bar"><i></i><i></i><i></i><div class="url" data-f="url"></div></div>
-      <img data-f="img" alt="" />
-    </div>
-  </section>
-</template>
+<!-- ===================== 03 · LinkedIn 1200x627 ===================== -->
+<section class="frame w1200" data-name="03-linkedin">
+  <div style="position:absolute; left:60px; top:52px; width:540px;">
+    <div class="brand" style="font-size:20px; gap:10px;"><svg style="width:32px;height:32px"><use href="#logo"/></svg>Waypoint</div>
+    <div style="margin-top:46px"><span class="pill" style="font-size:11px; padding:7px 12px;"><i></i>Free · No sign-up</span></div>
+    <h1 style="font-size:66px; margin-top:20px;">Know exactly<br/>what to learn <span class="hl g">next.<svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M3 14 C 50 5, 120 4, 197 10"/></svg></span></h1>
+    <p class="lead" style="font-size:17px; margin-top:24px; max-width:460px;">Step-by-step roadmaps for 8 developer roles.</p>
+    <ul class="checks" style="margin-top:22px; gap:10px;">
+      <li style="font-size:15px; gap:10px;">Lessons with real code &amp; diagrams</li>
+      <li style="font-size:15px; gap:10px;">Progress, badges &amp; stage projects</li>
+      <li style="font-size:15px; gap:10px;">A personal plan with a finish date</li>
+    </ul>
+  </div>
+  <div class="win" style="left:600px; top:64px; width:680px; border-radius:12px;">
+    <div class="bar" style="height:30px; padding:0 12px; gap:6px;"><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i></div>
+    <img src="screens/roadmap-top.png" alt="" />
+  </div>
+  <div class="card" style="left:560px; top:380px; width:450px; border-radius:14px;"><div class="crop" data-src="screens/stage1.png" data-box="0,0,2264,946"></div></div>
+  <div class="label" style="left:880px; top:345px; font-size:12px; padding:8px 11px; border-radius:9px;">🏅 Badge every stage</div>
+</section>
+
+<!-- ===================== 04 · Roadmaps ===================== -->
+<section class="frame w1920" data-name="04-roadmaps">
+  <div style="position:absolute; left:120px; top:96px; width:560px;">
+    <div class="brand"><svg><use href="#logo"/></svg>Waypoint</div>
+    <div class="kicker" style="margin-top:110px;">01 · Roadmaps</div>
+    <h2 style="font-size:80px; margin-top:20px;">A clear path,<br/><span class="g">one stage</span><br/>at a time.</h2>
+    <ul class="flist" style="margin-top:48px;">
+      <li><div class="n">1</div><div><b>See your progress</b><span>Every lesson you finish moves the bar.</span></div></li>
+      <li><div class="n">2</div><div><b>Earn a badge per stage</b><span>7 stages, 7 badges for Frontend.</span></div></li>
+      <li><div class="n">3</div><div><b>Build a real project</b><span>Each stage ends with something to ship.</span></div></li>
+    </ul>
+  </div>
+  <div class="win" style="left:760px; top:110px; width:1100px;">
+    <div class="bar"><i></i><i></i><i></i><div class="url">waypoint · roadmap / frontend</div></div>
+    <img src="screens/roadmap-top.png" alt="" />
+  </div>
+  <div class="card" style="left:960px; top:620px; width:880px;"><div class="crop" data-src="screens/stage1.png" data-box="0,0,2264,946"></div></div>
+  <div class="pin" style="left:1420px; top:268px;">1</div>
+  <div class="pin" style="left:930px; top:640px;">2</div>
+  <div class="pin" style="left:930px; top:880px;">3</div>
+</section>
+
+<!-- ===================== 05 · Lessons ===================== -->
+<section class="frame w1920" data-name="05-lessons">
+  <div style="position:absolute; left:120px; top:96px; width:560px;">
+    <div class="brand"><svg><use href="#logo"/></svg>Waypoint</div>
+    <div class="kicker" style="margin-top:110px;">02 · Lessons</div>
+    <h2 style="font-size:80px; margin-top:20px;">Lessons that<br/><span class="g">show you</span>,<br/>not just tell.</h2>
+    <ul class="flist" style="margin-top:48px;">
+      <li><div class="n">1</div><div><b>In plain words first</b><span>One sentence that makes it click.</span></div></li>
+      <li><div class="n">2</div><div><b>Real code, real output</b><span>Commands you can copy and run.</span></div></li>
+      <li><div class="n">3</div><div><b>Steps with try-it tasks</b><span>Practice each idea before moving on.</span></div></li>
+    </ul>
+  </div>
+  <div class="win" style="left:760px; top:110px; width:1100px;">
+    <div class="bar"><i></i><i></i><i></i><div class="url">waypoint · lesson / how-the-internet-works</div></div>
+    <img src="screens/lesson.png" alt="" />
+  </div>
+  <div class="card" style="left:1170px; top:560px; width:700px;"><div class="crop" data-src="screens/lesson-2.png" data-box="937,250,1517,1130"></div></div>
+  <div class="card" style="left:690px; top:800px; width:500px;"><div class="crop" data-src="screens/lesson-3.png" data-box="1110,800,1020,330"></div></div>
+  <div class="pin" style="left:1062px; top:420px;">1</div>
+  <div class="pin" style="left:1145px; top:578px;">2</div>
+  <div class="pin" style="left:665px; top:778px;">3</div>
+</section>
+
+<!-- ===================== 06 · Tech stacks ===================== -->
+<section class="frame w1920" data-name="06-tech-stacks">
+  <div style="position:absolute; left:120px; top:96px; width:560px;">
+    <div class="brand"><svg><use href="#logo"/></svg>Waypoint</div>
+    <div class="kicker" style="margin-top:110px;">03 · Tech stacks</div>
+    <h2 style="font-size:80px; margin-top:20px;">Learn what<br/>companies<br/><span class="g">hire for.</span></h2>
+    <ul class="flist" style="margin-top:48px;">
+      <li><div class="n">1</div><div><b>Pick any of 8 roles</b><span>See the tools that role uses daily.</span></div></li>
+      <li><div class="n">2</div><div><b>Must-know first</b><span>Tags show what to learn now vs later.</span></div></li>
+      <li><div class="n">3</div><div><b>Why it gets you hired</b><span>Every tool explained in plain words.</span></div></li>
+    </ul>
+  </div>
+  <div class="win" style="left:760px; top:110px; width:1100px;">
+    <div class="bar"><i></i><i></i><i></i><div class="url">waypoint · stack</div></div>
+    <img src="screens/stack.png" alt="" />
+  </div>
+  <div class="card" style="left:1340px; top:590px; width:500px;"><div class="crop" data-src="screens/stack-lang.png" data-box="0,96,736,626"></div></div>
+  <div class="pin" style="left:800px; top:620px;">1</div>
+  <div class="pin" style="left:1700px; top:560px;">2</div>
+  <div class="pin" style="left:1310px; top:850px;">3</div>
+</section>
+
+<!-- ===================== 07 · AI workflow ===================== -->
+<section class="frame w1920" data-name="07-ai-workflow">
+  <div style="position:absolute; left:120px; top:96px; width:560px;">
+    <div class="brand"><svg><use href="#logo"/></svg>Waypoint</div>
+    <div class="kicker" style="margin-top:110px;">04 · AI workflow</div>
+    <h2 style="font-size:80px; margin-top:20px;">Work with AI<br/><span class="g">like a pro.</span></h2>
+    <ul class="flist" style="margin-top:48px;">
+      <li><div class="n">1</div><div><b>The tools devs really use</b><span>Ranked with 2026 survey data.</span></div></li>
+      <li><div class="n">2</div><div><b>Copy-paste setup</b><span>Install any tool in one command.</span></div></li>
+      <li><div class="n">3</div><div><b>Ideas every tool shares</b><span>Plan first, rules, skills, MCP and more.</span></div></li>
+    </ul>
+  </div>
+  <div class="win" style="left:760px; top:110px; width:1100px;">
+    <div class="bar"><i></i><i></i><i></i><div class="url">waypoint · ai</div></div>
+    <div class="crop" data-src="screens/ai-2.png" data-box="0,110,2880,1690"></div>
+  </div>
+  <div class="card" style="left:1400px; top:400px; width:470px;"><div class="crop" data-src="screens/ai-0.png" data-box="309,342,732,881"></div></div>
+  <div class="pin" style="left:1375px; top:500px;">1</div>
+  <div class="pin" style="left:1375px; top:760px;">2</div>
+  <div class="pin" style="left:770px; top:232px;">3</div>
+</section>
 
 <script>
-  const features = [
-    { name: '03-roadmaps', num: '01 — ROADMAPS', title: 'A clear path for <span class="hl" style="color:var(--green)">8 roles</span>',
-      lead: 'From zero to job-ready, one stage at a time.', img: 'roadmap-light', light: true, url: 'waypoint / roadmap / frontend',
-      points: ['Frontend, Backend, Full-Stack, AI, DevOps, Mobile, Cloud, AI Agent', 'A project to build in every stage', 'Badges and progress that sync across paths'] },
-    { name: '04-how-to-learn', num: '02 — HOW TO LEARN', title: 'Learn how to learn in <span style="color:var(--green)">10 minutes</span>',
-      lead: 'A short, guided quick start before the first lesson.', img: 'learn-dark', url: 'waypoint / learn',
-      points: ['Spot the study traps that slow you down', 'A simple 5-step loop for every lesson', 'Set your hours and see your finish date'] },
-    { name: '05-tech-stacks', num: '03 — TECH STACKS', title: 'What companies <span style="color:var(--green)">hire for</span> now',
-      lead: 'The real tools each role uses, ranked by demand.', img: 'stack-light', light: true, url: 'waypoint / stack',
-      points: ['Must-know vs nice-to-have, per role', 'Plain explanation of every tool', 'Updated for 2026'] },
-    { name: '06-ai-workflow', num: '04 — AI WORKFLOW', title: 'Work with AI <span style="color:var(--green)">like a pro</span>',
-      lead: 'Use AI coding tools as a tutor, not an autopilot.', img: 'ai-dark', url: 'waypoint / ai',
-      points: ['The AI coding tools developers use most', 'Step-by-step setup guides', 'A workflow that keeps you learning'] },
-  ];
-  const tpl = document.getElementById('feature');
-  for (const f of features) {
-    const node = tpl.content.firstElementChild.cloneNode(true);
-    node.dataset.name = f.name;
-    node.querySelector('[data-f=num]').textContent = f.num;
-    node.querySelector('[data-f=title]').innerHTML = f.title;
-    node.querySelector('[data-f=lead]').textContent = f.lead;
-    node.querySelector('[data-f=url]').textContent = f.url;
-    node.querySelector('[data-f=img]').src = 'screens/' + f.img + '.png';
-    if (f.light) node.querySelector('[data-f=win]').classList.add('light');
-    const ul = node.querySelector('[data-f=points]');
-    for (const p of f.points) { const li = document.createElement('li'); li.textContent = p; ul.appendChild(li); }
-    document.body.appendChild(node);
-  }
+  // Crop helper: shows box (x,y,w,h in source pixels) of an image, scaled to the element's width.
+  window.cropsReady = Promise.all([...document.querySelectorAll('.crop')].map(el => new Promise(res => {
+    const [x, y, w, h] = el.dataset.box.split(',').map(Number);
+    const img = new Image();
+    img.onload = () => {
+      const width = el.getBoundingClientRect().width || el.parentElement.getBoundingClientRect().width;
+      const s = width / w;
+      el.style.width = width + 'px';
+      el.style.height = h * s + 'px';
+      img.style.width = img.naturalWidth * s + 'px';
+      img.style.transform = `translate(${-x * s}px, ${-y * s}px)`;
+      res();
+    };
+    img.src = el.dataset.src;
+    el.appendChild(img);
+  })));
 </script>
 </body>
 </html>
