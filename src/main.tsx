@@ -12,10 +12,13 @@ import Learn from './pages/Learn';
 import Stacks from './pages/Stacks';
 import Login from './pages/Login';
 import Account from './pages/Account';
+import Settings from './pages/Settings';
+import ProfileSetupHost from './components/ProfileSetup';
 import { AuthProvider } from './hooks/useAuth';
 import AuthModalHost from './components/AuthModal';
 import AiWorkflow from './pages/AiWorkflow';
 import './styles.css';
+import './profile.css';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -49,11 +52,13 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/ai" element={<AiWorkflow />} />
             <Route path="/login" element={<Login />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />
         <AuthModalHost />
+        <ProfileSetupHost />
       </HashRouter>
       </AuthProvider>
     </ProgressProvider>

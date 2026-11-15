@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { profileOf, useAuth } from '../hooks/useAuth';
 import { useProgress } from '../hooks/useProgress';
@@ -7,7 +6,9 @@ import { roadmaps, topicIdsOf } from '../data/roadmaps';
 import { topics } from '../data/topics';
 import { ProgressBar } from '../components/Bits';
 import { ArrowRight, Check } from '../components/Icons';
-import { clearLocal } from '../lib/sync';
+import Avatar from '../components/Avatar';
+import { Glyph } from '../components/Art';
+import { GOALS, LEVELS } from '../lib/profile';
 
 function timeAgo(d: Date | null) {
   if (!d || Number.isNaN(d.getTime())) return '';
@@ -22,15 +23,13 @@ export default function Account() {
   const auth = useAuth();
   const { countDone, isDone } = useProgress();
   const { plan } = usePlan();
-  const [confirmReset, setConfirmReset] = useState(false);
-  const [deleteText, setDeleteText] = useState('');
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   if (auth.loading) return <section className="account"><div className="container"><p className="muted">Loading your account…</p></div></section>;
   if (!auth.user) return <Navigate to="/login" replace />;
 
-  const { name, initials, avatar } = profileOf(auth.user);
+  const { name, avatar, profile } = profileOf(auth.user);
+  const level = LEVELS.find((l) => l.id === profile.level);
+  const goal = GOALS.find((g) => g.id === profile.goal);
   const providers = (auth.user.app_metadata?.providers as string[] | undefined) ?? [auth.user.app_metadata?.provider ?? 'email'];
 
   const rows = roadmaps.map((r) => {
@@ -57,18 +56,33 @@ export default function Account() {
     <section className="account">
       <div className="container account-inner">
         <header className="account-head">
-          <span className="account-avatar">{avatar ? <img src={avatar} alt="" referrerPolicy="no-referrer" /> : initials}</span>
+          <Avatar src={avatar} name={name} color={profile.color} size={84} className="account-avatar-lg" />
           <div className="account-who">
             <span className="kicker">Your account</span>
             <h1>Hi, {name.split(' ')[0]}</h1>
+            {profile.headline && <p className="account-headline">{profile.headline}</p>}
+            <span className="account-tags">
+              {level && <span className="account-tag"><Glyph name="gauge" size={13} /> {level.label}</span>}
+              {goal && <span className="account-tag"><Glyph name="sparkle" size={13} /> {goal.label}</span>}
+              {profile.github && (
+                <a className="account-tag account-tag-link" href={`https://github.com/${profile.github}`} target="_blank" rel="noreferrer">
+                  <Glyph name="branch" size={13} /> {profile.github}
+                </a>
+              )}
+            </span>
             <span className="muted small">
               {auth.user.email} · signed in with {providers.map((p) => (p === 'email' ? 'email' : p[0].toUpperCase() + p.slice(1))).join(', ')}
             </span>
           </div>
-          <span className={`sync-pill sync-${auth.sync}`}>
-            <span className="sync-dot" aria-hidden />
-            {syncLabel}
-          </span>
+          <div className="account-head-side">
+            <span className={`sync-pill sync-${auth.sync}`}>
+              <span className="sync-dot" aria-hidden />
+              {syncLabel}
+            </span>
+            <Link to="/settings" className="btn btn-ghost account-settings-btn">
+              <Glyph name="puzzle" size={16} /> Edit profile &amp; settings
+            </Link>
+          </div>
         </header>
 
         <div className="account-stats">
@@ -116,55 +130,15 @@ export default function Account() {
           </div>
         </div>
 
-        <div className="account-card account-danger">
-          <span className="kicker">Manage your data</span>
-          <div className="danger-row">
-            <div>
-              <b>Log out</b>
-              <p className="muted small">Your progress stays saved in your account. This device keeps a copy too.</p>
-            </div>
+        <div className="account-card account-manage">
+          <div>
+            <b>Profile, plan and account</b>
+            <p className="muted small">Change your name and photo, your weekly hours, the theme, or log out.</p>
+          </div>
+          <span className="danger-confirm">
             <button className="btn btn-ghost" onClick={() => auth.signOut()}>Log out</button>
-          </div>
-          <div className="danger-row">
-            <div>
-              <b>Reset all progress</b>
-              <p className="muted small">Untick every lesson on every roadmap. This can’t be undone.</p>
-            </div>
-            {confirmReset ? (
-              <span className="danger-confirm">
-                <button className="btn btn-ghost" onClick={() => setConfirmReset(false)}>Cancel</button>
-                <button className="btn btn-danger" onClick={() => { clearLocal(); setConfirmReset(false); }}>Yes, reset</button>
-              </span>
-            ) : (
-              <button className="btn btn-ghost" onClick={() => setConfirmReset(true)}>Reset progress</button>
-            )}
-          </div>
-          <div className="danger-row">
-            <div>
-              <b>Delete account</b>
-              <p className="muted small">Permanently delete your account and everything saved in it.</p>
-            </div>
-            {!deleteOpen && <button className="btn btn-ghost danger-text" onClick={() => setDeleteOpen(true)}>Delete account</button>}
-          </div>
-          {deleteOpen && (
-            <div className="delete-box">
-              <label className="field">
-                <span>Type <b>DELETE</b> to confirm</span>
-                <input value={deleteText} onChange={(e) => setDeleteText(e.target.value)} autoComplete="off" />
-              </label>
-              {error && <div className="auth-alert bad">{error}</div>}
-              <span className="danger-confirm">
-                <button className="btn btn-ghost" onClick={() => { setDeleteOpen(false); setDeleteText(''); }}>Cancel</button>
-                <button
-                  className="btn btn-danger"
-                  disabled={deleteText !== 'DELETE'}
-                  onClick={async () => setError(await auth.deleteAccount())}
-                >
-                  Delete forever
-                </button>
-              </span>
-            </div>
-          )}
+            <Link to="/settings" className="btn btn-primary">Open settings <ArrowRight size={16} /></Link>
+          </span>
         </div>
       </div>
     </section>

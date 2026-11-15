@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { User } from '@supabase/supabase-js';
 import { siteUrl, supabase } from '../lib/supabase';
 import { clearLocal, merge, normalise, onLocalChange, readLocal, writeLocal } from '../lib/sync';
+import { avatarSrc, colorOf, initialsOf, readProfile, removeOldAvatars, saveProfile, type Profile } from '../lib/profile';
 
 export type SyncStatus = 'off' | 'syncing' | 'synced' | 'error';
 
@@ -23,6 +24,8 @@ interface AuthCtx {
   /** email login, step 2: check the code */
   verifyCode: (email: string, code: string) => Promise<string | null>;
   signOut: () => Promise<void>;
+  /** save profile fields (name, photo, headline…); returns an error message or null */
+  updateProfile: (patch: Partial<Profile>) => Promise<string | null>;
   deleteAccount: () => Promise<string | null>;
   modal: AuthModal | null;
   openAuth: (m: AuthModal) => void;
@@ -32,6 +35,19 @@ interface AuthCtx {
 const Ctx = createContext<AuthCtx | null>(null);
 const RETURN_KEY = 'waypoint.authReturn';
 const TABLE = 'user_data';
+
+/** Turn Supabase's raw email errors into something a learner can act on. */
+function friendlySendError(msg: string) {
+  const m = msg.toLowerCase();
+  if (m.includes('rate limit') || m.includes('security purposes') || m.includes('seconds')) {
+    return 'Too many tries for now. Wait a minute, then send a new code.';
+  }
+  if (m.includes('invalid') && m.includes('email')) return 'That email address doesn’t look right. Check it and try again.';
+  if (m.includes('sending') || m.includes('smtp') || m.includes('email')) {
+    return 'We couldn’t send the email right now. Try again in a moment, or continue with Google.';
+  }
+  return msg;
+}
 
 /** Remember which page to come back to after the Google redirect. */
 function rememberReturn() {
@@ -97,16 +113,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLastSynced(new Date(updated_at));
   }, []);
 
+  const uid = user?.id ?? null;
+
   // on login: pull the account's data and merge it with this device's progress
   useEffect(() => {
-    if (!supabase || !user) {
+    if (!supabase || !uid) {
       setSync('off');
       return;
     }
     let cancelled = false;
     (async () => {
       setSync('syncing');
-      const { data, error } = await supabase.from(TABLE).select('data').eq('user_id', user.id).maybeSingle();
+      const { data, error } = await supabase.from(TABLE).select('data').eq('user_id', uid).maybeSingle();
       if (cancelled) return;
       if (error) {
         setSync('error');
@@ -117,34 +135,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       writeLocal(merged);
       applying.current = false;
       lastPushed.current = '';
-      await push(user.id);
+      await push(uid);
     })();
     return () => {
       cancelled = true;
     };
-  }, [user, push]);
+  }, [uid, push]);
 
   // every local change (tick a lesson, change the plan…) is pushed a moment later
   useEffect(() => {
-    if (!user) return;
+    if (!uid) return;
     let t = 0;
     const off = onLocalChange(() => {
       if (applying.current) return;
       window.clearTimeout(t);
-      t = window.setTimeout(() => push(user.id), 900);
+      t = window.setTimeout(() => push(uid), 900);
     });
     return () => {
       off();
       window.clearTimeout(t);
     };
-  }, [user, push]);
+  }, [uid, push]);
 
   // coming back to the tab: pick up changes made on another device
   useEffect(() => {
-    if (!supabase || !user) return;
+    if (!supabase || !uid) return;
     const onVisible = async () => {
       if (document.visibilityState !== 'visible' || !supabase) return;
-      const { data } = await supabase.from(TABLE).select('data, updated_at').eq('user_id', user.id).maybeSingle();
+      const { data } = await supabase.from(TABLE).select('data, updated_at').eq('user_id', uid).maybeSingle();
       if (!data) return;
       const remote = normalise(data.data);
       const body = JSON.stringify(remote);
@@ -159,7 +177,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
     document.addEventListener('visibilitychange', onVisible);
     return () => document.removeEventListener('visibilitychange', onVisible);
-  }, [user]);
+  }, [uid]);
 
   /* ---------- actions ---------- */
   const value = useMemo<AuthCtx>(
@@ -178,7 +196,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       sendCode: async (email) => {
         if (!supabase) return 'Login is not set up yet.';
         const { error } = await supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
-        return error?.message ?? null;
+        return error ? friendlySendError(error.message) : null;
       },
       verifyCode: async (email, code) => {
         if (!supabase) return 'Login is not set up yet.';
@@ -189,11 +207,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await supabase?.auth.signOut();
         lastPushed.current = '';
       },
+      updateProfile: async (patch) => {
+        if (!user) return 'You’re not logged in.';
+        const res = await saveProfile(user, patch);
+        if (res.user) setUser(res.user);
+        return res.error ?? null;
+      },
       modal,
       openAuth: setModal,
       closeAuth: () => setModal(null),
       deleteAccount: async () => {
         if (!supabase) return 'Login is not set up yet.';
+        if (user) await removeOldAvatars(user.id, null);
         const { error } = await supabase.rpc('delete_my_account');
         if (error) return error.message;
         await supabase.auth.signOut();
@@ -213,15 +238,8 @@ export function useAuth() {
   return ctx;
 }
 
-/** Display name + initials for the avatar. */
+/** Display name, initials, photo and colour for the avatar. */
 export function profileOf(user: User) {
-  const m = user.user_metadata ?? {};
-  const name: string = m.full_name || m.name || m.user_name || user.email?.split('@')[0] || 'Learner';
-  const initials = name
-    .split(/[\s._-]+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0]!.toUpperCase())
-    .join('');
-  return { name, initials, avatar: (m.avatar_url as string | undefined) ?? null };
+  const p = readProfile(user);
+  return { name: p.name, initials: initialsOf(p.name), avatar: avatarSrc(p, user), color: colorOf(p.color), profile: p };
 }

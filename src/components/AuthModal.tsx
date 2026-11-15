@@ -104,7 +104,7 @@ export default function AuthModalHost() {
 
   // prompts only make sense when accounts work (or while developing the site)
   const prompts = auth.enabled || import.meta.env.DEV;
-  const quietPage = pathname.startsWith('/login') || pathname.startsWith('/account');
+  const quietPage = pathname.startsWith('/login') || pathname.startsWith('/account') || pathname.startsWith('/settings');
   const done = countDone(LESSON_IDS);
 
   useEffect(() => {

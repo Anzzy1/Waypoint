@@ -3,14 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, Logo, Moon, Sun } from './Icons';
 import { Glyph, type GlyphKey } from './Art';
 import { profileOf, useAuth } from '../hooks/useAuth';
-
-type Theme = 'light' | 'dark';
-
-function initialTheme(): Theme {
-  const set = document.documentElement.dataset.theme;
-  if (set === 'light' || set === 'dark') return set;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
+import { useTheme } from '../lib/theme';
+import Avatar from './Avatar';
 
 const LINKS: { to: string; label: string; desc: string; glyph: GlyphKey; match: (p: string) => boolean }[] = [
   { to: '/', label: 'Roadmaps', desc: 'Step-by-step career paths', glyph: 'compass', match: (p) => p === '/' || p.startsWith('/roadmap') },
@@ -21,9 +15,11 @@ const LINKS: { to: string; label: string; desc: string; glyph: GlyphKey; match: 
 
 export default function Nav() {
   const { pathname } = useLocation();
-  const { user, loading, openAuth } = useAuth();
+  const { user, loading, openAuth, signOut } = useAuth();
   const me = user ? profileOf(user) : null;
-  const [theme, setTheme] = useState<Theme>(initialTheme);
+  const { resolved: theme, setPref: setTheme } = useTheme();
+  const [menu, setMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [pill, setPill] = useState<CSSProperties>({ opacity: 0 });
@@ -35,14 +31,21 @@ export default function Nav() {
   const active = LINKS.findIndex((l) => l.match(pathname));
   const next = theme === 'dark' ? 'light' : 'dark';
 
+  // account menu: close on navigation, Escape and outside clicks
+  useEffect(() => setMenu(false), [pathname]);
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    try {
-      localStorage.setItem('waypoint.theme', theme);
-    } catch {
-      /* ignore */
-    }
-  }, [theme]);
+    if (!menu) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenu(false);
+    const onDown = (e: PointerEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenu(false);
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onDown);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onDown);
+    };
+  }, [menu]);
 
   // bar tightens once the page scrolls; the progress line is written straight to the DOM
   // so scrolling never re-renders the nav
@@ -129,9 +132,27 @@ export default function Nav() {
             </button>
             {!loading &&
               (me ? (
-                <Link to="/account" className="nav-avatar" aria-label="Your account" title={me.name}>
-                  {me.avatar ? <img src={me.avatar} alt="" referrerPolicy="no-referrer" /> : me.initials}
-                </Link>
+                <div className="nav-me" ref={menuRef}>
+                  <button className="nav-avatar" onClick={() => setMenu((m) => !m)} aria-expanded={menu} aria-haspopup="menu" aria-label="Account menu" title={me.name}>
+                    <Avatar src={me.avatar} name={me.name} color={me.color.id} size={36} />
+                  </button>
+                  {menu && (
+                    <div className="nav-menu" role="menu">
+                      <div className="nav-menu-who">
+                        <Avatar src={me.avatar} name={me.name} color={me.color.id} size={40} />
+                        <span>
+                          <b>{me.name}</b>
+                          <span className="small muted">{user?.email}</span>
+                        </span>
+                      </div>
+                      <Link to="/account" role="menuitem" className="nav-menu-item"><Glyph name="checklist" size={16} /> Your progress</Link>
+                      <Link to="/settings" role="menuitem" className="nav-menu-item"><Glyph name="puzzle" size={16} /> Profile &amp; settings</Link>
+                      <button role="menuitem" className="nav-menu-item" onClick={() => { setMenu(false); signOut(); }}>
+                        <Glyph name="lock" size={16} /> Log out
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <button className="nav-login" onClick={() => openAuth({ view: 'login' })}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
@@ -192,11 +213,11 @@ export default function Nav() {
               }}
             >
               <span className="nav-panel-glyph nav-panel-me">
-                {me ? me.avatar ? <img src={me.avatar} alt="" referrerPolicy="no-referrer" /> : me.initials : <Glyph name="lock" size={18} />}
+                {me ? <Avatar src={me.avatar} name={me.name} color={me.color.id} size={38} /> : <Glyph name="lock" size={18} />}
               </span>
               <span className="nav-panel-text">
                 <b>{me ? 'Your account' : 'Log in'}</b>
-                <span className="small muted">{me ? 'Progress, plan and settings' : 'Track your roadmap on every device'}</span>
+                <span className="small muted">{me ? `${me.name} · progress and settings` : 'Track your roadmap on every device'}</span>
               </span>
             </Link>
             <Link to="/learn" className="btn btn-primary nav-panel-cta" style={{ '--i': LINKS.length + 1 } as CSSProperties} onClick={() => setOpen(false)}>

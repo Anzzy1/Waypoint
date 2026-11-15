@@ -43,11 +43,14 @@ creates the account. Their progress, plan and badges then sync across devices.
 1. Create a free project at [supabase.com](https://supabase.com).
 2. In **SQL Editor**, run `supabase/schema.sql`. It creates the `user_data` table with row-level security (each user
    can only read and write their own row) and the `delete_my_account` function used by the Account page.
+   Then run `supabase/avatars.sql` too. It creates the `avatars` storage bucket for profile photos people upload.
 3. Copy `.env.example` to `.env` and fill in **Project URL** and **anon public key** from **Project Settings → API**.
    The anon key is safe to ship to the browser; never put the `service_role` key here.
-4. **Email codes:** in **Authentication → Email Templates → Magic Link**, put the code in the email, for example:
+4. **Email codes:** in **Authentication → Email Templates**, put the code in both the **Magic Link** and the
+   **Confirm signup** templates (new accounts get Confirm signup), for example:
    `<h2>Your Waypoint login code</h2><p>Enter this code to log in: <b>{{ .Token }}</b></p>`.
    Supabase sends a link by default; with `{{ .Token }}` in the template it sends the 6-digit code the site asks for.
+   Set **Authentication → Sign In / Providers → Email → Email OTP Length** to `6` (the site shows 6 boxes).
    Supabase's built-in email service is limited to a few emails per hour, so set up custom SMTP
    (in the Authentication email settings) before launch.
 5. **Google:** in **Authentication → Providers → Google**, turn it on and paste the client ID and secret from the
@@ -57,7 +60,8 @@ creates the account. Their progress, plan and badges then sync across devices.
 7. On your host (Vercel, Netlify…), add the same two `VITE_SUPABASE_…` variables and redeploy.
 
 When someone logs in for the first time on a device, the progress already in their browser is merged into their account,
-so nothing is lost. Guests see a welcome pop-up on their first visit and a reminder after 3, 10 and 25 finished lessons.
+so nothing is lost. On their first login, people set up a profile (name, photo, level and goal), which they can change
+later on the Settings page. Guests see a welcome pop-up on their first visit and a reminder after 3, 10 and 25 finished lessons.
 
 ## Deploy
 
