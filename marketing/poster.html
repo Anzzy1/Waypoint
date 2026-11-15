@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Waypoint Posters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
+<style>
+  :root {
+    --bg: #0a0d0e;
+    --ink: #f5f7f8;
+    --muted: #9fb0b8;
+    --faint: #5f747e;
+    --line: rgba(255, 255, 255, 0.09);
+    --green: #7fd49a;
+    --green-deep: #1f6b45;
+    --sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #222; font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; padding: 40px; display: grid; gap: 40px; justify-content: center; }
+
+  .frame { position: relative; overflow: hidden; background: var(--bg); isolation: isolate; }
+  .w1920 { width: 1920px; height: 1080px; }
+  .w1200 { width: 1200px; height: 627px; }
+
+  /* backdrop: grid + glows */
+  .frame::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 70% at 70% 40%, #000 20%, transparent 75%);
+    opacity: 0.55;
+  }
+  .frame::after {
+    content: ''; position: absolute; z-index: -1; pointer-events: none;
+    width: 1400px; height: 1000px; right: -300px; top: -300px;
+    background: radial-gradient(closest-side, rgba(127, 212, 154, 0.22), rgba(127, 212, 154, 0.06) 55%, transparent 75%);
+  }
+  .glow-b { position: absolute; z-index: -1; width: 900px; height: 700px; left: -300px; bottom: -400px;
+    background: radial-gradient(closest-side, rgba(90, 150, 255, 0.12), transparent 70%); }
+
+  /* brand */
+  .brand { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 30px; letter-spacing: -0.02em; }
+  .brand svg { width: 46px; height: 46px; }
+  .pill { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 999px;
+    border: 1px solid rgba(127, 212, 154, 0.35); background: rgba(127, 212, 154, 0.08);
+    font: 500 15px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); }
+  .pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); }
+  .kicker { font: 500 16px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+
+  h1 { font-weight: 800; letter-spacing: -0.045em; line-height: 0.95; }
+  .hl { position: relative; color: var(--green); white-space: nowrap; }
+  .hl svg { position: absolute; left: 0; right: 0; bottom: -0.12em; width: 100%; height: 0.2em; overflow: visible; }
+  .hl path { fill: none; stroke: var(--green); stroke-width: 5; stroke-linecap: round; }
+  .lead { color: var(--muted); line-height: 1.45; letter-spacing: -0.005em; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { padding: 10px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.035);
+    font-weight: 600; font-size: 17px; color: #dfe6e9; display: inline-flex; align-items: center; gap: 9px; }
+  .chip b { width: 7px; height: 7px; border-radius: 2px; background: var(--green); opacity: 0.9; }
+
+  .stats { display: flex; gap: 0; border-top: 1px solid var(--line); }
+  .stat { padding: 24px 30px 0 0; margin-right: 30px; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: 0; }
+  .stat strong { display: block; font-size: 54px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+  .stat span { font: 400 15px/1 var(--mono); color: var(--faint); display: block; margin-top: 12px; white-space: nowrap; }
+  .meta { position: absolute; left: 120px; bottom: 80px; display: flex; gap: 12px; }
+
+  /* browser window */
+  .win { position: absolute; border-radius: 18px; overflow: hidden; background: #111618;
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.6), 0 50px 120px -20px rgba(0,0,0,0.85), 0 0 80px -20px rgba(127,212,154,0.25); }
+  .win.light { background: #fff; }
+  .bar { height: 46px; display: flex; align-items: center; gap: 9px; padding: 0 18px; background: #161c1f; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .win.light .bar { background: #eef1f3; border-bottom-color: #dde3e6; }
+  .bar i { width: 12px; height: 12px; border-radius: 50%; background: #3a4449; }
+  .bar i:nth-child(1) { background: #ff5f57; } .bar i:nth-child(2) { background: #febc2e; } .bar i:nth-child(3) { background: #28c840; }
+  .url { margin-left: 18px; flex: 1; max-width: 460px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.06);
+    font: 400 13px/28px var(--mono); color: #8c9ba2; padding: 0 12px; }
+  .win.light .url { background: #fff; color: #5f747e; border: 1px solid #dde3e6; }
+  .win img { display: block; width: 100%; }
+
+  /* floating tags */
+  .tag { position: absolute; z-index: 5; display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 14px;
+    background: rgba(20, 27, 30, 0.82); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.14);
+    font: 500 16px/1 var(--mono); color: #dfe6e9; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6); }
+  .tag .ok { width: 22px; height: 22px; border-radius: 50%; background: var(--green-deep); display: grid; place-items: center; color: var(--green); font-size: 13px; }
+
+  .footer { position: absolute; left: 120px; right: 120px; bottom: 56px; display: flex; justify-content: space-between; align-items: center;
+    font: 400 16px/1 var(--mono); color: var(--faint); }
+
+  /* feature slides */
+  .num { font: 700 16px/1 var(--mono); color: var(--green); letter-spacing: 0.1em; }
+  .points { list-style: none; display: grid; gap: 18px; }
+  .points li { display: flex; gap: 14px; align-items: flex-start; font-size: 22px; line-height: 1.35; color: #dfe6e9; }
+  .points li::before { content: ''; flex: none; width: 24px; height: 24px; margin-top: 3px; border-radius: 7px;
+    background: rgba(127,212,154,0.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 12.5l3.2 3.2L17 9' fill='none' stroke='%237fd49a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat;
+    border: 1px solid rgba(127,212,154,0.35); }
+</style>
+</head>
+<body>
+
+<!-- Logo symbol reused -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#0a0d0e" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#0a0d0e"/><circle cx="23" cy="8" r="2.8" fill="#1f9d5c"/></symbol>
+</svg>
+
+<!-- ========== 1. Hero poster 1920x1080 ========== -->
+<section class="frame w1920" data-name="01-poster">
+  <div class="glow-b"></div>
+  <div style="position:absolute; left:120px; top:96px; width:820px;">
+    <div class="brand"><svg><use href="#logo"/></svg>Waypoint</div>
+    <div style="margin-top:96px"><span class="pill"><i></i>Free developer roadmaps</span></div>
+    <h1 style="font-size:124px; margin-top:34px;">Know exactly<br/>what to learn <span class="hl">next.<svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M3 14 C 50 5, 120 4, 197 10"/></svg></span></h1>
+    <p class="lead" style="font-size:26px; margin-top:44px; max-width:720px;">Step-by-step roadmaps for 8 developer roles. Short lessons, hand-picked videos, a project per stage, and a checklist that remembers your progress.</p>
+    <div class="stats" style="margin-top:56px; width:780px;">
+      <div class="stat"><strong>8</strong><span>career roadmaps</span></div>
+      <div class="stat"><strong>72</strong><span>focused lessons</span></div>
+      <div class="stat"><strong>296</strong><span>resources</span></div>
+      <div class="stat"><strong>100%</strong><span>free</span></div>
+    </div>
+  </div>
+
+  <div class="win" style="left:1080px; top:150px; width:1100px; transform: rotate(-3deg);">
+    <div class="bar"><i></i><i></i><i></i><div class="url">waypoint / roadmap / frontend</div></div>
+    <img src="screens/roadmap-dark.png" alt="" />
+  </div>
+  <div class="win light" style="left:1010px; top:470px; width:1060px; transform: rotate(2deg);">
+    <div class="bar"><i></i><i></i><i></i><div class="url">waypoint / home</div></div>
+    <img src="screens/home-light.png" alt="" />
+  </div>
+  <div class="tag" style="left:960px; top:380px;"><span class="ok">✓</span>HTML &amp; CSS done</div>
+  <div class="tag" style="left:1610px; top:96px;">▶ React in 100s</div>
+  <div class="tag" style="left:1560px; top:960px;">git commit -m "day 1"</div>
+</section>
+
+<!-- ========== 2. LinkedIn 1200x627 ========== -->
+<section class="frame w1200" data-name="02-linkedin">
+  <div class="glow-b"></div>
+  <div style="position:absolute; left:64px; top:56px; width:560px;">
+    <div class="brand" style="font-size:22px; gap:10px;"><svg style="width:34px;height:34px"><use href="#logo"/></svg>Waypoint</div>
+    <div style="margin-top:48px"><span class="pill" style="font-size:12px; padding:7px 12px;"><i></i>Free · No sign-up</span></div>
+    <h1 style="font-size:70px; margin-top:22px;">Know exactly<br/>what to learn <span class="hl">next.<svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M3 14 C 50 5, 120 4, 197 10"/></svg></span></h1>
+    <p class="lead" style="font-size:18px; margin-top:28px; max-width:470px;">Step-by-step roadmaps for 8 developer roles, with lessons, curated videos and a progress checklist.</p>
+    <div class="chips" style="margin-top:28px; gap:8px; max-width:520px;">
+      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Frontend</span>
+      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Backend</span>
+      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Full-Stack</span>
+      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>AI &amp; ML</span>
+      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>DevOps</span>
+      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Mobile</span>
+      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>Cloud</span>
+      <span class="chip" style="font-size:13px; padding:7px 11px;"><b></b>AI Agent</span>
+    </div>
+  </div>
+  <div class="win" style="left:680px; top:70px; width:680px; transform: rotate(-3deg); border-radius:12px;">
+    <div class="bar" style="height:30px; padding:0 12px; gap:6px;"><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i></div>
+    <img src="screens/learn-dark.png" alt="" />
+  </div>
+  <div class="win light" style="left:640px; top:270px; width:640px; transform: rotate(2deg); border-radius:12px;">
+    <div class="bar" style="height:30px; padding:0 12px; gap:6px;"><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i><i style="width:9px;height:9px"></i></div>
+    <img src="screens/home-light.png" alt="" />
+  </div>
+  <div class="tag" style="left:610px; top:225px; font-size:12px; padding:9px 13px;"><span class="ok" style="width:18px;height:18px;font-size:11px">✓</span>72 lessons · 296 resources</div>
+</section>
+
+<!-- ========== Feature slides 1920x1080 ========== -->
+<template id="feature">
+  <section class="frame w1920">
+    <div class="glow-b"></div>
+    <div style="position:absolute; left:120px; top:96px; width:600px;">
+      <div class="brand" style="font-size:24px; gap:12px;"><svg style="width:38px;height:38px"><use href="#logo"/></svg>Waypoint</div>
+      <div class="num" style="margin-top:140px" data-f="num"></div>
+      <h1 style="font-size:84px; margin-top:22px;" data-f="title"></h1>
+      <p class="lead" style="font-size:24px; margin-top:30px;" data-f="lead"></p>
+      <ul class="points" style="margin-top:44px;" data-f="points"></ul>
+    </div>
+    <div class="meta"><span class="pill"><i></i>100% free</span><span class="pill" style="color:#cfd8dc;border-color:var(--line);background:rgba(255,255,255,0.04)">8 roadmaps · 72 lessons</span></div>
+    <div class="win" data-f="win" style="left:800px; top:150px; width:1280px;">
+      <div class="bar"><i></i><i></i><i></i><div class="url" data-f="url"></div></div>
+      <img data-f="img" alt="" />
+    </div>
+  </section>
+</template>
+
+<script>
+  const features = [
+    { name: '03-roadmaps', num: '01 — ROADMAPS', title: 'A clear path for <span class="hl" style="color:var(--green)">8 roles</span>',
+      lead: 'From zero to job-ready, one stage at a time.', img: 'roadmap-light', light: true, url: 'waypoint / roadmap / frontend',
+      points: ['Frontend, Backend, Full-Stack, AI, DevOps, Mobile, Cloud, AI Agent', 'A project to build in every stage', 'Badges and progress that sync across paths'] },
+    { name: '04-how-to-learn', num: '02 — HOW TO LEARN', title: 'Learn how to learn in <span style="color:var(--green)">10 minutes</span>',
+      lead: 'A short, guided quick start before the first lesson.', img: 'learn-dark', url: 'waypoint / learn',
+      points: ['Spot the study traps that slow you down', 'A simple 5-step loop for every lesson', 'Set your hours and see your finish date'] },
+    { name: '05-tech-stacks', num: '03 — TECH STACKS', title: 'What companies <span style="color:var(--green)">hire for</span> now',
+      lead: 'The real tools each role uses, ranked by demand.', img: 'stack-light', light: true, url: 'waypoint / stack',
+      points: ['Must-know vs nice-to-have, per role', 'Plain explanation of every tool', 'Updated for 2026'] },
+    { name: '06-ai-workflow', num: '04 — AI WORKFLOW', title: 'Work with AI <span style="color:var(--green)">like a pro</span>',
+      lead: 'Use AI coding tools as a tutor, not an autopilot.', img: 'ai-dark', url: 'waypoint / ai',
+      points: ['The AI coding tools developers use most', 'Step-by-step setup guides', 'A workflow that keeps you learning'] },
+  ];
+  const tpl = document.getElementById('feature');
+  for (const f of features) {
+    const node = tpl.content.firstElementChild.cloneNode(true);
+    node.dataset.name = f.name;
+    node.querySelector('[data-f=num]').textContent = f.num;
+    node.querySelector('[data-f=title]').innerHTML = f.title;
+    node.querySelector('[data-f=lead]').textContent = f.lead;
+    node.querySelector('[data-f=url]').textContent = f.url;
+    node.querySelector('[data-f=img]').src = 'screens/' + f.img + '.png';
+    if (f.light) node.querySelector('[data-f=win]').classList.add('light');
+    const ul = node.querySelector('[data-f=points]');
+    for (const p of f.points) { const li = document.createElement('li'); li.textContent = p; ul.appendChild(li); }
+    document.body.appendChild(node);
+  }
+</script>
+</body>
+</html>
