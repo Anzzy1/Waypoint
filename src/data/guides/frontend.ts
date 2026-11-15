@@ -65,7 +65,7 @@ git log --oneline`,
       { t: "Push your code to GitHub", d: "A remote is a copy of your repo online. push uploads your commits, pull downloads others’, clone copies a whole repo to your computer.", try: "Create a GitHub repo and push your practice project to it." },
       { t: "Pull requests", d: "On a team you don’t push to main directly. You open a pull request so others can review your changes before they’re merged.", try: "Open a pull request on your own repo from a branch, review it yourself, then merge it." },
     ],
-    project: "Put every project you build from now on in its own GitHub repo with at least 5 meaningful commits and a README.",
+    project: "Put one of your projects in its own GitHub repo with at least 5 meaningful commits and a README. Then do the same for every project you build from now on.",
   },
 
   dsa: {
@@ -491,6 +491,6 @@ vercel`,
       { t: "Environment variables", d: "API keys and secrets go in the host’s settings, never in your code or GitHub. Your code reads them at build or run time.", try: "Add an environment variable on your host and read it in your app." },
       { t: "Domains and HTTPS", d: "Buy a domain, point its DNS at your host, and HTTPS is set up for you.", try: "Connect a custom domain (or a free subdomain) to a deployed project." },
     ],
-    project: "Deploy every portfolio project with a live link in its README.",
+    project: "Deploy one of your projects and put the live link in its README. Then do the same for every portfolio project.",
   },
 };

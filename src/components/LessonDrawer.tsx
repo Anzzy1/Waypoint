@@ -326,7 +326,7 @@ export default function LessonDrawer({ topic, stageLabel, position, total, done,
                   <span className="lproject-icon"><Hammer size={22} /></span>
                   <div>
                     <p>{guide.project}</p>
-                    <span className="small muted">Build it without following a tutorial. Getting stuck and figuring it out is where the learning happens.</span>
+                    <span className="small muted">Do it on your own, without following a tutorial. Getting stuck and figuring it out is where the learning happens.</span>
                   </div>
                 </div>
               </Section>
@@ -336,7 +336,7 @@ export default function LessonDrawer({ topic, stageLabel, position, total, done,
             {!topic.guide && (
               <Section id="l-finish" kicker="Finish line" title={done ? 'You finished this lesson' : 'Ready to mark it complete?'}>
                 {done ? (
-                  <p className="lsec-lead">Nice work. Come back in a week and try the mini project again from memory. That’s what makes it stick.</p>
+                  <p className="lsec-lead">Nice work. Come back in a week and explain it again from memory, without notes. That’s what makes it stick.</p>
                 ) : (
                   <>
                     <p className="lsec-lead">Tap each sentence that is true for you. When all three are true, you can complete the lesson.</p>

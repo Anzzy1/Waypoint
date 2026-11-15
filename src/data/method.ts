@@ -1,7 +1,7 @@
 /** Shared content for the "learn how to learn" onboarding and the lesson done-check. */
 
 export const DONE_CHECKS = [
-  'I built something small with it without following along',
+  'I did the lesson’s mini project on my own, without following along',
   'I can explain it in my own words, out loud or in writing',
   'I wrote a short note about it in my learning log',
 ];
@@ -60,7 +60,7 @@ export const LOOP = [
 export const LESSON_RECIPE = [
   { min: 5, time: '5 min', t: 'Read the lesson card', d: 'Know what you’re aiming for: the summary and the “What to learn” list.' },
   { min: 30, time: '30 min', t: 'Learn from ONE resource', d: 'Pick one video or one doc. Pause and type the code yourself as you go.' },
-  { min: 60, time: '60 min', t: 'Close it and build', d: 'Make a tiny exercise using the concept, from memory. Then change it.' },
+  { min: 60, time: '60 min', t: 'Close it and practise', d: 'Do the lesson’s mini project from memory. Depending on the lesson you’ll build, write or draw something.' },
   { min: 20, time: '≤ 20 min', t: 'Stuck? Debug first', d: 'Error message → console.log → docs → search. Then ask for a hint.' },
   { min: 10, time: '10 min', t: 'Write it down', d: '3 sentences in your learning log: what it is, how you used it, what confused you.' },
   { min: 0, time: '✓', t: 'Pass the done-check', d: 'Tick the 3 checks in the lesson panel, then mark the lesson complete.' },

@@ -30,7 +30,6 @@ const WHY = [
 const REACHED_KEY = 'waypoint.quickstartReached.v1';
 // answers to the trap game and the loop steps already opened, so coming back shows results instead of a blank game
 const TRAPS_KEY = 'waypoint.quickstartTraps.v1';
-const LOOP_KEY = 'waypoint.quickstartLoop.v1';
 function readJSON<T>(key: string, ok: (v: unknown) => v is T, fallback: T): T {
   try {
     const v = JSON.parse(localStorage.getItem(key) || 'null');
@@ -178,21 +177,10 @@ function TrapGame({ onReady }: { onReady: (ready: boolean) => void }) {
 /* ---------- Step 2: learning-loop wheel ---------- */
 const RING = 2 * Math.PI * 40;
 
-function LoopWheel({ onReady }: { onReady: (ready: boolean) => void }) {
+function LoopWheel() {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
   const [auto, setAuto] = useState(!reduced);
-  // steps the learner opened themselves (auto-play doesn't count)
-  const [seen, setSeen] = useState<number[]>(() => {
-    const saved = readJSON(LOOP_KEY, (v): v is number[] => Array.isArray(v), [0]);
-    const clean = [...new Set([0, ...saved.filter((n) => Number.isInteger(n) && n >= 0 && n < LOOP.length)])];
-    return clean;
-  });
-  const allSeen = seen.length === LOOP.length;
-  useEffect(() => writeJSON(LOOP_KEY, seen), [seen]);
-
-  useEffect(() => onReady(allSeen), [allSeen, onReady]);
-
   useEffect(() => {
     if (!auto) return;
     const t = setInterval(() => setActive((a) => (a + 1) % LOOP.length), 3800);
@@ -202,7 +190,6 @@ function LoopWheel({ onReady }: { onReady: (ready: boolean) => void }) {
   const pick = (i: number) => {
     setAuto(false);
     setActive(i);
-    setSeen((v) => (v.includes(i) ? v : [...v, i]));
   };
   const s = LOOP[active];
 
@@ -232,7 +219,7 @@ function LoopWheel({ onReady }: { onReady: (ready: boolean) => void }) {
           return (
             <button
               key={l.t}
-              className={`wheel-node${i === active ? ' on' : ''}${seen.includes(i) && i !== active ? ' past' : ''}`}
+              className={`wheel-node${i === active ? ' on' : ''}${i < active ? ' past' : ''}`}
               style={{ left: `${50 + 40 * Math.cos(a)}%`, top: `${50 + 40 * Math.sin(a)}%` }}
               onClick={() => pick(i)}
               aria-pressed={i === active}
@@ -250,9 +237,7 @@ function LoopWheel({ onReady }: { onReady: (ready: boolean) => void }) {
         <div className="wheel-detail-nav">
           <button className="icon-btn" onClick={() => pick((active + 4) % 5)} aria-label="Previous step"><ArrowLeft size={16} /></button>
           <button className="icon-btn" onClick={() => pick((active + 1) % 5)} aria-label="Next step"><ArrowRight size={16} /></button>
-          <span className={`mono small wheel-read${allSeen ? ' done' : ''}`}>
-            {allSeen ? '✓ All 5 read' : `${seen.length}/5 read · tap each step`}
-          </span>
+          {auto && <span className="mono small faint">auto-playing · tap a step</span>}
         </div>
       </div>
     </div>
@@ -308,8 +293,9 @@ export default function Learn() {
     go(step + 1);
   };
 
-  // steps with something to do (trap game, loop wheel) keep Next locked until it's done
-  const TASK: Record<number, string> = { 1: 'Answer all 8 traps first', 2: 'Tap all 5 steps first' };
+  // steps with questions to answer (the trap game) keep Next locked until they're done;
+  // read-only steps like the loop wheel don't
+  const TASK: Record<number, string> = { 1: 'Answer all 8 traps first' };
   const [readySteps, setReadySteps] = useState<number[]>([]);
   const setReady = useCallback(
     (ready: boolean) => setReadySteps((v) => (ready ? (v.includes(step) ? v : [...v, step]) : v.filter((x) => x !== step))),
@@ -459,7 +445,7 @@ export default function Learn() {
             {step === 2 && (
               <>
                 <p className="ob-lead">For every topic, go round these 5 steps. Tap a step to read what it means.</p>
-                <LoopWheel onReady={setReady} />
+                <LoopWheel />
                 <div className="split">
                   <div className="split-bar">
                     <span className="split-in">20%<small>take it in</small></span>

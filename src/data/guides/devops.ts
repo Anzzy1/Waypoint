@@ -339,6 +339,6 @@ def handler(event, context):
       { t: "Cost control", d: "Set budgets and alerts, right-size servers, and turn off what you don’t use. Most cloud waste is idle resources.", try: "Set a budget alert and find your most expensive resource in Cost Explorer." },
       { t: "Your first certification", d: "AWS Cloud Practitioner or Azure Fundamentals (AZ-900) cover the basics and are a good first credential.", try: "Take a free practice exam and note your weak areas." },
     ],
-    project: "Pass AWS Cloud Practitioner or AZ-900, and write a one-page architecture doc for one of your apps.",
+    project: "Write a one-page architecture doc for one of your apps: a diagram, the services it uses and a monthly cost estimate. When you feel ready, book AWS Cloud Practitioner or AZ-900.",
   },
 };
