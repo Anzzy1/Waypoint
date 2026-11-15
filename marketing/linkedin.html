@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Waypoint LinkedIn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#0b0f10; --muted:#66717a; --soft:#9aa3a9; --line:#e5e9eb; --green:#1f9d5c; --deep:#1f6b45; --mint:#7fd49a; --tint:#eaf6ef; --red:#d9534f; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#ccc; padding:40px; display:flex; flex-direction:column; gap:40px; font-family:'Schibsted Grotesk', system-ui, sans-serif; color:var(--ink); }
+  .mono { font-family:'JetBrains Mono', monospace; }
+
+  .frame { position:relative; width:1280px; height:720px; overflow:hidden; background:#fff; flex:none; }
+  .frame::before { content:""; position:absolute; inset:0; pointer-events:none;
+    background-image:radial-gradient(#d3d9dd 1.2px, transparent 1.2px); background-size:28px 28px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 85%); mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 85%); }
+  .glow { position:absolute; border-radius:50%; pointer-events:none; }
+  .gA { width:620px; height:620px; right:-160px; top:-220px; background:radial-gradient(circle, rgba(127,212,154,.34), rgba(127,212,154,0) 65%); }
+  .gB { width:460px; height:460px; left:-180px; bottom:-220px; background:radial-gradient(circle, rgba(31,157,92,.14), rgba(31,157,92,0) 65%); }
+
+  /* shared chrome */
+  .top { position:absolute; left:72px; right:72px; top:44px; display:flex; align-items:center; z-index:3; }
+  .top .brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:21px; letter-spacing:-.01em; }
+  .top .brand svg { width:34px; height:34px; }
+  .top .brand small { font:700 11px 'JetBrains Mono', monospace; letter-spacing:.24em; color:var(--green); margin-left:4px; }
+  .top .pg { margin-left:auto; font:700 14px 'JetBrains Mono', monospace; color:var(--soft); letter-spacing:.08em; }
+  .top .pg b { color:var(--ink); }
+
+  .eyebrow { display:inline-flex; align-items:center; gap:10px; padding:8px 14px; border-radius:999px; background:var(--tint); border:1px solid #cfe7d9;
+    font:700 13px 'JetBrains Mono', monospace; letter-spacing:.14em; color:var(--deep); }
+  h2 { font-size:68px; line-height:.98; font-weight:900; letter-spacing:-.04em; }
+  h2 em { font-style:normal; color:var(--green); }
+  .lead { font-size:22px; line-height:1.5; color:var(--muted); }
+  .lead b { color:var(--ink); }
+
+  .card { background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:0 20px 44px -16px rgba(11,15,16,.18); }
+  .lbl { font:700 12px 'JetBrains Mono', monospace; letter-spacing:.12em; color:var(--soft); text-transform:uppercase; }
+
+  /* slide 2 */
+  .s2 .copy { position:absolute; left:72px; top:150px; width:540px; z-index:2; }
+  .s2 h2 { margin-top:22px; }
+  .s2 .lead { margin-top:24px; }
+  .before { position:absolute; left:680px; top:120px; width:470px; padding:22px 24px; transform:rotate(-2deg); z-index:2; }
+  .before .lbl { color:var(--red); }
+  .tab { display:flex; align-items:center; gap:12px; margin-top:12px; padding:11px 14px; border-radius:12px; background:#f6f7f8; border:1px solid #eceff1; font-size:17px; color:#7d878e; }
+  .tab .x { width:22px; height:22px; border-radius:6px; background:#fde8e7; color:var(--red); display:grid; place-items:center; font:700 13px 'JetBrains Mono', monospace; flex:none; }
+  .tab s { text-decoration-color:#e9a4a2; text-decoration-thickness:2px; }
+  .after { position:absolute; left:720px; top:430px; width:500px; padding:22px 24px; transform:rotate(1.5deg); z-index:3; }
+  .after .lbl { color:var(--green); }
+  .steps { display:flex; align-items:center; gap:10px; margin-top:14px; }
+  .step { display:flex; align-items:center; gap:8px; font-weight:700; font-size:17px; white-space:nowrap; }
+  .dot { width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font:700 11px 'JetBrains Mono', monospace; flex:none; }
+  .dot.done { background:var(--green); color:#fff; }
+  .dot.now { border:2px solid var(--green); color:var(--green); box-shadow:0 0 0 4px var(--tint); }
+  .arrow { color:#c4cacd; font-weight:700; }
+  .after p { margin-top:14px; font-size:15px; color:var(--muted); }
+  .curve { position:absolute; left:0; top:0; z-index:1; }
+
+  /* slide 3 */
+  .s3 .head { position:absolute; left:72px; top:130px; right:72px; z-index:2; }
+  .s3 h2 { margin-top:20px; white-space:nowrap; }
+  .grid4 { position:absolute; left:72px; right:72px; top:350px; display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; z-index:2; }
+  .feat { padding:24px 22px; }
+  .ic { width:52px; height:52px; border-radius:14px; background:var(--tint); color:var(--deep); display:grid; place-items:center; }
+  .ic svg { width:26px; height:26px; }
+  .feat b { display:block; margin-top:20px; font-size:22px; letter-spacing:-.01em; }
+  .feat span { display:block; margin-top:8px; font-size:16px; line-height:1.45; color:var(--muted); }
+  .feat .mini { margin-top:18px; }
+  .bar { height:7px; border-radius:9px; background:#edf0f2; overflow:hidden; }
+  .bar i { display:block; height:100%; border-radius:9px; background:linear-gradient(90deg, var(--green), var(--mint)); }
+  .also { position:absolute; left:72px; right:72px; bottom:56px; display:flex; align-items:center; gap:14px; font-size:18px; color:var(--muted); z-index:2; }
+  .also b { color:var(--ink); }
+  .also .plus { width:30px; height:30px; border-radius:9px; background:var(--ink); color:var(--mint); display:grid; place-items:center; font-weight:800; }
+
+  /* slide 4 */
+  .s4 .head { position:absolute; left:72px; top:130px; z-index:2; }
+  .s4 h2 { margin-top:20px; }
+  .roles { position:absolute; left:72px; right:72px; top:340px; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; z-index:2; }
+  .role { display:flex; align-items:center; gap:16px; padding:18px 18px; }
+  .role .lg { width:52px; height:52px; border-radius:14px; background:#f5f7f8; border:1px solid #edf0f2; display:grid; place-items:center; flex:none; }
+  .role .lg img { width:28px; height:28px; }
+  .role b { display:block; font-size:21px; letter-spacing:-.01em; }
+  .role span { display:block; margin-top:3px; font-size:15px; color:var(--muted); }
+  .s4 .note { position:absolute; left:72px; bottom:56px; font-size:18px; color:var(--muted); z-index:2; }
+  .s4 .note b { color:var(--ink); }
+
+  /* slide 5 */
+  .s5 .center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:2; padding-top:20px; }
+  .s5 .icon { width:92px; height:92px; filter:drop-shadow(0 16px 26px rgba(11,15,16,.2)) drop-shadow(0 0 36px rgba(127,212,154,.45)); }
+  .s5 h2 { margin-top:28px; font-size:76px; }
+  .s5 .lead { margin-top:20px; max-width:760px; }
+  .cta { margin-top:34px; display:flex; gap:12px; }
+  .btn { padding:14px 24px; border-radius:999px; font-weight:700; font-size:19px; border:1px solid var(--line); background:#fff; box-shadow:0 8px 20px rgba(11,15,16,.06); }
+  .btn.dark { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .btn.dark b { color:var(--mint); }
+  .bubble { position:absolute; z-index:3; padding:14px 16px; display:flex; gap:12px; align-items:flex-start; max-width:290px; }
+  .bubble .av { width:34px; height:34px; border-radius:50%; flex:none; display:grid; place-items:center; font-weight:800; font-size:14px; color:#fff; }
+  .bubble b { display:block; font-size:14px; }
+  .bubble span { display:block; font-size:15px; color:var(--muted); margin-top:3px; line-height:1.4; }
+  .spark { position:absolute; z-index:1; color:var(--mint); font-size:22px; }
+</style>
+</head>
+<body>
+
+<!-- ============ 02 · The problem ============ -->
+<section class="frame s2" data-name="li-02-why">
+  <div class="glow gA"></div><div class="glow gB"></div>
+  <div class="top"><div class="brand"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>Waypoint<small>DEVELOPER ROADMAP</small></div><div class="pg"><b>02</b> / 05</div></div>
+
+  <div class="copy">
+    <span class="eyebrow">WHY I BUILT THIS</span>
+    <h2>I got stuck in<br><em>tutorial hell.</em></h2>
+    <p class="lead">Video after video, but I never knew <b>what to actually learn next</b>. That was my biggest mistake, so I built the roadmap I wish I had.</p>
+  </div>
+
+  <svg class="curve" width="1280" height="720" viewBox="0 0 1280 720"><path d="M760 400 C 720 440, 730 480, 790 470" fill="none" stroke="#1f9d5c" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 10"/></svg>
+
+  <div class="card before">
+    <div class="lbl">Before · 27 tabs open</div>
+    <div class="tab"><span class="x">×</span><s>React crash course (part 4 of 9)</s></div>
+    <div class="tab"><span class="x">×</span><s>Learn Python in 1 hour</s></div>
+    <div class="tab"><span class="x">×</span><s>Which framework should I learn??</s></div>
+    <div class="tab"><span class="x">×</span><s>Yet another to-do app tutorial</s></div>
+  </div>
+
+  <div class="card after">
+    <div class="lbl">After · with Waypoint</div>
+    <div class="steps">
+      <span class="step"><span class="dot done">✓</span>Basics</span><span class="arrow">→</span>
+      <span class="step"><span class="dot done">✓</span>HTML &amp; CSS</span><span class="arrow">→</span>
+      <span class="step"><span class="dot now">03</span>JavaScript</span>
+    </div>
+    <p>One clear next step, every time.</p>
+  </div>
+</section>
+
+<!-- ============ 03 · What's inside ============ -->
+<section class="frame s3" data-name="li-03-inside">
+  <div class="glow gA"></div><div class="glow gB"></div>
+  <div class="top"><div class="brand"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>Waypoint<small>DEVELOPER ROADMAP</small></div><div class="pg"><b>03</b> / 05</div></div>
+
+  <div class="head">
+    <span class="eyebrow">WHAT'S INSIDE</span>
+    <h2>Everything you need, <em>in order.</em></h2>
+  </div>
+
+  <div class="grid4">
+    <div class="card feat">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div>
+      <b>Short lessons</b><span>Plain words, real code and diagrams. No fluff.</span>
+      <div class="mini lbl">72 lessons</div>
+    </div>
+    <div class="card feat">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg></div>
+      <b>A project per stage</b><span>Build real things instead of only watching.</span>
+      <div class="mini lbl">Learn by doing</div>
+    </div>
+    <div class="card feat">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+      <b>Progress &amp; badges</b><span>A checklist that saves as you go.</span>
+      <div class="mini"><div class="bar"><i style="width:58%"></i></div></div>
+    </div>
+    <div class="card feat">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+      <b>Your finish date</b><span>A plan based on your weekly hours.</span>
+      <div class="mini lbl" style="color:var(--green)">≈ Aug 2027</div>
+    </div>
+  </div>
+
+  <div class="also"><span class="plus">+</span><span>Also: <b>the tech stacks companies hire for</b> and <b>how to learn with AI tools</b>.</span></div>
+</section>
+
+<!-- ============ 04 · 8 roadmaps ============ -->
+<section class="frame s4" data-name="li-04-roadmaps">
+  <div class="glow gA"></div><div class="glow gB"></div>
+  <div class="top"><div class="brand"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>Waypoint<small>DEVELOPER ROADMAP</small></div><div class="pg"><b>04</b> / 05</div></div>
+
+  <div class="head">
+    <span class="eyebrow">8 ROADMAPS</span>
+    <h2>Pick your path. <em>We'll guide the rest.</em></h2>
+  </div>
+
+  <div class="roles">
+    <div class="card role"><div class="lg"><img src="https://cdn.simpleicons.org/react"></div><div><b>Frontend</b><span>UI, React, the web</span></div></div>
+    <div class="card role"><div class="lg"><img src="https://cdn.simpleicons.org/nodedotjs"></div><div><b>Backend</b><span>APIs and databases</span></div></div>
+    <div class="card role"><div class="lg"><img src="https://cdn.simpleicons.org/nextdotjs"></div><div><b>Full-Stack</b><span>End-to-end apps</span></div></div>
+    <div class="card role"><div class="lg"><img src="https://cdn.simpleicons.org/python"></div><div><b>AI &amp; ML</b><span>Data and models</span></div></div>
+    <div class="card role"><div class="lg"><img src="https://cdn.simpleicons.org/docker"></div><div><b>DevOps</b><span>CI/CD, containers</span></div></div>
+    <div class="card role"><div class="lg"><img src="https://cdn.simpleicons.org/flutter"></div><div><b>Mobile</b><span>iOS and Android</span></div></div>
+    <div class="card role"><div class="lg"><img src="https://cdn.simpleicons.org/googlecloud"></div><div><b>Cloud</b><span>Deploy and scale</span></div></div>
+    <div class="card role"><div class="lg"><img src="https://cdn.simpleicons.org/langchain"></div><div><b>AI Agent</b><span>LLMs, tools, agents</span></div></div>
+  </div>
+
+  <div class="note"><b>296 hand-picked resources</b> across every roadmap, all free.</div>
+</section>
+
+<!-- ============ 05 · CTA ============ -->
+<section class="frame s5" data-name="li-05-feedback">
+  <div class="glow gA" style="right:auto; left:330px; top:-240px"></div><div class="glow gB"></div>
+  <div class="top"><div class="brand"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>Waypoint<small>DEVELOPER ROADMAP</small></div><div class="pg"><b>05</b> / 05</div></div>
+
+  <div class="card bubble" style="left:70px; top:200px; transform:rotate(-3deg)"><span class="av" style="background:#1f9d5c">?</span><div><b>Is anything confusing?</b><span>Point me to the lesson or step</span></div></div>
+  <div class="card bubble" style="right:80px; top:150px; transform:rotate(3deg)"><span class="av" style="background:#0b0f10">+</span><div><b>What's missing?</b><span>A topic, stage or resource to add</span></div></div>
+  <div class="card bubble" style="left:110px; bottom:110px; transform:rotate(2deg)"><span class="av" style="background:#7fd49a; color:#0b0f10">!</span><div><b>Found something wrong?</b><span>Bugs, typos, outdated info</span></div></div>
+  <span class="spark" style="right:220px; bottom:150px">✦</span>
+  <span class="spark" style="left:330px; top:130px; font-size:16px">✦</span>
+
+  <div class="center">
+    <svg class="icon" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>
+    <h2>Free. <em>No sign-up.</em></h2>
+    <p class="lead">I'm still learning too, so <b>I'd really love your feedback.</b> Tell me what's wrong, confusing or missing.</p>
+    <div class="cta">
+      <span class="btn dark"><b>→</b> Link in the post</span>
+      <span class="btn">💬 Comment your feedback</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
