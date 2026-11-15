@@ -109,10 +109,12 @@ interface Props {
   onClose: () => void;
   onPrev?: () => void;
   onNext?: () => void;
+  /** title of the next lesson, shown on the "what's next" buttons once this one is done */
+  nextTitle?: string;
 }
 
 /** Full-screen lesson view (kept under its old name so the roadmap page needs no changes). */
-export default function LessonDrawer({ topic, stageLabel, position, total, done, onToggle, onClose, onPrev, onNext }: Props) {
+export default function LessonDrawer({ topic, stageLabel, position, total, done, onToggle, onClose, onPrev, onNext, nextTitle }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const guide = GUIDES[topic.id];
@@ -336,7 +338,19 @@ export default function LessonDrawer({ topic, stageLabel, position, total, done,
             {!topic.guide && (
               <Section id="l-finish" kicker="Finish line" title={done ? 'You finished this lesson' : 'Ready to mark it complete?'}>
                 {done ? (
-                  <p className="lsec-lead">Nice work. Come back in a week and explain it again from memory, without notes. That’s what makes it stick.</p>
+                  <>
+                    <p className="lsec-lead">Nice work. Come back in a week and explain it again from memory, without notes. That’s what makes it stick.</p>
+                    <div className="up-next">
+                      <span className="up-next-icon"><ArrowRight size={20} /></span>
+                      <div className="up-next-text">
+                        <span className="kicker">{onNext ? 'Up next' : 'All lessons done'}</span>
+                        <b>{onNext ? nextTitle ?? 'Next lesson' : 'You reached the end of this roadmap'}</b>
+                      </div>
+                      <button type="button" className="btn btn-primary" onClick={onNext ?? onClose}>
+                        {onNext ? 'Start next lesson' : 'Back to the roadmap'} <ArrowRight size={16} />
+                      </button>
+                    </div>
+                  </>
                 ) : (
                   <>
                     <p className="lsec-lead">Tap each sentence that is true for you. When all three are true, you can complete the lesson.</p>
@@ -371,24 +385,27 @@ export default function LessonDrawer({ topic, stageLabel, position, total, done,
         <button className="btn btn-ghost" onClick={onPrev} disabled={!onPrev} aria-label="Previous lesson">
           <ArrowLeft size={16} /> <span className="hide-sm">Previous</span>
         </button>
-        <button
-          className={`btn grow ${done ? 'btn-done' : 'btn-primary'}`}
-          onClick={onToggle}
-          disabled={!done && !allChecked && !topic.guide}
-        >
-          {done ? (
-            <>
-              <Check size={16} /> Completed. Tap to undo
-            </>
-          ) : allChecked || topic.guide ? (
-            'Mark as complete'
-          ) : (
-            `Finish line: ${checks.filter(Boolean).length}/${DONE_CHECKS.length}`
-          )}
-        </button>
-        <button className="btn btn-ghost" onClick={onNext} disabled={!onNext} aria-label="Next lesson">
-          <span className="hide-sm">Next</span> <ArrowRight size={16} />
-        </button>
+        {done ? (
+          <>
+            {/* done: the button they just tapped becomes the way forward */}
+            <button className="btn btn-done foot-undo" onClick={onToggle} aria-label="Completed. Tap to undo">
+              <Check size={16} /> <span className="hide-sm">Done · Undo</span>
+            </button>
+            <button key="next" className="btn btn-primary grow foot-next-btn" onClick={onNext ?? onClose}>
+              <span className="foot-next-label">{onNext ? <>Next lesson<span className="hide-sm">: {nextTitle}</span></> : 'Back to the roadmap'}</span>
+              <ArrowRight size={16} />
+            </button>
+          </>
+        ) : (
+          <>
+            <button className="btn btn-primary grow" onClick={onToggle} disabled={!allChecked && !topic.guide}>
+              {allChecked || topic.guide ? 'Mark as complete' : `Finish line: ${checks.filter(Boolean).length}/${DONE_CHECKS.length}`}
+            </button>
+            <button className="btn btn-ghost" onClick={onNext} disabled={!onNext} aria-label="Next lesson">
+              <span className="hide-sm">Next</span> <ArrowRight size={16} />
+            </button>
+          </>
+        )}
       </footer>
     </div>
   );

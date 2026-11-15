@@ -437,6 +437,7 @@ export default function RoadmapPage() {
           onClose={closeLesson}
           onPrev={openIndex > 0 ? () => setLesson(order[openIndex - 1].id) : undefined}
           onNext={openIndex < order.length - 1 ? () => setLesson(order[openIndex + 1].id) : undefined}
+          nextTitle={openIndex < order.length - 1 ? topics[order[openIndex + 1].id]?.title : undefined}
         />
       )}
 
