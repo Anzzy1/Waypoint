@@ -4,6 +4,8 @@ import { BACKEND_GUIDES } from './backend';
 import { DEVOPS_GUIDES } from './devops';
 import { AI_GUIDES } from './ai';
 import { MOBILE_GUIDES } from './mobile';
+import { SOFTWARE_GUIDES } from './software';
+import { QA_GUIDES } from './qa';
 
 export type { LessonGuide, GuideStep } from './types';
 
@@ -14,4 +16,6 @@ export const GUIDES: Record<string, LessonGuide> = {
   ...DEVOPS_GUIDES,
   ...AI_GUIDES,
   ...MOBILE_GUIDES,
+  ...SOFTWARE_GUIDES,
+  ...QA_GUIDES,
 };

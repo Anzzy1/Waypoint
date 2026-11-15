@@ -1,6 +1,7 @@
 # Waypoint: Developer Roadmaps
 
-Step-by-step learning roadmaps for six developer roles: **Frontend, Backend, Full-Stack, AI Engineer, DevOps and Mobile**.
+Step-by-step learning roadmaps for ten developer roles: **Frontend, Backend, Full-Stack, AI & ML Engineer, DevOps,
+Mobile, Cloud, AI Agent Engineer, Software Engineer and QA / Test Automation Engineer**.
 Each stage has short lessons, hand-picked videos and docs, a project to build, and a checklist that saves your progress.
 
 ## Run it

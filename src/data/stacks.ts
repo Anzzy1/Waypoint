@@ -1094,6 +1094,228 @@ stacks.push(
       },
     ],
   },
+  {
+    roadmap: 'software',
+    typical: ['Python', 'Java (Spring Boot)', 'Git & GitHub', 'SQL & PostgreSQL', 'Unit testing'],
+    summary:
+      'Software engineer job posts ask for one main language used well, plus the fundamentals that work in every language: data structures, clean and tested code, Git, SQL and basic system design. Companies care more about how you solve problems than which language you used to learn.',
+    groups: [
+      {
+        title: 'One main language',
+        note: 'Pick ONE and go deep. The concepts transfer, so a second language takes weeks, not months.',
+        items: [
+          {
+            name: 'Python',
+            what: 'A readable, general-purpose language used for backends, automation, data and AI.',
+            why: 'One of the most requested languages overall, and the easiest to read in coding interviews.',
+            demand: 'core',
+            topic: 'python',
+          },
+          {
+            name: 'Java (Spring Boot)',
+            what: 'A strongly typed language that runs large enterprise systems, banks and Android apps.',
+            why: 'Very common in big companies and their technical interviews.',
+            demand: 'high',
+          },
+          {
+            name: 'C# (.NET)',
+            what: 'Microsoft’s typed language for business apps, cloud services and games (Unity).',
+            why: 'Strong demand in enterprises and companies built on Microsoft tools.',
+            demand: 'high',
+          },
+          typescript,
+        ],
+      },
+      {
+        title: 'Fundamentals',
+        items: [
+          {
+            name: 'Data structures & algorithms',
+            what: 'Arrays, hash maps, trees, graphs and Big-O: how to store and process data efficiently.',
+            why: 'The core of most technical interviews, and what makes code fast at scale.',
+            demand: 'core',
+            topic: 'dsa',
+          },
+          {
+            name: 'OOP & design patterns',
+            what: 'Organising code into classes with clear responsibilities, using proven design solutions.',
+            why: 'Most large codebases are object-oriented, and design questions come up in interviews.',
+            demand: 'high',
+            topic: 'oop',
+          },
+          {
+            name: 'Clean code & refactoring',
+            what: 'Readable names, small functions, and improving code safely without changing its behaviour.',
+            why: 'Teams spend more time reading code than writing it. Reviewers notice messy code immediately.',
+            demand: 'high',
+            topic: 'clean-code',
+          },
+        ],
+      },
+      {
+        title: 'Quality & teamwork',
+        items: [
+          {
+            name: 'Unit testing',
+            what: 'Automated tests with tools like pytest, JUnit or Jest that check your code works.',
+            why: 'Expected on almost every professional team. Untested code rarely passes review.',
+            demand: 'core',
+            topic: 'testing-fundamentals',
+          },
+          git,
+          {
+            name: 'Code review & pull requests',
+            what: 'Proposing changes in small pull requests and reviewing teammates’ code.',
+            why: 'How every team ships code. Good reviewers are trusted with more responsibility fast.',
+            demand: 'high',
+            topic: 'code-review',
+          },
+          {
+            name: 'Agile & Scrum',
+            what: 'Working in short cycles with tickets, sprints and stand-ups.',
+            why: 'Most software teams work this way, and job posts often mention it.',
+            demand: 'high',
+            topic: 'sdlc-agile',
+          },
+          aiTools,
+        ],
+      },
+      {
+        title: 'Building real systems',
+        items: [
+          sql,
+          {
+            name: 'REST APIs',
+            what: 'How programs talk to each other over HTTP with JSON.',
+            why: 'Almost every app today is built from APIs, so every engineer works with them.',
+            demand: 'core',
+            topic: 'http-apis',
+          },
+          {
+            name: 'System design',
+            what: 'Planning systems with load balancers, caches, databases and queues so they scale.',
+            why: 'Asked in interviews for mid-level and senior roles, and useful from day one.',
+            demand: 'high',
+            topic: 'system-design',
+          },
+          { ...docker, demand: 'high' },
+          { ...cicd, demand: 'high' },
+        ],
+      },
+    ],
+  },
+  {
+    roadmap: 'qa',
+    typical: ['Playwright', 'TypeScript', 'Postman', 'Jira', 'GitHub Actions'],
+    summary:
+      'QA job posts ask for solid manual testing skills (test cases, bug reports, exploratory testing) and, more and more, automation: Playwright, Cypress or Selenium for the web, Postman or code for APIs, and running tests in CI. Automation skills are what move testers into higher-paid SDET roles.',
+    groups: [
+      {
+        title: 'Testing skills',
+        note: 'The foundation of every QA job, manual or automated.',
+        items: [
+          {
+            name: 'Test design & test cases',
+            what: 'Choosing what to test with techniques like boundary values and equivalence classes, and writing clear test cases.',
+            why: 'Asked about in almost every QA interview. Good test design finds more bugs with fewer tests.',
+            demand: 'core',
+            topic: 'test-design',
+          },
+          {
+            name: 'Bug reporting',
+            what: 'Writing reports with exact steps, expected vs actual results and evidence.',
+            why: 'The main thing a tester delivers. Clear reports get bugs fixed fast.',
+            demand: 'core',
+            topic: 'bug-reports',
+          },
+          {
+            name: 'Exploratory testing',
+            what: 'Learning and testing an app at the same time, guided by a mission.',
+            why: 'Finds the bugs scripts miss. Valued by teams that move fast.',
+            demand: 'high',
+            topic: 'exploratory-testing',
+          },
+          {
+            name: 'ISTQB Foundation (CTFL)',
+            what: 'The most recognised entry-level software testing certificate.',
+            why: 'Often listed as a plus in job posts, especially at larger companies and outsourcing firms.',
+            demand: 'optional',
+            topic: 'qa-career',
+          },
+        ],
+      },
+      {
+        title: 'UI automation',
+        note: 'Pick ONE tool. Playwright is growing fastest; Selenium is still common in older codebases.',
+        items: [
+          {
+            name: 'Playwright',
+            what: 'Microsoft’s browser automation tool: fast, reliable, all browsers, with a recorder and trace viewer.',
+            why: 'The fastest-growing web testing tool, used for new test suites at many companies.',
+            demand: 'core',
+            topic: 'ui-automation',
+          },
+          {
+            name: 'Cypress',
+            what: 'A JavaScript end-to-end testing tool that runs inside the browser with a friendly UI.',
+            why: 'Widely used in frontend teams, so it appears in many job posts.',
+            demand: 'high',
+            topic: 'ui-automation',
+          },
+          {
+            name: 'Selenium',
+            what: 'The original browser automation tool, with bindings for Java, Python, C# and more.',
+            why: 'Still found in many large and older test suites, especially with Java.',
+            demand: 'high',
+            topic: 'ui-automation',
+          },
+          { ...typescript, why: 'Playwright and Cypress tests are mostly written in TypeScript or JavaScript.', demand: 'core' },
+        ],
+      },
+      {
+        title: 'APIs, data & performance',
+        items: [
+          {
+            name: 'Postman',
+            what: 'An app for sending API requests, saving them in collections and adding test scripts.',
+            why: 'The most common API testing tool in QA job posts.',
+            demand: 'core',
+            topic: 'api-testing',
+          },
+          { ...sql, why: 'Testers check that the data saved in the database is correct.', demand: 'high' },
+          {
+            name: 'k6',
+            what: 'A load testing tool where you write tests in JavaScript.',
+            why: 'Performance testing is a valued extra, and k6 is a modern, popular choice.',
+            demand: 'rising',
+            topic: 'performance-testing',
+          },
+          {
+            name: 'Chrome DevTools',
+            what: 'The browser tools for console errors, network requests, storage and device testing.',
+            why: 'Used daily to investigate bugs and write better reports.',
+            demand: 'core',
+            topic: 'devtools-for-testers',
+          },
+        ],
+      },
+      {
+        title: 'Team tools',
+        items: [
+          {
+            name: 'Jira',
+            what: 'The most common tool for tracking bugs, stories and sprints.',
+            why: 'Appears in a large share of QA job posts. You’ll file and track bugs here every day.',
+            demand: 'core',
+            topic: 'bug-reports',
+          },
+          git,
+          { ...cicd, why: 'Automated tests run in CI pipelines on every change, so testers set them up and keep them green.', demand: 'high' },
+          aiTools,
+        ],
+      },
+    ],
+  },
 );
 
 /** Skills that show up across almost every developer role. */

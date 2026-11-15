@@ -1456,6 +1456,436 @@ const list: Topic[] = [
       p('The Cloud Resume Challenge', 'https://cloudresumechallenge.dev/'),
     ],
   },
+
+  /* ================= SOFTWARE ENGINEERING ================= */
+  {
+    id: 'programming-fundamentals',
+    title: 'Programming Fundamentals',
+    hours: 20,
+    summary:
+      'Every language is built on the same few ideas: values and variables, decisions, loops, functions and collections. Learn to break a problem into small steps and turn those steps into code. Once this clicks, picking up a second language takes weeks, not months.',
+    points: [
+      'Variables, types and expressions',
+      'Conditions (if/else) and loops (for/while)',
+      'Functions: inputs, outputs and keeping them small',
+      'Lists and dictionaries (arrays and maps)',
+      'Breaking a problem into steps before you code (pseudocode)',
+    ],
+    resources: [
+      c('CS50x — Harvard’s free intro to computer science', 'https://cs50.harvard.edu/x/'),
+      d('The Python Tutorial (official)', 'https://docs.python.org/3/tutorial/'),
+      p('Exercism — Python track (free, with mentors)', 'https://exercism.org/tracks/python'),
+      v('Python for beginners (freeCodeCamp)', 'freeCodeCamp Python for beginners full course'),
+    ],
+  },
+  {
+    id: 'debugging',
+    title: 'Debugging',
+    hours: 6,
+    summary:
+      'Developers spend more time reading and fixing code than writing it. Debugging is a skill you can learn: read the error, reproduce the bug, form a guess, test it with prints or a debugger, and fix the cause instead of the symptom.',
+    points: [
+      'Reading error messages and stack traces from the bottom up',
+      'Reproducing a bug reliably before fixing it',
+      'Breakpoints, stepping and watching variables in a debugger',
+      'Narrowing it down: print debugging, logging and git bisect',
+      'Rubber-duck debugging and asking good questions',
+    ],
+    resources: [
+      a('Eric Lippert — How to debug small programs', 'https://ericlippert.com/2014/03/05/how-to-debug-small-programs/'),
+      d('VS Code — Debugging', 'https://code.visualstudio.com/docs/debugtest/debugging'),
+      d('Python — pdb, the built-in debugger', 'https://docs.python.org/3/library/pdb.html'),
+      v('Debugging Python in VS Code', 'VS Code debugging python tutorial breakpoints'),
+    ],
+  },
+  {
+    id: 'cs-basics',
+    title: 'How Computers Work (CS Basics)',
+    hours: 10,
+    summary:
+      'You don’t need a degree, but knowing what happens under your code helps you write faster programs and understand error messages. Learn how data is stored in binary, how memory and the CPU work together, and what the operating system does for your program.',
+    points: [
+      'Binary, bits, bytes and how text and numbers are stored',
+      'CPU, memory (RAM) and storage: why some things are slow',
+      'Processes, threads and what the operating system manages',
+      'Compiled vs interpreted languages',
+      'Stack vs heap memory, and what a memory leak is',
+    ],
+    resources: [
+      v('Crash Course Computer Science', 'Crash Course Computer Science playlist'),
+      a('Teach Yourself Computer Science', 'https://teachyourselfcs.com/'),
+      c('Nand2Tetris — build a computer from first principles', 'https://www.nand2tetris.org/'),
+      b('Operating Systems: Three Easy Pieces (free book)', 'https://pages.cs.wisc.edu/~remzi/OSTEP/'),
+    ],
+  },
+  {
+    id: 'oop',
+    title: 'Object-Oriented Programming & SOLID',
+    hours: 10,
+    summary:
+      'Object-oriented programming groups data and the code that works on it into classes. It’s how most large codebases in Java, C#, Python and TypeScript are organised. The SOLID principles are five simple rules that keep those classes small and easy to change.',
+    points: [
+      'Classes, objects, attributes and methods',
+      'Encapsulation: hide details behind a clear interface',
+      'Inheritance vs composition (prefer composition)',
+      'Polymorphism: different objects, same method name',
+      'SOLID: single responsibility, open/closed, Liskov, interface segregation, dependency inversion',
+    ],
+    resources: [
+      d('Python — Classes (official tutorial)', 'https://docs.python.org/3/tutorial/classes.html'),
+      a('Real Python — Object-oriented programming in Python', 'https://realpython.com/python3-object-oriented-programming/'),
+      a('DigitalOcean — SOLID: the first five principles', 'https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design'),
+      v('Python OOP tutorial (Corey Schafer)', 'Corey Schafer python OOP tutorial classes and instances'),
+    ],
+  },
+  {
+    id: 'clean-code',
+    title: 'Clean Code & Refactoring',
+    hours: 8,
+    summary:
+      'Code is read far more often than it is written. Clean code uses clear names, small functions and no surprises. Refactoring means improving the structure of code without changing what it does, in small safe steps, with tests to catch mistakes.',
+    points: [
+      'Names that explain intent; functions that do one thing',
+      'Code smells: long functions, duplication, magic numbers, deep nesting',
+      'Refactoring in small steps: extract function, rename, simplify conditions',
+      'Following a style guide and letting a formatter and linter enforce it',
+      'Comments explain why, not what',
+    ],
+    resources: [
+      a('Refactoring.Guru — Code smells', 'https://refactoring.guru/refactoring/smells'),
+      a('Refactoring.Guru — Refactoring techniques', 'https://refactoring.guru/refactoring/techniques'),
+      d('PEP 8 — Python style guide', 'https://peps.python.org/pep-0008/'),
+      d('Google style guides (many languages)', 'https://google.github.io/styleguide/'),
+      v('Clean code tips', 'clean code tips refactoring beginners'),
+    ],
+  },
+  {
+    id: 'design-patterns',
+    title: 'Design Patterns',
+    hours: 8,
+    summary:
+      'Design patterns are proven solutions to problems that come up again and again, with names every developer recognises. You don’t need all 23 classic patterns. Learn the handful you’ll actually meet (Strategy, Factory, Observer, Adapter, Decorator) and when NOT to use them.',
+    points: [
+      'Why patterns exist: a shared vocabulary for common designs',
+      'Creational: Factory and Builder',
+      'Structural: Adapter and Decorator',
+      'Behavioural: Strategy and Observer',
+      'Avoiding over-engineering: use a pattern only when the problem appears',
+    ],
+    resources: [
+      a('Refactoring.Guru — Design patterns (with examples)', 'https://refactoring.guru/design-patterns'),
+      a('Python design patterns guide', 'https://python-patterns.guide/'),
+      a('Patterns.dev — modern web patterns', 'https://www.patterns.dev/'),
+      v('10 design patterns explained (Fireship)', 'Fireship 10 design patterns explained in 10 minutes'),
+    ],
+  },
+  {
+    id: 'testing-fundamentals',
+    title: 'Testing Fundamentals & TDD',
+    hours: 10,
+    summary:
+      'Automated tests let you change code without fear. Learn the test pyramid (many fast unit tests, fewer integration tests, a few end-to-end tests), how to write good assertions, how to replace slow parts with fakes, and the test-first rhythm of TDD.',
+    points: [
+      'Unit, integration and end-to-end tests: the test pyramid',
+      'Arrange, act, assert: the shape of a good test',
+      'Test runners and assertions (pytest, Jest, JUnit)',
+      'Mocks, stubs and fakes for databases and APIs',
+      'Test-driven development: red, green, refactor',
+    ],
+    resources: [
+      a('Martin Fowler — The practical test pyramid', 'https://martinfowler.com/articles/practical-test-pyramid.html'),
+      d('pytest — Get started', 'https://docs.pytest.org/en/stable/getting-started.html'),
+      d('Python — unittest.mock', 'https://docs.python.org/3/library/unittest.mock.html'),
+      a('Martin Fowler — Test-driven development', 'https://martinfowler.com/bliki/TestDrivenDevelopment.html'),
+      v('pytest tutorial for beginners', 'pytest tutorial for beginners'),
+    ],
+  },
+  {
+    id: 'code-review',
+    title: 'Code Review & Pull Requests',
+    hours: 4,
+    summary:
+      'On a team, no code goes live without another person reading it. Learn to write small pull requests with clear descriptions and commit messages, review other people’s code kindly and usefully, and respond to feedback without taking it personally.',
+    points: [
+      'Small, focused pull requests with a clear description',
+      'Good commit messages',
+      'What reviewers look for: correctness, readability, tests, security',
+      'Writing kind, specific review comments',
+      'Reviewing AI-generated code with extra care',
+    ],
+    resources: [
+      d('Google — Code review developer guide', 'https://google.github.io/eng-practices/review/'),
+      d('GitHub — About pull request reviews', 'https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews'),
+      a('How to write a Git commit message', 'https://cbea.ms/git-commit/'),
+      a('Conventional Comments — clearer review comments', 'https://conventionalcomments.org/'),
+    ],
+  },
+  {
+    id: 'software-architecture',
+    title: 'Software Architecture Basics',
+    hours: 8,
+    summary:
+      'Architecture is how a codebase is split into parts and how those parts talk to each other. Good structure keeps a growing app easy to change. Start with layers and modules inside one app (a monolith) before you reach for microservices.',
+    points: [
+      'Layers: presentation, business logic and data access',
+      'Modules, boundaries and keeping dependencies one-way',
+      'Monolith vs microservices, and why most apps should start as a monolith',
+      'Configuration and secrets: the Twelve-Factor App',
+      'Drawing your system with simple diagrams (the C4 model)',
+    ],
+    resources: [
+      a('Martin Fowler — Software architecture guide', 'https://martinfowler.com/architecture/'),
+      a('The Twelve-Factor App', 'https://12factor.net/'),
+      a('The C4 model for software diagrams', 'https://c4model.com/'),
+      v('Software architecture patterns explained', 'software architecture patterns explained layered monolith microservices'),
+    ],
+  },
+  {
+    id: 'sdlc-agile',
+    title: 'How Teams Build Software (SDLC & Agile)',
+    hours: 5,
+    summary:
+      'Software is built in a loop: plan, build, test, release, learn. Most teams work in an Agile way (often Scrum or Kanban) with short cycles, a board of tickets and regular check-ins. Knowing this vocabulary makes your first job much less confusing.',
+    points: [
+      'The software development life cycle (SDLC)',
+      'Agile, Scrum (sprints, stand-ups, retros) and Kanban',
+      'Tickets, user stories and acceptance criteria',
+      'Branching workflows: GitHub flow and feature branches',
+      'Writing docs people actually read: READMEs and decision records',
+    ],
+    resources: [
+      a('The Agile Manifesto', 'https://agilemanifesto.org/'),
+      d('The Scrum Guide', 'https://scrumguides.org/scrum-guide.html'),
+      a('Atlassian — Agile coach', 'https://www.atlassian.com/agile'),
+      d('GitHub flow', 'https://docs.github.com/en/get-started/using-github/github-flow'),
+      d('Write the Docs — documentation guide', 'https://www.writethedocs.org/guide/'),
+    ],
+  },
+  {
+    id: 'tech-interviews',
+    title: 'Technical Interviews',
+    hours: 20,
+    summary:
+      'Most software jobs test you with coding problems, a system design talk and behavioural questions. Practise by pattern (two pointers, sliding window, BFS/DFS) instead of memorising answers, think out loud, and prepare short stories about your projects.',
+    points: [
+      'Common problem patterns: hashing, two pointers, sliding window, BFS/DFS',
+      'Thinking out loud: clarify, plan, code, test',
+      'Big-O of your solution, and how to improve it',
+      'Behavioural questions with the STAR method',
+      'Take-home projects and talking about your portfolio',
+    ],
+    resources: [
+      a('Tech Interview Handbook (free)', 'https://www.techinterviewhandbook.org/'),
+      p('NeetCode — problems grouped by pattern', 'https://neetcode.io/'),
+      p('LeetCode', 'https://leetcode.com/'),
+      v('How to solve coding interview problems (NeetCode)', 'NeetCode how to solve coding interview problems'),
+    ],
+  },
+
+  /* ================= QA & TEST AUTOMATION ================= */
+  {
+    id: 'qa-fundamentals',
+    title: 'Software Testing Fundamentals',
+    hours: 8,
+    summary:
+      'Testing is checking that software does what it should, and finding where it doesn’t, before users do. Learn the vocabulary every QA job uses: test levels, test types, the testing life cycle, and why testing early is cheaper than testing late.',
+    points: [
+      'Why testing matters: errors, defects and failures',
+      'Test levels: unit, integration, system and acceptance',
+      'Test types: functional, regression, smoke, usability, performance, security',
+      'The software testing life cycle (STLC) and where QA fits in Agile teams',
+      'Manual vs automated testing, and the test pyramid',
+    ],
+    resources: [
+      c('ISTQB Certified Tester Foundation Level (syllabus)', 'https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/'),
+      a('Martin Fowler — The practical test pyramid', 'https://martinfowler.com/articles/practical-test-pyramid.html'),
+      a('Ministry of Testing — community and learning', 'https://www.ministryoftesting.com/'),
+      v('Software testing full course (freeCodeCamp)', 'freeCodeCamp software testing course manual testing'),
+    ],
+  },
+  {
+    id: 'test-design',
+    title: 'Test Design & Test Cases',
+    hours: 8,
+    summary:
+      'You can’t test every possible input, so testers use techniques to pick the few inputs most likely to find bugs. Learn equivalence partitioning, boundary values and decision tables, and how to write test cases anyone on the team can follow.',
+    points: [
+      'Equivalence partitioning: one test per group of similar inputs',
+      'Boundary value analysis: bugs hide at the edges',
+      'Decision tables and state transitions for complex rules',
+      'Writing test cases: title, preconditions, steps, expected result',
+      'Test plans and test coverage',
+    ],
+    resources: [
+      a('Guru99 — Equivalence partitioning & boundary values', 'https://www.guru99.com/equivalence-partitioning-boundary-value-analysis.html'),
+      a('Guru99 — Decision table testing', 'https://www.guru99.com/decision-table-testing.html'),
+      a('Guru99 — How to write test cases', 'https://www.guru99.com/test-case.html'),
+      p('The Internet — practice pages for testers', 'https://the-internet.herokuapp.com/'),
+    ],
+  },
+  {
+    id: 'bug-reports',
+    title: 'Bug Reports & Bug Tracking',
+    hours: 4,
+    summary:
+      'A bug that nobody can reproduce never gets fixed. A great bug report has a clear title, exact steps, expected vs actual results, and evidence like screenshots or logs. Learn severity vs priority and how bugs move through a tracker like Jira.',
+    points: [
+      'Title, steps to reproduce, expected and actual result',
+      'Evidence: screenshots, screen recordings, console logs, environment',
+      'Severity (how bad) vs priority (how soon)',
+      'The bug life cycle: new, in progress, fixed, verified, closed',
+      'Working in Jira or GitHub Issues',
+    ],
+    resources: [
+      d('Mozilla — Bug writing guidelines', 'https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html'),
+      d('Atlassian — What is an issue in Jira?', 'https://support.atlassian.com/jira-software-cloud/docs/what-is-an-issue/'),
+      p('Sauce Demo — a practice shop to test', 'https://www.saucedemo.com/'),
+      v('How to write a good bug report', 'how to write a good bug report QA'),
+    ],
+  },
+  {
+    id: 'exploratory-testing',
+    title: 'Exploratory Testing',
+    hours: 5,
+    summary:
+      'Scripted test cases only find the bugs you thought of. Exploratory testing means learning the app, designing tests and running them at the same time, guided by a mission and a time limit. It’s where testers find the strangest and most valuable bugs.',
+    points: [
+      'Charters: a short mission like “explore checkout with invalid cards”',
+      'Time-boxed sessions and taking notes as you go',
+      'Heuristics: try zero, one, many, too long, special characters, going back',
+      'Testing like different users: new, impatient, on a slow phone',
+      'Turning findings into bug reports and new test cases',
+    ],
+    resources: [
+      a('Martin Fowler — Exploratory testing', 'https://martinfowler.com/bliki/ExploratoryTesting.html'),
+      b('Explore It! by Elisabeth Hendrickson', 'https://pragprog.com/titles/ehxta/explore-it/'),
+      p('Sauce Demo — practice shop', 'https://www.saucedemo.com/'),
+      v('Exploratory testing explained', 'exploratory testing explained charters sessions'),
+    ],
+  },
+  {
+    id: 'devtools-for-testers',
+    title: 'Browser DevTools for Testers',
+    hours: 4,
+    summary:
+      'The browser’s developer tools show what users can’t see: errors in the console, every request to the server, saved data and how the page behaves on a phone. Testers who use DevTools write far better bug reports.',
+    points: [
+      'Console: spotting JavaScript errors and warnings',
+      'Network: requests, status codes, slow calls and failed APIs',
+      'Elements: inspecting the page and finding good selectors',
+      'Application: cookies, localStorage and sessions',
+      'Device mode and network throttling for mobile and slow connections',
+    ],
+    resources: [
+      d('Chrome DevTools documentation', 'https://developer.chrome.com/docs/devtools'),
+      d('Chrome DevTools — Network panel', 'https://developer.chrome.com/docs/devtools/network'),
+      d('Firefox DevTools user docs', 'https://firefox-source-docs.mozilla.org/devtools-user/'),
+      v('Chrome DevTools for testers', 'Chrome DevTools tutorial for QA testers'),
+    ],
+  },
+  {
+    id: 'ui-automation',
+    title: 'UI Test Automation (Playwright)',
+    hours: 15,
+    summary:
+      'UI automation makes a real browser click, type and check the page for you, so regression tests run in minutes instead of days. Playwright is the fastest-growing tool for this: it waits for elements automatically, runs in every browser and has a test recorder.',
+    points: [
+      'Setting up Playwright Test with TypeScript',
+      'Locators: find elements by role, label and text, like a user would',
+      'Actions and assertions that wait automatically',
+      'Running tests headless, in several browsers, and in parallel',
+      'Debugging with the trace viewer and codegen; Cypress and Selenium as alternatives',
+    ],
+    resources: [
+      d('Playwright — Getting started', 'https://playwright.dev/docs/intro'),
+      d('Playwright — Locators', 'https://playwright.dev/docs/locators'),
+      d('Cypress documentation', 'https://docs.cypress.io/'),
+      d('Selenium documentation', 'https://www.selenium.dev/documentation/'),
+      v('Playwright tutorial for beginners', 'Playwright TypeScript tutorial for beginners'),
+    ],
+  },
+  {
+    id: 'automation-design',
+    title: 'Test Automation Design',
+    hours: 8,
+    summary:
+      'A test suite is code, and it rots like code. Good suites use page objects to avoid repetition, fixtures for setup, independent tests that run in any order, and no fixed waits. The goal is tests that fail only when something is really broken.',
+    points: [
+      'Page Object Model: one class per page, tests read like steps',
+      'Fixtures and test data: every test sets up what it needs',
+      'Independent tests that can run in any order and in parallel',
+      'Flaky tests: why they happen and how to fix them (no sleep calls)',
+      'Choosing what to automate, and what to keep manual',
+    ],
+    resources: [
+      d('Playwright — Page object models', 'https://playwright.dev/docs/pom'),
+      d('Playwright — Fixtures', 'https://playwright.dev/docs/test-fixtures'),
+      d('Playwright — Best practices', 'https://playwright.dev/docs/best-practices'),
+      a('Martin Fowler — Eradicating non-determinism in tests', 'https://martinfowler.com/articles/nonDeterminism.html'),
+      c('Test Automation University (free courses)', 'https://testautomationu.applitools.com/'),
+    ],
+  },
+  {
+    id: 'api-testing',
+    title: 'API Testing',
+    hours: 8,
+    summary:
+      'Most of an app’s logic sits behind its API, and API tests are faster and more stable than UI tests. Learn to send requests, check status codes, response bodies and error cases with Postman or Bruno, then automate them in code.',
+    points: [
+      'REST basics: methods, URLs, headers, JSON bodies',
+      'Status codes and what each one should mean',
+      'Testing error cases: missing fields, wrong types, no login',
+      'Collections, environments and variables in Postman or Bruno',
+      'Automating API tests in code with Playwright’s request API',
+    ],
+    resources: [
+      d('Postman — Learning Center', 'https://learning.postman.com/docs/introduction/overview/'),
+      d('Bruno — open-source API client', 'https://docs.usebruno.com/'),
+      d('Playwright — API testing', 'https://playwright.dev/docs/api-testing'),
+      d('MDN — HTTP response status codes', 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status'),
+      p('Restful Booker — a practice API for testers', 'https://restful-booker.herokuapp.com/'),
+    ],
+  },
+  {
+    id: 'performance-testing',
+    title: 'Performance & Load Testing',
+    hours: 6,
+    summary:
+      'An app that works for one user can fall over with a thousand. Performance testing measures speed under load and finds the breaking point before launch day does. k6 lets you write load tests in JavaScript; Lighthouse checks how fast a page feels.',
+    points: [
+      'Load, stress, spike and soak tests',
+      'Key numbers: response time (p95), throughput and error rate',
+      'Writing a k6 script with thresholds',
+      'Page speed: Lighthouse and Core Web Vitals',
+      'Reading results and reporting where the bottleneck is',
+    ],
+    resources: [
+      d('Grafana k6 documentation', 'https://grafana.com/docs/k6/latest/'),
+      d('Lighthouse overview', 'https://developer.chrome.com/docs/lighthouse/overview'),
+      d('Apache JMeter', 'https://jmeter.apache.org/'),
+      v('k6 load testing tutorial', 'k6 load testing tutorial beginners'),
+    ],
+  },
+  {
+    id: 'qa-career',
+    title: 'QA Career: Certification & Portfolio',
+    hours: 5,
+    summary:
+      'Testers get hired by showing their work. A public portfolio with a test plan, bug reports and automated suites beats a list of tools on a CV. The ISTQB Foundation certificate is often asked for, and SDET roles are the next step for testers who code.',
+    points: [
+      'The ISTQB Foundation Level certificate and when it helps',
+      'A portfolio repo: test plan, bug reports, UI and API suites, CI badge',
+      'QA job titles: QA analyst, QA engineer, automation engineer, SDET',
+      'Common QA interview questions and live testing exercises',
+      'Growing into SDET, DevOps or development',
+    ],
+    resources: [
+      c('ISTQB Certified Tester Foundation Level', 'https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/'),
+      c('Test Automation University (free courses)', 'https://testautomationu.applitools.com/'),
+      a('Ministry of Testing — community and learning', 'https://www.ministryoftesting.com/'),
+      v('How to get a QA job with no experience', 'how to get a QA tester job with no experience portfolio'),
+    ],
+  },
 ];
 
 export const topics: Record<string, Topic> = Object.fromEntries(list.map((t) => [t.id, t]));

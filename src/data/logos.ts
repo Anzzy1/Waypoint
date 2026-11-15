@@ -125,6 +125,28 @@ export const LOGOS: Record<string, LogoSpec> = {
   'Tracing & observability (Langfuse, LangSmith)': { glyph: 'eye' },
   'AI coding agents (Claude Code, Cursor)': { glyph: 'sparkle' },
 
+  /* software engineering */
+  'Data structures & algorithms': { glyph: 'puzzle' },
+  'OOP & design patterns': { logos: ['unifiedmodelinglanguage/unifiedmodelinglanguage-original'] },
+  'Clean code & refactoring': { glyph: 'sparkle' },
+  'Unit testing': { logos: ['pytest/pytest-original', 'junit/junit-original'] },
+  'Code review & pull requests': { glyph: 'speech' },
+  'Agile & Scrum': { glyph: 'refresh' },
+  'System design': { glyph: 'network' },
+
+  /* QA & test automation */
+  'Test design & test cases': { glyph: 'tree' },
+  'Bug reporting': { logos: ['jira/jira-original'] },
+  'Exploratory testing': { glyph: 'compass' },
+  'ISTQB Foundation (CTFL)': { glyph: 'checklist' },
+  Playwright: { logos: ['playwright/playwright-original'] },
+  Cypress: { logos: ['cypressio/cypressio-original'] },
+  Selenium: { logos: ['selenium/selenium-original'] },
+  Postman: { logos: ['postman/postman-original'] },
+  k6: { logos: ['k6/k6-original'] },
+  'Chrome DevTools': { logos: ['chrome/chrome-original'] },
+  Jira: { logos: ['jira/jira-original'] },
+
   /* mobile */
   'React Native + Expo': { logos: ['react/react-original'] },
   'Navigation (Expo Router, React Navigation)': { glyph: 'compass' },

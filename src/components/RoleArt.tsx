@@ -173,7 +173,59 @@ const Agents = () => {
   );
 };
 
+
+/* code on the left, a tiny class diagram on the right, tests passing */
+const Software = () => (
+  <>
+    <rect x="20" y="16" width="112" height="88" rx="9" className="art-card" />
+    <path d="M20 32h112" className="art-line" />
+    <circle cx="31" cy="24" r="2.6" className="art-dot" />
+    <circle cx="40" cy="24" r="2.6" className="art-dot" />
+    <circle cx="49" cy="24" r="2.6" className="art-dot" />
+    <text x="30" y="50" className="art-label">{'class {'}</text>
+    <rect x="42" y="57" width="58" height="6" rx="3" className="art-soft" />
+    <rect x="42" y="69" width="44" height="6" rx="3" className="art-soft" />
+    <text x="30" y="91" className="art-label">{'}'}</text>
+    <rect x="96" y="84" width="28" height="12" rx="6" className="art-accent-fill art-blink" />
+    <rect x="160" y="12" width="56" height="26" rx="5" className="art-card" />
+    <path d="M160 23h56" className="art-line art-faint" />
+    <rect x="146" y="80" width="40" height="24" rx="5" className="art-card" />
+    <rect x="194" y="80" width="40" height="24" rx="5" className="art-card" />
+    <path d="M188 38v20M166 58h48M166 58v22M214 58v22" className="art-line art-faint" />
+    <path d="m183 44 5-6 5 6" className="art-line" />
+    <path d="M136 60h8" className="art-line art-dash art-flow" />
+  </>
+);
+
+/* a test checklist being ticked, and a bug caught under a magnifier */
+const Qa = () => (
+  <>
+    <rect x="30" y="12" width="104" height="96" rx="9" className="art-card" />
+    {[30, 54, 78].map((y, i) => (
+      <g key={y}>
+        <rect x="42" y={y} width="14" height="14" rx="3.5" className="art-card" />
+        {i < 2 ? (
+          <path d={`m45 ${y + 7} 3 3 6-6`} className="art-accent-stroke" />
+        ) : (
+          <path d={`M46 ${y + 4}l6 6M52 ${y + 4}l-6 6`} className="art-line" />
+        )}
+        <rect x="64" y={y + 4} width={i === 1 ? 46 : 58} height="6" rx="3" className="art-soft" />
+      </g>
+    ))}
+    <g className="art-bob">
+      <circle cx="182" cy="54" r="26" className="art-card" />
+      <circle cx="182" cy="54" r="19" className="art-line art-faint" />
+      <path d="M201 73l18 18" className="art-line art-thick" />
+      <ellipse cx="182" cy="56" rx="7" ry="9" className="art-ink" />
+      <path d="M182 46v-4M175 52h-6M189 52h6M175 60h-6M189 60h6M178 45l-3-3M186 45l3-3" className="art-line" />
+    </g>
+    <circle cx="150" cy="100" r="4" className="art-accent-fill art-blink" />
+  </>
+);
+
 const SCENES: Record<string, () => ReactElement> = {
+  software: Software,
+  qa: Qa,
   cloud: Cloud,
   agents: Agents,
   frontend: Frontend,

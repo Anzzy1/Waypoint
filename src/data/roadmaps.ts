@@ -186,6 +186,52 @@ export const roadmaps: Roadmap[] = [
       { title: 'Ship it', summary: 'Deploy, trace and control costs.', topics: ['docker', 'cloud', 'mlops'], project: 'Deploy your agent behind an API with tracing and a cost dashboard.' },
     ],
   },
+  {
+    id: 'software',
+    title: 'Software Engineer',
+    tagline: 'Master the fundamentals behind every kind of software.',
+    role: 'Software engineers design, build, test and maintain software as part of a team. Beyond writing code, they choose sensible designs, keep code easy to change, review each other’s work and think about how systems grow. These fundamentals work in any language and any role, and they are what technical interviews test.',
+    level: 'Beginner friendly',
+    duration: '8–12 months',
+    outcomes: [
+      'Write clean, tested, well-structured code in any language',
+      'Use data structures, OOP and design patterns to solve real problems',
+      'Work like a professional team member and pass technical interviews',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'How the internet works, plus the tools every developer uses daily.', topics: ['how-to-learn', 'how-internet-works', 'terminal', 'git'], project: 'Push a repo to GitHub with a README describing your learning plan.' },
+      { title: 'Programming fundamentals', summary: 'Think like a programmer in one language (this path uses Python), and learn to find your own bugs.', topics: ['programming-fundamentals', 'python', 'debugging'], project: 'Build a command-line to-do app, then ask a friend to hide a bug in it and find it with the debugger.' },
+      { title: 'How computers work', summary: 'What happens under your code, and the data structures that make it fast.', topics: ['cs-basics', 'dsa'], project: 'Build a stack, a queue and a hash map from scratch, with tests, and explain their Big-O in the README.' },
+      { title: 'Writing good code', summary: 'Code that other people (and future you) can read and change safely.', topics: ['oop', 'clean-code', 'design-patterns'], project: 'Refactor a messy 200-line script into small classes, using at least two design patterns.' },
+      { title: 'Testing & quality', summary: 'Prove your code works, and keep it working as it changes.', topics: ['testing-fundamentals', 'code-review'], project: 'Add tests to your refactored project until they cover the main logic, then open a pull request and review it yourself with a checklist.' },
+      { title: 'Building real software', summary: 'Data, APIs and how to organise a real application.', topics: ['sql', 'http-apis', 'software-architecture'], project: 'Build a small REST API for a library (books, members, loans) with separate layers for routes, logic and data.' },
+      { title: 'Working on a team', summary: 'How professional teams plan, ship and document work, with AI as a teammate.', topics: ['sdlc-agile', 'agentic-coding'], project: 'Ship one feature the team way: write the issue, create a branch, open a pull request, get a review and update the docs.' },
+      { title: 'Scale & interviews', summary: 'Design systems that grow, and get ready for technical interviews.', topics: ['system-design', 'tech-interviews'], project: 'Write a one-page design doc for your API at 1 million users, and keep a log of 30 solved practice problems.' },
+    ],
+  },
+  {
+    id: 'qa',
+    title: 'QA / Test Automation Engineer',
+    tagline: 'Find bugs before users do, then automate the checks.',
+    role: 'QA engineers make sure software works before it reaches users. They plan tests, explore apps to find bugs, write clear bug reports, and automate repeated checks for the web, APIs and performance. It is one of the most common first jobs in tech, and it grows into SDET (Software Development Engineer in Test) and other engineering roles.',
+    level: 'Beginner friendly',
+    duration: '6–9 months',
+    outcomes: [
+      'Plan tests and design test cases that find real bugs',
+      'Automate web and API tests with Playwright and TypeScript',
+      'Run tests in CI and check performance and accessibility',
+    ],
+    stages: [
+      { title: 'Foundations', summary: 'How the internet works, plus the tools every tester uses daily.', topics: ['how-to-learn', 'how-internet-works', 'terminal', 'git'], project: 'Push a repo to GitHub with a README describing your QA learning plan.' },
+      { title: 'Testing fundamentals', summary: 'What testing is, the kinds of tests, and how to design test cases.', topics: ['qa-fundamentals', 'test-design'], project: 'Write a test plan and 20 test cases for a real signup form, using boundary values and equivalence classes.' },
+      { title: 'Bugs & exploratory testing', summary: 'Find bugs on purpose, and report them so developers can fix them fast.', topics: ['bug-reports', 'exploratory-testing'], project: 'Explore a demo shop for one hour and write 10 clear bug reports with steps, expected and actual results.' },
+      { title: 'The web for testers', summary: 'Read the page, the code and the network like a developer.', topics: ['html', 'javascript', 'devtools-for-testers'], project: 'Find three bugs on a demo site using only browser DevTools (Console, Network and Application tabs).' },
+      { title: 'UI automation', summary: 'Let the computer click through your tests, reliably.', topics: ['typescript', 'ui-automation', 'automation-design'], project: 'Write a Playwright test suite for a demo shop: login, add to cart and checkout, using page objects.' },
+      { title: 'API & data testing', summary: 'Test the layer under the UI, where most logic lives.', topics: ['api-testing', 'sql'], project: 'Build an API test collection for a public demo API, including error cases, and check the data with SQL.' },
+      { title: 'Pipelines & non-functional testing', summary: 'Run tests automatically, and check speed and accessibility too.', topics: ['ci-cd', 'performance-testing', 'accessibility'], project: 'Run your test suite in GitHub Actions on every push, publish the report, and add a k6 load test.' },
+      { title: 'Grow your career', summary: 'Mobile testing, AI tools, certifications and a portfolio that gets interviews.', topics: ['mobile-testing', 'agentic-coding', 'qa-career'], project: 'Publish a QA portfolio repo: test plan, bug reports, automated UI and API suites, and CI badges.' },
+    ],
+  },
 ];
 
 export function getRoadmap(id: string | undefined) {
