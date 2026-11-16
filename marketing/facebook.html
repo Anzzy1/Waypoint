@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Waypoint Facebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#0b0f10; --muted:#66717a; --soft:#9aa3a9; --line:#e5e9eb; --green:#1f9d5c; --deep:#1f6b45; --mint:#7fd49a; --tint:#eaf6ef; --red:#d9534f; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#ccc; padding:40px; display:flex; flex-direction:column; gap:40px; font-family:'Schibsted Grotesk', system-ui, sans-serif; color:var(--ink); }
+
+  .frame { position:relative; width:1080px; height:1080px; overflow:hidden; background:#fff; flex:none; }
+  .frame::before { content:""; position:absolute; inset:0; pointer-events:none;
+    background-image:radial-gradient(#d3d9dd 1.3px, transparent 1.3px); background-size:30px 30px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 85%); mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 85%); }
+  .glow { position:absolute; border-radius:50%; pointer-events:none; }
+  .gA { width:700px; height:700px; right:-220px; top:-260px; background:radial-gradient(circle, rgba(127,212,154,.36), rgba(127,212,154,0) 65%); }
+  .gB { width:560px; height:560px; left:-220px; bottom:-260px; background:radial-gradient(circle, rgba(31,157,92,.15), rgba(31,157,92,0) 65%); }
+  .gC { width:760px; height:760px; left:160px; top:-200px; background:radial-gradient(circle, rgba(127,212,154,.38), rgba(127,212,154,0) 65%); }
+
+  .top { position:absolute; left:72px; right:72px; top:60px; display:flex; align-items:center; z-index:4; }
+  .brand { display:flex; align-items:center; gap:14px; font-weight:800; font-size:26px; letter-spacing:-.01em; }
+  .brand svg { width:42px; height:42px; }
+  .brand small { font:700 12px 'JetBrains Mono', monospace; letter-spacing:.24em; color:var(--green); margin-left:2px; }
+  .pg { margin-left:auto; font:700 16px 'JetBrains Mono', monospace; color:var(--soft); letter-spacing:.08em; }
+  .pg b { color:var(--ink); }
+
+  .eyebrow { display:inline-flex; align-items:center; gap:10px; padding:9px 16px; border-radius:999px; background:var(--tint); border:1px solid #cfe7d9;
+    font:700 15px 'JetBrains Mono', monospace; letter-spacing:.14em; color:var(--deep); }
+  h2 { font-size:84px; line-height:.97; font-weight:900; letter-spacing:-.045em; }
+  h2 em { font-style:normal; color:var(--green); }
+  .lead { font-size:26px; line-height:1.5; color:var(--muted); }
+  .lead b { color:var(--ink); }
+  .card { background:#fff; border:1px solid var(--line); border-radius:22px; box-shadow:0 22px 48px -18px rgba(11,15,16,.2); }
+  .lbl { font:700 13px 'JetBrains Mono', monospace; letter-spacing:.12em; color:var(--soft); text-transform:uppercase; }
+  .dot { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font:700 12px 'JetBrains Mono', monospace; flex:none; }
+  .dot.done { background:var(--green); color:#fff; }
+  .dot.now { border:2px solid var(--green); color:var(--green); box-shadow:0 0 0 5px var(--tint); }
+  .dot.next { border:2px solid #d5dadd; color:var(--soft); }
+  .logo { position:absolute; z-index:3; width:68px; height:68px; border-radius:18px; background:#fff; border:1px solid var(--line);
+    box-shadow:0 12px 26px -8px rgba(11,15,16,.18); display:grid; place-items:center; transform:translate(-50%,-50%) rotate(var(--r,0deg)); }
+  .logo img { width:36px; height:36px; }
+  .spark { position:absolute; z-index:1; color:var(--mint); font-size:26px; }
+
+  /* 01 cover */
+  .s1 .center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:2; padding-top:10px; }
+  .s1 .icon { width:150px; height:150px; filter:drop-shadow(0 20px 34px rgba(11,15,16,.22)) drop-shadow(0 0 48px rgba(127,212,154,.5)); }
+  .s1 h1 { margin-top:34px; font-size:150px; line-height:.9; font-weight:900; letter-spacing:-.05em; }
+  .s1 .dr { margin-top:24px; display:flex; align-items:center; gap:20px; font:700 28px 'JetBrains Mono', monospace; letter-spacing:.32em; color:var(--green); padding-left:.32em; }
+  .s1 .dr i { display:block; width:50px; height:2px; background:linear-gradient(90deg, transparent, var(--green)); }
+  .s1 .dr i:last-child { background:linear-gradient(90deg, var(--green), transparent); }
+  .s1 .tag { margin-top:30px; font-size:28px; color:var(--muted); }
+  .s1 .tag b { color:var(--ink); }
+  .pills { margin-top:34px; display:flex; gap:12px; justify-content:center; }
+  .pill { padding:12px 22px; border-radius:999px; border:1px solid var(--line); background:#fff; box-shadow:0 6px 16px rgba(11,15,16,.06); font-weight:600; font-size:21px; }
+  .pill b { color:var(--green); }
+  .pill.dark { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .pill.dark b { color:var(--mint); }
+
+  /* 02 story */
+  .s2 .copy { position:absolute; left:72px; right:72px; top:160px; z-index:2; }
+  .s2 h2 { margin-top:24px; }
+  .s2 .lead { margin-top:22px; max-width:880px; }
+  .timeline { position:absolute; left:72px; right:72px; top:650px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; z-index:2; }
+  .tl { padding:24px 22px; position:relative; }
+  .tl .yr { font:700 14px 'JetBrains Mono', monospace; letter-spacing:.12em; color:var(--soft); }
+  .tl b { display:block; margin-top:14px; font-size:25px; line-height:1.15; letter-spacing:-.01em; }
+  .tl > span { display:block; margin-top:10px; font-size:18px; color:var(--muted); line-height:1.4; }
+  .tl .vids { margin-top:14px; display:flex; flex-direction:column; gap:7px; }
+  .vid { display:flex; align-items:center; gap:9px; font-size:14px; color:#8a949a; }
+  .vid i { width:30px; height:20px; border-radius:5px; background:#eef1f2; display:grid; place-items:center; font-style:normal; font-size:9px; color:#9aa3a9; flex:none; }
+  .tl.bad { background:#fff8f7; border-color:#f4d6d4; }
+  .tl.bad .yr { color:var(--red); }
+  .tl.bad .big { font-size:44px; font-weight:900; color:var(--red); letter-spacing:-.03em; margin-top:10px; }
+  .tl.good { background:var(--ink); border-color:var(--ink); color:#fff; }
+  .tl.good .yr { color:var(--mint); }
+  .tl.good span { color:#b8c3c9; }
+  .tl.good .mini { margin-top:16px; display:flex; gap:7px; align-items:center; }
+  .tl.good .mini .dot { width:24px; height:24px; font-size:10px; }
+  .tl.good .mini .dot.next { border-color:#3a4448; }
+  .tl.good .mini .dot.now { box-shadow:0 0 0 4px rgba(127,212,154,.2); color:var(--mint); border-color:var(--mint); }
+  .tl.good .mini u { flex:1; height:2px; background:#2a3337; text-decoration:none; }
+  .arrowrow { position:absolute; left:72px; right:72px; top:575px; display:flex; justify-content:space-around; z-index:3; font:700 14px 'JetBrains Mono', monospace; color:var(--soft); }
+
+  /* 03 simple */
+  .s3 .copy { position:absolute; left:72px; right:72px; top:160px; z-index:2; }
+  .s3 h2 { margin-top:24px; }
+  .steps { position:absolute; left:72px; right:72px; top:520px; display:flex; flex-direction:column; gap:18px; z-index:2; }
+  .step { display:flex; align-items:center; gap:24px; padding:24px 28px; }
+  .step .n { width:62px; height:62px; border-radius:18px; background:var(--tint); color:var(--deep); display:grid; place-items:center; font:800 26px 'JetBrains Mono', monospace; flex:none; }
+  .step b { display:block; font-size:28px; letter-spacing:-.01em; }
+  .step > div:not(.r) > span { display:block; margin-top:4px; font-size:19px; color:var(--muted); }
+  .step .r { margin-left:auto; display:flex; gap:8px; }
+  .chip { padding:8px 14px; border-radius:10px; background:#f4f6f7; border:1px solid #eceff1; font:600 16px 'Schibsted Grotesk'; color:var(--ink); white-space:nowrap; }
+  .chip.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .bar { width:180px; height:9px; border-radius:9px; background:#edf0f2; overflow:hidden; }
+  .bar i { display:block; height:100%; width:62%; border-radius:9px; background:linear-gradient(90deg, var(--green), var(--mint)); }
+
+  /* 04 inside */
+  .s4 .copy { position:absolute; left:72px; right:72px; top:160px; z-index:2; }
+  .s4 h2 { margin-top:24px; }
+  .grid { position:absolute; left:72px; right:72px; top:440px; display:grid; grid-template-columns:1fr 1fr; gap:18px; z-index:2; }
+  .f { padding:26px 26px; display:flex; gap:18px; align-items:flex-start; }
+  .ic { width:56px; height:56px; border-radius:16px; background:var(--tint); color:var(--deep); display:grid; place-items:center; flex:none; }
+  .ic svg { width:28px; height:28px; }
+  .f b { display:block; font-size:25px; letter-spacing:-.01em; }
+  .f span { display:block; margin-top:6px; font-size:18px; color:var(--muted); line-height:1.4; }
+  .roles { position:absolute; left:72px; right:72px; bottom:80px; z-index:2; }
+  .roles .lbl { margin-bottom:14px; }
+  .roles .wrap { display:flex; flex-wrap:wrap; gap:10px; }
+  .roles .chip { font-size:19px; padding:10px 16px; background:#fff; }
+
+  /* 05 feedback */
+  .s5 .center { position:absolute; left:72px; right:72px; top:150px; text-align:center; z-index:2; display:flex; flex-direction:column; align-items:center; }
+  .s5 .icon { width:96px; height:96px; filter:drop-shadow(0 16px 26px rgba(11,15,16,.2)) drop-shadow(0 0 36px rgba(127,212,154,.45)); }
+  .s5 h2 { margin-top:30px; }
+  .s5 .lead { margin-top:22px; max-width:860px; }
+  .asks { position:absolute; left:72px; right:72px; top:590px; display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; z-index:2; }
+  .ask { padding:22px 20px; text-align:left; }
+  .ask .av { width:44px; height:44px; border-radius:14px; display:grid; place-items:center; font-weight:900; font-size:20px; }
+  .ask b { display:block; margin-top:16px; font-size:22px; letter-spacing:-.01em; }
+  .ask span { display:block; margin-top:6px; font-size:17px; color:var(--muted); line-height:1.4; }
+  .cmt { position:absolute; left:0; right:0; bottom:120px; display:flex; justify-content:center; z-index:2; }
+  .cmt span { padding:16px 28px; border-radius:999px; background:var(--ink); color:#fff; font-weight:700; font-size:22px; }
+  .cmt span b { color:var(--mint); }
+</style>
+</head>
+<body>
+
+<!-- ===== 01 cover ===== -->
+<section class="frame s1" data-name="fb-01-cover">
+  <div class="glow gC"></div><div class="glow gB"></div>
+  <div class="logo" style="left:150px; top:200px; --r:-8deg"><img src="https://cdn.simpleicons.org/html5"></div>
+  <div class="logo" style="left:930px; top:220px; --r:7deg"><img src="https://cdn.simpleicons.org/javascript"></div>
+  <div class="logo" style="left:110px; top:560px; --r:6deg"><img src="https://cdn.simpleicons.org/react"></div>
+  <div class="logo" style="left:975px; top:600px; --r:-6deg"><img src="https://cdn.simpleicons.org/python"></div>
+  <div class="logo" style="left:200px; top:930px; --r:-4deg"><img src="https://cdn.simpleicons.org/git"></div>
+  <div class="logo" style="left:880px; top:930px; --r:5deg"><img src="https://cdn.simpleicons.org/nodedotjs"></div>
+  <span class="spark" style="left:300px; top:110px">✦</span>
+  <span class="spark" style="right:260px; top:380px; font-size:18px">✦</span>
+  <span class="spark" style="left:280px; bottom:300px; font-size:18px; color:var(--green)">✦</span>
+  <div class="center">
+    <svg class="icon" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>
+    <h1>Waypoint</h1>
+    <div class="dr"><i></i>DEVELOPER ROADMAP<i></i></div>
+    <p class="tag">A <b>simple, free roadmap</b> for beginner developers</p>
+    <div class="pills">
+      <span class="pill"><b>8</b> roadmaps</span>
+      <span class="pill"><b>72</b> lessons</span>
+      <span class="pill dark"><b>100%</b> free</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 story ===== -->
+<section class="frame s2" data-name="fb-02-story">
+  <div class="glow gA"></div><div class="glow gB"></div>
+  <div class="top"><div class="brand"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>Waypoint</div><div class="pg"><b>02</b> / 05</div></div>
+  <div class="copy">
+    <span class="eyebrow">MY STORY</span>
+    <h2>I watched tutorials.<br><em>I learned nothing.</em></h2>
+    <p class="lead">When I started coding in 2024, I didn't know <b>what to learn next</b> or <b>how to study</b> properly. So I built the guide I needed back then.</p>
+  </div>
+  <div class="timeline">
+    <div class="card tl">
+      <div class="yr">2024 · DAY 1</div>
+      <b>Started learning to code</b>
+      <div class="vids">
+        <div class="vid"><i>▶</i>Learn coding in 1 hour</div>
+        <div class="vid"><i>▶</i>Full course, part 7</div>
+        <div class="vid"><i>▶</i>Which language first??</div>
+      </div>
+    </div>
+    <div class="card tl bad">
+      <div class="yr">MONTHS LATER</div>
+      <div class="big">0 progress</div>
+      <span>Lots of videos watched, nothing I could build on my own.</span>
+    </div>
+    <div class="card tl good">
+      <div class="yr">NOW</div>
+      <b>So I built Waypoint</b>
+      <span>A clear path, one step at a time.</span>
+      <div class="mini"><span class="dot done">✓</span><u></u><span class="dot now">2</span><u></u><span class="dot next">3</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 simple ===== -->
+<section class="frame s3" data-name="fb-03-simple">
+  <div class="glow gA"></div><div class="glow gB"></div>
+  <div class="top"><div class="brand"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>Waypoint</div><div class="pg"><b>03</b> / 05</div></div>
+  <div class="copy">
+    <span class="eyebrow">MADE FOR BEGINNERS</span>
+    <h2>Simple on purpose.<br><em>Easy to follow.</em></h2>
+    <p class="lead" style="margin-top:22px">No clutter. Just 3 steps.</p>
+  </div>
+  <div class="steps">
+    <div class="card step"><span class="n">1</span><div><b>Pick a roadmap</b><span>Choose the role you want</span></div>
+      <div class="r"><span class="chip on">Frontend</span><span class="chip">Backend</span><span class="chip">Mobile</span></div></div>
+    <div class="card step"><span class="n">2</span><div><b>Follow the stages in order</b><span>Short lessons, no guessing</span></div>
+      <div class="r"><span class="dot done">✓</span><span class="dot done">✓</span><span class="dot now">3</span><span class="dot next">4</span></div></div>
+    <div class="card step"><span class="n">3</span><div><b>Build &amp; track progress</b><span>A project per stage, saved as you go</span></div>
+      <div class="r" style="align-items:center"><div class="bar"><i></i></div></div></div>
+  </div>
+</section>
+
+<!-- ===== 04 inside ===== -->
+<section class="frame s4" data-name="fb-04-inside">
+  <div class="glow gA"></div><div class="glow gB"></div>
+  <div class="top"><div class="brand"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>Waypoint</div><div class="pg"><b>04</b> / 05</div></div>
+  <div class="copy">
+    <span class="eyebrow">WHAT'S INSIDE</span>
+    <h2>Everything in <em>one place.</em></h2>
+  </div>
+  <div class="grid">
+    <div class="card f"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div><div><b>72 short lessons</b><span>Plain words, real code, diagrams</span></div></div>
+    <div class="card f"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg></div><div><b>Projects</b><span>One to build at every stage</span></div></div>
+    <div class="card f"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><b>Progress &amp; badges</b><span>Checklist that saves as you go</span></div></div>
+    <div class="card f"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div><b>Finish-date plan</b><span>Based on your weekly hours</span></div></div>
+    <div class="card f"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div><div><b>Tech stacks</b><span>What companies actually use</span></div></div>
+    <div class="card f"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg></div><div><b>AI tools</b><span>How to learn with AI, the right way</span></div></div>
+  </div>
+  <div class="roles">
+    <div class="lbl">8 roadmaps</div>
+    <div class="wrap"><span class="chip">Frontend</span><span class="chip">Backend</span><span class="chip">Full-Stack</span><span class="chip">AI &amp; ML</span><span class="chip">DevOps</span><span class="chip">Mobile</span><span class="chip">Cloud</span><span class="chip">AI Agent</span></div>
+  </div>
+</section>
+
+<!-- ===== 05 feedback ===== -->
+<section class="frame s5" data-name="fb-05-feedback">
+  <div class="glow gC"></div><div class="glow gB"></div>
+  <div class="top"><div class="brand"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>Waypoint</div><div class="pg"><b>05</b> / 05</div></div>
+  <div class="center">
+    <svg class="icon" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0b0f10"/><path d="M9 23V16a4 4 0 0 1 4-4h6a4 4 0 0 0 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="9" cy="23" r="2.6" fill="#fff"/><circle cx="23" cy="8" r="2.6" fill="#7fd49a"/></svg>
+    <h2>Help me make it <em>better.</em></h2>
+    <p class="lead">I'm not an expert yet. If something on the site is wrong, <b>please tell me</b>. It would help a lot.</p>
+  </div>
+  <div class="asks">
+    <div class="card ask"><div class="av" style="background:var(--tint); color:var(--deep)">!</div><b>Something wrong?</b><span>Wrong info, bugs or typos</span></div>
+    <div class="card ask"><div class="av" style="background:var(--ink); color:var(--mint)">?</div><b>Confusing?</b><span>A lesson or step that's unclear</span></div>
+    <div class="card ask"><div class="av" style="background:var(--mint); color:var(--ink)">+</div><b>Missing?</b><span>A topic or resource to add</span></div>
+  </div>
+  <div class="cmt"><span>💬 Comment below <b>·</b> free, no sign-up</span></div>
+</section>
+
+</body>
+</html>
