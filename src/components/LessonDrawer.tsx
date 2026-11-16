@@ -8,6 +8,7 @@ import { Glyph, type GlyphKey } from './Art';
 import { TopicIcon } from './TechLogo';
 import CodeWindow from './CodeWindow';
 import { notifyLocalChange, onReload } from '../lib/sync';
+import { useLayer } from '../lib/layers';
 
 // diagrams live in their own chunk, loaded the first time a lesson opens
 const LessonFigure = lazy(() => import('./diagrams'));
@@ -119,19 +120,8 @@ export default function LessonDrawer({ topic, stageLabel, position, total, done,
   const scrollRef = useRef<HTMLDivElement>(null);
   const guide = GUIDES[topic.id];
 
-  // lock page scroll + close on Escape
-  useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = prev;
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [onClose]);
+  // lock page scroll + close on Escape (only when no dialog is open on top of the lesson)
+  useLayer(true, onClose);
 
   // the "definition of done" self-check, reset per lesson
   const [checks, setChecks] = useState(() => DONE_CHECKS.map(() => false));

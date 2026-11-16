@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { Close } from './Icons';
+import { useLayer } from '../lib/layers';
 
 /**
  * Centred dialog: closes on Escape, backdrop click or the close button; moves focus in and
@@ -12,11 +13,12 @@ export default function Modal({ label, onClose, children }: { label: string; onC
   const close = useRef(onClose);
   close.current = onClose;
 
+  useLayer(true, () => close.current());
+
   useEffect(() => {
     const before = document.activeElement as HTMLElement | null;
     panel.current?.focus();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close.current();
       // keep Tab inside the dialog
       if (e.key === 'Tab' && panel.current) {
         const items = panel.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
@@ -33,11 +35,8 @@ export default function Modal({ label, onClose, children }: { label: string; onC
       }
     };
     document.addEventListener('keydown', onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
       before?.focus?.();
     };
   }, []);

@@ -71,7 +71,8 @@ export default function AuthForm({ onStepChange }: { onStepChange?: (step: 'emai
     if (err) {
       setError(err.toLowerCase().includes('expired') || err.toLowerCase().includes('invalid') ? 'That code is wrong or has expired. Check the email or send a new code.' : err);
       setDigits(Array(CODE_LEN).fill(''));
-      boxes.current[0]?.focus();
+      // the boxes are still disabled until React re-renders with busy=false
+      window.setTimeout(() => boxes.current[0]?.focus(), 0);
     }
     // on success the pop-up closes itself (the user is now logged in)
   };

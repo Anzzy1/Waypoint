@@ -4,6 +4,7 @@ import { GOALS, LEVELS, NAME_MAX, HEADLINE_MAX, avatarSrc, readProfile, suggeste
 import Avatar from './Avatar';
 import { ChoiceChips, CountedField, PhotoPicker, type PhotoValue } from './ProfileBits';
 import { ArrowLeft, ArrowRight, Check } from './Icons';
+import { useLayer } from '../lib/layers';
 
 const STEPS = ['Your name', 'Your photo', 'About you'];
 
@@ -39,13 +40,10 @@ function ProfileSetup({ onDone }: { onDone: (name: string) => void }) {
   const suggestions = suggestedNames(user);
   const shown = name.trim() || start.name;
 
+  // no Escape: this setup is finished or skipped with its own buttons
+  useLayer(true);
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     panel.current?.focus();
-    return () => {
-      document.body.style.overflow = prev;
-    };
   }, []);
 
   const finish = async (skip = false) => {

@@ -7,6 +7,7 @@ import { Glyph } from './Art';
 import { ArrowRight, Check, Close } from './Icons';
 import LearnArt from './LearnArt';
 import AuthForm from './AuthForm';
+import { useLayer } from '../lib/layers';
 
 const WELCOME_KEY = 'waypoint.welcomeSeen.v1';
 const NUDGE_KEY = 'waypoint.nudgeLevel.v1';
@@ -143,18 +144,10 @@ export default function AuthModalHost() {
   }, [done, prompts, loading, user, openAuth]);
 
   /* ---------- pop-up behaviour: Escape, focus, scroll lock ---------- */
+  useLayer(!!modal, closeAuth);
   useEffect(() => {
-    if (!modal) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    panelRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && closeAuth();
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = prev;
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [modal, closeAuth]);
+    if (modal) panelRef.current?.focus();
+  }, [modal]);
 
   if (!modal) return null;
 

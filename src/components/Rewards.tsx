@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, 
 import { notifyLocalChange, onReload } from '../lib/sync';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check, Close } from './Icons';
+import { useLayer } from '../lib/layers';
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -98,15 +99,11 @@ function Celebration({ label, onClose, big, children }: { label: string; onClose
   // latest onClose without re-running the focus effect on every parent render
   const close = useRef(onClose);
   close.current = onClose;
+  useLayer(true, () => close.current());
   useEffect(() => {
     const before = document.activeElement as HTMLElement | null;
     panel.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && close.current();
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      before?.focus?.();
-    };
+    return () => before?.focus?.();
   }, []);
   return (
     <div className="celebrate-root">

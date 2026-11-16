@@ -74,6 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const applying = useRef(false);
   /** a local change is waiting to be pushed: don't let a pull overwrite it */
   const pending = useRef(false);
+  /** send any waiting local change right away (used before logging out) */
+  const flush = useRef<() => Promise<void>>(async () => {});
 
   /* ---------- session ---------- */
   useEffect(() => {
@@ -103,6 +105,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const snap = readLocal();
     const body = JSON.stringify(snap);
     if (body === lastPushed.current) return;
+    // never write once that user has logged out (e.g. the cleared device data after a logout)
+    const { data: sess } = await supabase.auth.getSession();
+    if (sess.session?.user.id !== uid) return;
     setSync('syncing');
     const updated_at = new Date().toISOString();
     const { error } = await supabase.from(TABLE).upsert({ user_id: uid, data: snap, updated_at });
@@ -148,19 +153,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!uid) return;
     let t = 0;
+    const flushNow = () => {
+      window.clearTimeout(t);
+      pending.current = false;
+      void push(uid);
+    };
+    flush.current = async () => {
+      if (pending.current) flushNow();
+      await push(uid);
+    };
     const off = onLocalChange(() => {
       if (applying.current) return;
       window.clearTimeout(t);
       pending.current = true;
-      t = window.setTimeout(() => {
-        pending.current = false;
-        push(uid);
-      }, 900);
+      t = window.setTimeout(flushNow, 900);
     });
+    // leaving the tab (switching apps, closing it): don't sit on an unsent change
+    const onHide = () => {
+      if (document.visibilityState === 'hidden' && pending.current) flushNow();
+    };
+    document.addEventListener('visibilitychange', onHide);
     return () => {
       off();
+      document.removeEventListener('visibilitychange', onHide);
       window.clearTimeout(t);
       pending.current = false;
+      flush.current = async () => {};
     };
   }, [uid, push]);
 
@@ -211,8 +229,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return error?.message ?? null;
       },
       signOut: async () => {
+        // save the last tick first, then forget this account's data on the device, so the next
+        // person to log in here doesn't get it merged into their account (it's safe in the account)
+        await flush.current();
         await supabase?.auth.signOut();
         lastPushed.current = '';
+        clearLocal();
       },
       updateProfile: async (patch) => {
         if (!user) return 'You’re not logged in.';
