@@ -1,22 +1,54 @@
-import { StrictMode, useEffect, useRef } from 'react';
+import { lazy, StrictMode, Suspense, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { ProgressProvider } from './hooks/useProgress';
 import Nav from './components/Nav';
 import { Footer } from './components/Bits';
 import { RevealManager } from './components/Motion';
+import ErrorBoundary from './components/ErrorBoundary';
 import Home from './pages/Home';
 import RoadmapPage from './pages/RoadmapPage';
 import NotFound from './pages/NotFound';
-import Learn from './pages/Learn';
-import Stacks from './pages/Stacks';
-import Login from './pages/Login';
-import Account from './pages/Account';
-import Settings from './pages/Settings';
 import ProfileSetupHost from './components/ProfileSetup';
 import { AuthProvider } from './hooks/useAuth';
 import AuthModalHost from './components/AuthModal';
-import AiWorkflow from './pages/AiWorkflow';
+
+// pages people rarely land on first are loaded on demand, keeping the first download small
+const Learn = lazy(() => import('./pages/Learn'));
+const Stacks = lazy(() => import('./pages/Stacks'));
+const Login = lazy(() => import('./pages/Login'));
+const Account = lazy(() => import('./pages/Account'));
+const Settings = lazy(() => import('./pages/Settings'));
+const AiWorkflow = lazy(() => import('./pages/AiWorkflow'));
+
+const PageLoading = () => (
+  <section className="section page-loading" aria-busy="true">
+    <div className="container"><p className="muted">Loading…</p></div>
+  </section>
+);
+
+/** A crash on one page shouldn't follow the learner to the next one. */
+function Pages() {
+  const { pathname } = useLocation();
+  return (
+    <ErrorBoundary resetKey={pathname}>
+      <Suspense fallback={<PageLoading />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/learn" element={<Learn />} />
+          <Route path="/roadmap/:id" element={<RoadmapPage />} />
+          <Route path="/stack" element={<Stacks />} />
+          <Route path="/stack/:id" element={<Stacks />} />
+          <Route path="/ai" element={<AiWorkflow />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
 import './styles.css';
 import './profile.css';
 
@@ -43,18 +75,7 @@ createRoot(document.getElementById('root')!).render(
         <RevealManager />
         <Nav />
         <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/learn" element={<Learn />} />
-            <Route path="/roadmap/:id" element={<RoadmapPage />} />
-            <Route path="/stack" element={<Stacks />} />
-            <Route path="/stack/:id" element={<Stacks />} />
-            <Route path="/ai" element={<AiWorkflow />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Pages />
         </main>
         <Footer />
         <AuthModalHost />

@@ -61,7 +61,8 @@ creates the account. Their progress, plan and badges then sync across devices.
 7. On your host (Vercel, Netlify…), add the same two `VITE_SUPABASE_…` variables and redeploy.
 
 When someone logs in for the first time on a device, the progress already in their browser is merged into their account,
-so nothing is lost. On their first login, people set up a profile (name, photo, level and goal), which they can change
+so nothing is lost. Logging out clears that device's copy (it stays safe in the account), so the next person to log in
+on a shared computer doesn't inherit it. On their first login, people set up a profile (name, photo, level and goal), which they can change
 later on the Settings page. Guests see a welcome pop-up on their first visit and a reminder after 3, 10 and 25 finished lessons.
 
 ## Deploy
@@ -69,3 +70,7 @@ later on the Settings page. Guests see a welcome pop-up on their first visit and
 The site uses hash routing and `base: './'`, so the `dist/` folder runs on any static host (Vercel, Netlify, GitHub Pages) with no extra configuration.
 
 The live site is hosted on **Vercel**, which redeploys on every push to `main`. The `VITE_SUPABASE_…` variables are set in the Vercel project settings.
+
+**Link previews:** set `VITE_SITE_URL` to the site's public address (for example `https://waypoint.vercel.app/`) in the
+host's environment variables. The build then adds the canonical link and the `og:image` / `og:url` tags that LinkedIn,
+X and Slack need to show the preview card (`public/og.png`, 1200×630). Without it, those tags are left out.

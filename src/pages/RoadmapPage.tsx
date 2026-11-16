@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { getRoadmap, hoursOf, roadmaps, topicIdsOf } from '../data/roadmaps';
 import { topics } from '../data/topics';
@@ -6,9 +6,9 @@ import { DIAGRAM_IDS } from '../data/topicIcons';
 import { useProgress } from '../hooks/useProgress';
 import { estimateFinish, usePlan } from '../hooks/usePlan';
 import { ProgressBar } from '../components/Bits';
-import { GUIDES } from '../data/guides';
+import { useGuides } from '../hooks/useGuides';
+import { saveLastRoadmap } from '../lib/lastRoadmap';
 import { onReload } from '../lib/sync';
-import LessonDrawer from '../components/LessonDrawer';
 import { ArrowLeft, ArrowRight, Check } from '../components/Icons';
 import { CountUp } from '../components/Motion';
 import RoleArt from '../components/RoleArt';
@@ -25,7 +25,8 @@ function readSteps(): Record<string, number[]> {
     return {};
   }
 }
-const stepCount = (tid: string) => GUIDES[tid]?.steps.length ?? topics[tid]?.points.length ?? 0;
+// the lesson view carries all lesson content, so it's downloaded the first time a lesson opens
+const LessonDrawer = lazy(() => import('../components/LessonDrawer'));
 
 type Celebration = { kind: 'stage'; stage: number } | { kind: 'roadmap' } | null;
 
@@ -98,6 +99,15 @@ export default function RoadmapPage() {
   const [celebration, setCelebration] = useState<Celebration>(null);
   const journeyRef = useRef<HTMLOListElement>(null);
   const [steps, setSteps] = useState(readSteps);
+  const guides = useGuides();
+  useEffect(() => {
+    if (rm) saveLastRoadmap(rm.id);
+  }, [rm]);
+  // warm up the lesson view in the background so opening a lesson is instant
+  useEffect(() => {
+    void import('../components/LessonDrawer').catch(() => {});
+  }, []);
+  const stepCount = (tid: string) => guides?.[tid]?.steps.length ?? topics[tid]?.points.length ?? 0;
   useEffect(() => onReload(() => setSteps(readSteps())), []);
 
   // flat, ordered list of lessons with their stage for drawer prev/next
@@ -427,6 +437,7 @@ export default function RoadmapPage() {
       </section>
 
       {open && (
+        <Suspense fallback={<div className="lesson-root lesson-loading" aria-busy="true" />}>
         <LessonDrawer
           topic={topics[open.id]}
           stageLabel={`Stage ${pad(open.stage + 1)}`}
@@ -439,6 +450,7 @@ export default function RoadmapPage() {
           onNext={openIndex < order.length - 1 ? () => setLesson(order[openIndex + 1].id) : undefined}
           nextTitle={openIndex < order.length - 1 ? topics[order[openIndex + 1].id]?.title : undefined}
         />
+        </Suspense>
       )}
 
       {celebration?.kind === 'stage' && (

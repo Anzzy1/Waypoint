@@ -8,6 +8,7 @@ import { CountUp, SplitWords } from '../components/Motion';
 import RoleArt from '../components/RoleArt';
 import { Glyph, StepArt } from '../components/Art';
 import { estimateFinish, usePlan } from '../hooks/usePlan';
+import { readLastRoadmap } from '../lib/lastRoadmap';
 import { stacks, EVERY_ROLE } from '../data/stacks';
 import { EVERY_ROLE_GLYPH } from '../data/logos';
 import { CDN, logoPathsFor } from '../components/TechLogo';
@@ -70,6 +71,47 @@ function HeroVisual() {
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Returning learners: one tap back to the lesson they're on. Follows their saved plan, else the
+ * roadmap they opened last, else the one with the most lessons done. (Not the highest %: shared
+ * lessons would make the shortest roadmap win for no reason.) Hidden for new visitors and once
+ * that roadmap is finished.
+ */
+function ResumeCard() {
+  const { countDone, isDone } = useProgress();
+  const { plan, saved } = usePlan();
+  // roadmaps the learner has started and not finished yet
+  const open = roadmaps
+    .map((r) => {
+      const ids = topicIdsOf(r);
+      return { r, ids, done: countDone(ids.filter((t) => t !== 'how-to-learn')), next: ids.find((t) => !isDone(t)) };
+    })
+    .filter((s) => s.done > 0 && s.next);
+  if (!open.length) return null;
+  const byId = (id: string | null) => open.find((s) => s.r.id === id);
+  const pick =
+    (saved ? byId(plan.roadmap) : undefined) ?? byId(readLastRoadmap()) ?? open.reduce((a, b) => (b.done > a.done ? b : a));
+  const next = pick.next!;
+  const pct = countDone(pick.ids) / pick.ids.length;
+
+  return (
+    <Link to={`/roadmap/${pick.r.id}?lesson=${next}`} className="resume rise" style={i(10)}>
+      <RoleArt role={pick.r.id} className="resume-art" />
+      <span className="resume-text">
+        <span className="kicker">Continue where you left off</span>
+        <b>{topics[next].title}</b>
+        <span className="small muted">
+          {pick.r.title} · {Math.round(pct * 100)}% done
+        </span>
+        <ProgressBar value={pct} label={`${pick.r.title} progress`} />
+      </span>
+      <span className="resume-go" aria-hidden>
+        <ArrowRight size={18} />
+      </span>
+    </Link>
   );
 }
 
@@ -300,6 +342,7 @@ export default function Home() {
                 Try the 10-min quick start
               </Link>
             </div>
+            <ResumeCard />
           </div>
           <HeroVisual />
         </div>

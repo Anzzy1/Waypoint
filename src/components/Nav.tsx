@@ -5,6 +5,7 @@ import { Glyph, type GlyphKey } from './Art';
 import { profileOf, useAuth } from '../hooks/useAuth';
 import { useTheme } from '../lib/theme';
 import Avatar from './Avatar';
+import SearchDialog from './Search';
 
 const LINKS: { to: string; label: string; desc: string; glyph: GlyphKey; match: (p: string) => boolean }[] = [
   { to: '/', label: 'Roadmaps', desc: 'Step-by-step career paths', glyph: 'compass', match: (p) => p === '/' || p.startsWith('/roadmap') },
@@ -22,6 +23,7 @@ export default function Nav() {
   const menuRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [searching, setSearching] = useState(false);
   const [pill, setPill] = useState<CSSProperties>({ opacity: 0 });
 
   const shellRef = useRef<HTMLDivElement>(null);
@@ -30,6 +32,19 @@ export default function Nav() {
 
   const active = LINKS.findIndex((l) => l.match(pathname));
   const next = theme === 'dark' ? 'light' : 'dark';
+
+  // Ctrl/⌘+K opens search from anywhere (also while typing: it's the standard shortcut)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setOpen(false);
+        setSearching(true);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
 
   // account menu: close on navigation, Escape and outside clicks
   useEffect(() => setMenu(false), [pathname]);
@@ -125,6 +140,12 @@ export default function Nav() {
           </nav>
 
           <div className="nav-actions">
+            <button className="nav-icon" onClick={() => { setOpen(false); setSearching(true); }} aria-label="Search lessons" title="Search (Ctrl+K)">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+            </button>
             <button className="nav-icon" onClick={() => setTheme(next)} aria-label={`Switch to ${next} mode`}>
               <span key={theme} className="theme-icon">
                 {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
@@ -226,6 +247,7 @@ export default function Nav() {
           </div>
         )}
       </div>
+      {searching && <SearchDialog onClose={() => setSearching(false)} />}
     </header>
   );
 }

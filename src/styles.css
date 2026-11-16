@@ -2181,3 +2181,62 @@ button.complete-note:hover { transform: translateY(-1px); box-shadow: var(--shad
   .hv-seg span { height: 100%; }
   .hv-bar span { width: 60%; }
 }
+
+/* ============ Crash card + page loading ============ */
+.page-loading { min-height: 60vh; }
+.crash { min-height: 60vh; display: grid; align-items: center; }
+.crash-card { display: flex; flex-direction: column; gap: 14px; max-width: 620px; }
+.crash-card h1 { font-size: clamp(30px, 5vw, 44px); }
+.crash-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+
+/* ============ Search (Ctrl/⌘+K) ============ */
+.search { display: flex; flex-direction: column; gap: 14px; }
+.search-field {
+  display: flex; align-items: center; gap: 10px; margin-right: 44px;
+  padding: 0 14px; height: 48px; border-radius: 12px;
+  border: 1px solid var(--line-strong); background: var(--soft); color: var(--faint);
+}
+.search-field:focus-within { border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 25%, transparent); }
+.search-field input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); font: inherit; font-size: 16px; }
+.search-field input::-webkit-search-cancel-button { cursor: pointer; }
+.search-empty { display: flex; flex-direction: column; gap: 10px; }
+.search-suggest { display: flex; flex-wrap: wrap; gap: 8px; }
+.search-suggest .chip { cursor: pointer; }
+.search-suggest .chip:hover { border-color: var(--ink); }
+.search-none { padding: 12px 2px; }
+.search-results { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.search-hit {
+  display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 12px;
+  border: 1px solid transparent; cursor: pointer; min-width: 0;
+}
+.search-hit.on { background: var(--soft); border-color: var(--line-strong); }
+.search-hit .topic-icon { width: 40px; height: 40px; }
+.search-role { flex: none; display: grid; place-items: center; width: 40px; height: 40px; overflow: hidden; }
+.search-role svg { width: 40px; height: auto; }
+.search-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.search-text b { font-weight: 600; font-size: 15.5px; line-height: 1.3; }
+.search-text .small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-done { flex: none; }
+.search-keys { margin-top: 2px; }
+
+/* ============ Resume card (home, returning learners) ============ */
+.resume {
+  display: flex; align-items: center; gap: 16px; margin-top: 24px; max-width: 540px;
+  padding: 16px 18px; border-radius: 16px; border: 1px solid var(--line-strong);
+  background: var(--card); box-shadow: var(--shadow-sm);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.2s ease;
+}
+.resume:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--ink); }
+.resume:hover .resume-go { transform: translateX(3px); }
+.resume-art { flex: none; width: 64px; height: auto; }
+.resume-text { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+.resume-text b { font-size: 17px; font-weight: 600; line-height: 1.3; }
+.resume-text .bar { margin-top: 6px; }
+.resume-go {
+  flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--primary); color: var(--on-primary); transition: transform 0.25s var(--ease);
+}
+@media (max-width: 640px) {
+  .resume { gap: 12px; padding: 14px; }
+  .resume-art { width: 48px; }
+}
